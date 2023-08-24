@@ -11,14 +11,48 @@ public class PlayerControl : MonoBehaviour
     private float lookSensitivity;
 
     [SerializeField]
-    private Camera theCamera;
+    private Camera firstPersonViewCamera;
+
+    [SerializeField]
+    private Camera topViewCamera;
+
+    [SerializeField]
+    private Camera quaterViewCamera;
 
     private Rigidbody myRigid;
+
+    private void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.tag == "topView") // 충돌한 오브젝트의 태그 확인
+        {
+            firstPersonViewCamera.enabled = false; // 1인칭 카메라 비활성화
+            topViewCamera.enabled = true;     // Top 뷰 카메라 활성화
+            quaterViewCamera.enabled = false;
+        }
+
+        if (other.gameObject.tag == "firstPersonView") // 충돌이 끝난 오브젝트의 태그 확인
+        {
+            firstPersonViewCamera.enabled = true;  // 1인칭 카메라 활성화
+            topViewCamera.enabled = false;     // Top 뷰 카메라 비활성화
+            quaterViewCamera.enabled = false;
+        }
+
+        if (other.gameObject.tag == "quaterView") // 충돌이 끝난 오브젝트의 태그 확인
+        {
+            firstPersonViewCamera.enabled = true;  // 1인칭 카메라 활성화
+            topViewCamera.enabled = false;     // Top 뷰 카메라 비활성화
+            quaterViewCamera.enabled = true;
+
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         myRigid = GetComponent<Rigidbody>();
+        firstPersonViewCamera.enabled = false;
+        topViewCamera.enabled = true;
+        quaterViewCamera.enabled = false;
     }
 
     // Update is called once per frame
@@ -26,6 +60,18 @@ public class PlayerControl : MonoBehaviour
     {
         Move();
         CharacterRotation();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // 첫 번째 카메라를 활성화하고, 두 번째 카메라를 비활성화
+            firstPersonViewCamera.enabled = true;
+            topViewCamera.enabled = false;
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            // 두 번째 카메라를 활성화하고, 첫 번째 카메라를 비활성화
+            firstPersonViewCamera.enabled = false;
+            topViewCamera.enabled = true;
+        }
     }
 
     private void Move()
