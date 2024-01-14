@@ -2,16 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackTurretController : MonoBehaviour
+public class EnemyBaseController : MonoBehaviour
 {
-
-    [Header("¹Ì´Ï¾ð")]
-    [SerializeField] GameObject Minion;
+    [Header("UNIT")]
+    [SerializeField] GameObject Unit;
     [SerializeField] Transform StartPosition;
     [SerializeField] float minion_create_speed;
     [SerializeField] float CurTime;
     [SerializeField] float MaxTime;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -24,9 +22,9 @@ public class AttackTurretController : MonoBehaviour
         CurTime -= Time.deltaTime;
         if (CurTime <= 0)
         {
-            var a = Instantiate(Minion, StartPosition.position, StartPosition.rotation);
+            var a = Instantiate(Unit, StartPosition.position, StartPosition.rotation);
             a.GetComponent<Rigidbody>().AddForce(StartPosition.transform.forward * minion_create_speed);
-            Destroy(a.gameObject, 2.0f);
+            // Destroy(a.gameObject, 2.0f);
             CurTime = MaxTime;
         }
     }
