@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2274666207604183814}
   - component: {fileID: 7168960419575315647}
   - component: {fileID: 5187730628550718303}
-  - component: {fileID: 86242779432796911}
   m_Layer: 0
   m_Name: Water Unit
   m_TagString: Untagged
@@ -64,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fb7837426595e344b89f40b9c6d4e1a5, type: 2}
+  - {fileID: 2100000, guid: d170b2b54890c27438ad54e5dc0249da, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -136,15 +135,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &86242779432796911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 97690299423046507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83cd6d92361aa324fa53b27dd1e4b6b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
