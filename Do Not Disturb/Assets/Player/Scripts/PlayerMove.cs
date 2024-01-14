@@ -12,25 +12,26 @@ public class PlayerMove : MonoBehaviour
     float vAxis;
     bool wDown;
     bool jDown;
+    bool dDown;
     bool fDown;
 
     bool swapTool1;
     bool swapTool2;
 
     bool isJump;
-    bool isDodge;
+    bool isDash;
     bool isSwap;
-    bool isFireReady = true;
+    bool isSwingReady = true;
 
     Vector3 moveVec;
-    Vector3 dodgeVec;
+    Vector3 dashVec;
 
     Rigidbody rigid;
     // Animator animator;
 
     Tools equipTool;
     int equipToolIndex = -1;                // 0:도끼 1:곡괭이
-    float fireDelay;
+    float swingDelay;
 
     void Awake()
     {
@@ -45,7 +46,7 @@ public class PlayerMove : MonoBehaviour
         Turn();
         Jump();
         Swing();
-        Dodge();
+        Dash();
         Swap();
     }
 
@@ -55,6 +56,7 @@ public class PlayerMove : MonoBehaviour
         vAxis = Input.GetAxisRaw("Vertical");
         wDown = Input.GetButton("Walk");
         jDown = Input.GetButton("Jump");
+        dDown = Input.GetButton("Dash");
         fDown = Input.GetButton("Fire1");
 
         swapTool1 = Input.GetButton("Swap1");
@@ -65,10 +67,10 @@ public class PlayerMove : MonoBehaviour
     {
         moveVec = new Vector3(hAxis, 0, vAxis).normalized;
 
-        if (isDodge)
-            moveVec = dodgeVec;
+        if (isDash)
+            moveVec = dashVec;
 
-        if (isSwap || !isFireReady)
+        if (isSwap || !isSwingReady)
             moveVec = Vector3.zero;
 
         transform.position += moveVec * speed * (wDown ? 0.8f : 1f) * Time.deltaTime;
@@ -84,7 +86,7 @@ public class PlayerMove : MonoBehaviour
 
     void Jump()
     {
-        if (jDown && moveVec == Vector3.zero && !isJump && !isDodge && !isSwap)
+        if (jDown && moveVec == Vector3.zero && !isJump && !isDash && !isSwap)
         {
             rigid.AddForce(Vector3.up * 5, ForceMode.Impulse);
             //animator.SetBool("isJump", true);
@@ -98,33 +100,33 @@ public class PlayerMove : MonoBehaviour
         if (equipTool == null)
             return;
 
-        fireDelay += Time.deltaTime;
-        isFireReady = equipTool.rate < fireDelay;
+        swingDelay += Time.deltaTime;
+        isSwingReady = equipTool.rate < swingDelay;
 
-        if(fDown && isFireReady && !isDodge && !isSwap)
+        if(fDown && isSwingReady && !isDash && !isSwap)
         {
             equipTool.Use();
             //animation.SetTrigger("doSwing");
             Debug.Log("Swing");
-            fireDelay = 0;
+            swingDelay = 0;
         }
     }
 
-    void Dodge()
+    void Dash()
     {
-        if (jDown && moveVec != Vector3.zero && !isJump && !isDodge && !isSwap)
+        if (dDown && moveVec != Vector3.zero && !isJump && !isDash && !isSwap)
         {
-            dodgeVec = moveVec;
+            dashVec = moveVec;
             speed *= 2;
-            //animator.SetTrigger("isDodge");
-            isDodge = true;
-            Invoke("DodgeOut", 0.6f);
+            //animator.SetTrigger("isDash");
+            isDash = true;
+            Invoke("DashOut", 0.6f);
         }
     }
 
-    void DodgeOut()
+    void DashOut()
     {
-        isDodge = false;
+        isDash = false;
         speed *= 0.5f;
     }
 
@@ -140,7 +142,7 @@ public class PlayerMove : MonoBehaviour
         if (swapTool1) toolIndex = 0;
         if (swapTool2) toolIndex = 1;
 
-        if ((swapTool1 || swapTool2) && !isDodge && !isJump)
+        if ((swapTool1 || swapTool2) && !isDash && !isJump)
         {
 
             //Debug.Log(toolIndex);
