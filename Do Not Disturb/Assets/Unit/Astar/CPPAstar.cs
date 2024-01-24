@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class UnitAstar : MonoBehaviour
+public class CPPAstar : MonoBehaviour
 {
     [DllImport("Test")]
     private static extern int SimpleTypeArgFun(int n);
-
     // Start is called before the first frame update
-    private void Start()
+    void Start()
     {
         Run1_2();
     }
@@ -17,7 +16,6 @@ public class UnitAstar : MonoBehaviour
     {
         Debug.Log("1.2. Output: \t" + SimpleTypeArgFun(20));
     }
-
     // Update is called once per frame
     void Update()
     {
