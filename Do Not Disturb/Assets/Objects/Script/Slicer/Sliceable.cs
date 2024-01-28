@@ -6,29 +6,29 @@ using UnityEngine;
 public class Sliceable : MonoBehaviour
 {
     [SerializeField]
-    private bool _isSolid = true;
+    private bool isSolid = true;
 
     [SerializeField]
-    private bool _reverseWindTriangles = false;
+    private bool reverseWindTriangles = false;
 
     [SerializeField]
-    private bool _useGravity = false;
+    private bool useGravity = false;
 
     [SerializeField]
-    private bool _shareVertices = false;
+    private bool shareVertices = false;
 
     [SerializeField]
-    private bool _smoothVertices = false;
+    private bool smoothVertices = false;
 
     public bool IsSolid
     {
         get
         {
-            return _isSolid;
+            return isSolid;
         }
         set
         {
-            _isSolid = value;
+            isSolid = value;
         }
     }
 
@@ -36,11 +36,11 @@ public class Sliceable : MonoBehaviour
     {
         get
         {
-            return _reverseWindTriangles;
+            return reverseWindTriangles;
         }
         set
         {
-            _reverseWindTriangles = value;
+            reverseWindTriangles = value;
         }
     }
 
@@ -48,11 +48,11 @@ public class Sliceable : MonoBehaviour
     {
         get
         {
-            return _useGravity;
+            return useGravity;
         }
         set
         {
-            _useGravity = value;
+            useGravity = value;
         }
     }
 
@@ -60,11 +60,11 @@ public class Sliceable : MonoBehaviour
     {
         get
         {
-            return _shareVertices;
+            return shareVertices;
         }
         set
         {
-            _shareVertices = value;
+            shareVertices = value;
         }
     }
 
@@ -72,11 +72,11 @@ public class Sliceable : MonoBehaviour
     {
         get
         {
-            return _smoothVertices;
+            return smoothVertices;
         }
         set
         {
-            _smoothVertices = value;
+            smoothVertices = value;
         }
     }
 
