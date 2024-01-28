@@ -4,18 +4,12 @@ using UnityEngine;
 
 public class Node
 {
-    public int x;
-    public int z;
+    public bool isWalkAble;
+    public Vector3 WorldPos;
 
-    public Node parent;
-
-    private int F;
-    private int G;
-    private int H;
-
-    public Node(int _x, int _z)
+    public Node(bool isWalkAble, Vector3 worldPos)
     {
-        x = _x;
-        z = _z;
+        this.isWalkAble = isWalkAble;
+        WorldPos = worldPos;
     }
 }

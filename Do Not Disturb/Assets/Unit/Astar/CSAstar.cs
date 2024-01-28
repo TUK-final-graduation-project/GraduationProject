@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class CSAstar : MonoBehaviour
 {
+    [SerializeField]
+    private Vector3 GoalPoint;
+    private Vector3 Dir;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        transform.position = Vector3.MoveTowards(transform.position,
+                new Vector3(GoalPoint.x, GoalPoint.y, GoalPoint.z), Time.deltaTime * 2f);
     }
 }
