@@ -20,6 +20,7 @@ public class AstarManager : MonoBehaviour
         pathFinding = GetComponent<PathFinding>();
     }
 
+    // 길 찾기 큐에 찾아야 할 길 넣기
     public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, UnityAction<Vector3[], bool> callback)
     {
         PathRequest newRequest = new PathRequest(pathStart, pathEnd, callback);
@@ -27,6 +28,7 @@ public class AstarManager : MonoBehaviour
         instance.TryProcessNext();
     }
 
+    // 큐에서 다음 찾아야 할 길 꺼내오기
     void TryProcessNext()
     {
         if(!isProcessingPath && pathRequestQueue.Count > 0)
@@ -37,8 +39,10 @@ public class AstarManager : MonoBehaviour
         }
     }
 
+    // 길 찾기 종료 후 TryProcessNext 호출하기
     public void FinishedProcessingPath(Vector3[] path, bool success)
     {
+        // 움직이기
         currentPathRequest.callback(path, success);
         isProcessingPath = false;
         TryProcessNext();   

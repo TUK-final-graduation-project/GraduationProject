@@ -15,11 +15,13 @@ public class PathFinding : MonoBehaviour
         grid = GetComponent<AGrid>();
     }
 
+    // 시작
     public void StartFindPath(Vector3 startPos, Vector3 targetPos)
     {
         StartCoroutine(FindPath(startPos, targetPos));
     }
 
+    // 길 찾기 (A*)
     IEnumerator FindPath(Vector3 StartPos, Vector3 TargetPos)
     {
         Vector3[] waypoints = new Vector3[0];
@@ -84,6 +86,7 @@ public class PathFinding : MonoBehaviour
         requestManager.FinishedProcessingPath(waypoints, pathSuccess);
     }
 
+    // close list의 노드 길로 만들기
     Vector3[] RetracePath(Node StartNode, Node EndNode)
     {
         List<Node> path = new List<Node>();
@@ -98,6 +101,8 @@ public class PathFinding : MonoBehaviour
         Array.Reverse(waypoints);
         return waypoints;
     }
+
+    // 길 정리하기
     Vector3[] SimplifyPath(List<Node> path)
     {
         List<Vector3> waypoints = new List<Vector3>();
@@ -114,6 +119,8 @@ public class PathFinding : MonoBehaviour
         }
         return waypoints.ToArray();
     }
+
+    // cost 계산하기
     int GetDistanceCost(Node nodeA, Node nodeB)
     {
         int distX = Mathf.Abs(nodeA.gridX - nodeB.gridX);

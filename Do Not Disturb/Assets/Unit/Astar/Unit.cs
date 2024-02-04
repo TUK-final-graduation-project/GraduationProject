@@ -9,11 +9,14 @@ public class Unit : MonoBehaviour
     Vector3[] path;
     int targetIndex;
 
+    // 찾아야 할 길 요청하기
     private void Start()
     {
-        AstarManager.RequestPath(transform.position, target.position, OnPathFound);
+        AstarManager.RequestPath(transform.position /* 현재 위치 */, target.position /* 목표 위치 */, OnPathFound /* 콜백 함수 */);
 
     }
+
+    // 길 찾기 시작하기
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
         if(pathSuccessful)
@@ -23,6 +26,8 @@ public class Unit : MonoBehaviour
             StartCoroutine("FollowPath");
         }
     }
+
+    // 움직이기
     IEnumerator FollowPath()
     {
         Vector3 currentWaypoint = path[0];
