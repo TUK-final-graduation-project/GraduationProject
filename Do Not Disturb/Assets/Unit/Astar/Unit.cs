@@ -12,7 +12,7 @@ public class Unit : MonoBehaviour
     // 찾아야 할 길 요청하기
     private void Start()
     {
-        AstarManager.RequestPath(transform.position /* 현재 위치 */, target.position /* 목표 위치 */, OnPathFound /* 콜백 함수 */);
+        AstarManager.RequestPath(transform.position, target.position, OnPathFound);
 
     }
 
