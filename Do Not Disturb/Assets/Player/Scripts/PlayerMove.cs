@@ -27,7 +27,7 @@ public class PlayerMove : MonoBehaviour
     Vector3 dashVec;
 
     Rigidbody rigid;
-    // Animator animator;
+    Animator anim;
 
     Tools equipTool;
     int equipToolIndex = -1;                // 0:도끼 1:곡괭이
@@ -36,7 +36,7 @@ public class PlayerMove : MonoBehaviour
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        //animator = GetComponentInChildren<Animator>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -75,8 +75,8 @@ public class PlayerMove : MonoBehaviour
 
         transform.position += moveVec * speed * (wDown ? 0.8f : 1f) * Time.deltaTime;
 
-        // animator.SetBool("isWalk", moveVec != Vector3.zero);
-        // animator.SetBool("isWalk", wDown);
+        //animator.SetBool("isWalk", moveVec != Vector3.zero);
+        //animator.SetBool("isWalk", wDown);
     }
 
     void Turn()
@@ -89,8 +89,8 @@ public class PlayerMove : MonoBehaviour
         if (jDown && moveVec == Vector3.zero && !isJump && !isDash && !isSwap)
         {
             rigid.AddForce(Vector3.up * 5, ForceMode.Impulse);
-            //animator.SetBool("isJump", true);
-            //animator.SetTrigger("isJump");
+            anim.SetBool("Jump", true);
+            anim.SetTrigger("Jump");
             isJump = true;
         }
     }
@@ -106,8 +106,8 @@ public class PlayerMove : MonoBehaviour
         if(fDown && isSwingReady && !isDash && !isSwap)
         {
             equipTool.Use();
-            //animation.SetTrigger("doSwing");
-            Debug.Log("Swing");
+            //GetComponent<Animation>().SetTrigger("isAttack");
+            Debug.Log("Attack");
             swingDelay = 0;
         }
     }
@@ -172,7 +172,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            // animator.SetBool("Idle ", false);
+            anim.SetBool("Idle", true);
             isJump = false;
         }
     }
