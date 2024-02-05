@@ -7,25 +7,24 @@ namespace Assets.Scripts
 {
     class Slicer
     {
-        /// <summary>
-        /// Slice the object by the plane 
-        /// </summary>
+        // 평면에 따라 객체를 자르기
+        
         /// <param name="plane"></param>
         /// <param name="objectToCut"></param>
         /// <returns></returns>
         public static GameObject[] Slice(Plane plane, GameObject objectToCut)
         {
-            //Get the current mesh and its verts and tris
+            // 현재 메시 및 해당 정점 및 삼각형 가져오기
             Mesh mesh = objectToCut.GetComponent<MeshFilter>().mesh;
             var a = mesh.GetSubMesh(0);
             Sliceable sliceable = objectToCut.GetComponent<Sliceable>();
 
             if (sliceable == null)
             {
-                throw new NotSupportedException("Cannot slice non sliceable object, add the sliceable script to the object or inherit from sliceable to support slicing");
+                throw new NotSupportedException("비 자르기 가능한 객체를 자를 수 없습니다. 해당 객체에 sliceable 스크립트를 추가하거나 자르기를 지원하려면 sliceable에서 상속하세요.");
             }
 
-            //Create left and right slice of hollow object
+            // 중첩된 객체의 왼쪽 및 오른쪽 슬라이스 만들기
             SlicesMetadata slicesMeta = new SlicesMetadata(plane, mesh, sliceable.IsSolid, sliceable.ReverseWireTriangles, sliceable.ShareVertices, sliceable.SmoothVertices);
 
             GameObject positiveObject = CreateMeshGameObject(objectToCut);
@@ -46,10 +45,9 @@ namespace Assets.Scripts
             return new GameObject[] { positiveObject, negativeObject };
         }
 
-        /// <summary>
-        /// Creates the default mesh game object.
-        /// </summary>
-        /// <param name="originalObject">The original object.</param>
+        // 기본 메시 게임 객체 만들기
+        
+        /// <param name="originalObject">원본 객체.</param>
         /// <returns></returns>
         private static GameObject CreateMeshGameObject(GameObject originalObject)
         {
@@ -77,9 +75,7 @@ namespace Assets.Scripts
             return meshGameObject;
         }
 
-        /// <summary>
-        /// Add mesh collider and rigid body to game object
-        /// </summary>
+        // 메시 콜라이더 및 리지드 바디를 게임 객체에 추가
         /// <param name="gameObject"></param>
         /// <param name="mesh"></param>
         private static void SetupCollidersAndRigidBodys(ref GameObject gameObject, Mesh mesh, bool useGravity)
