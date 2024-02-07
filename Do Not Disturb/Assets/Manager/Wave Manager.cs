@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public float gameTime;
+    public int waveNum = 0;
+    public EnemyBaseController enemyBase;
 
-    // Update is called once per frame
     void Update()
     {
-        
+        gameTime += Time.deltaTime;
+        // Wave n번 UI 출력
+        if (gameTime > 2f && waveNum == 0)
+        {
+            waveNum += 1;
+            Debug.Log("wave "+waveNum);
+            // gameTime = 0f;
+            // Unit 생성 및 player 향해 이동
+            enemyBase.UnitGenerator(waveNum);
+        }
     }
 }

@@ -6,26 +6,39 @@ public class EnemyBaseController : MonoBehaviour
 {
     [Header("UNIT")]
     [SerializeField] GameObject Unit;
-    [SerializeField] Transform StartPosition;
-    [SerializeField] float minion_create_speed;
-    [SerializeField] float CurTime;
-    [SerializeField] float MaxTime;
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] Transform startPosition;
+    [SerializeField] float minionSpeed;
+    [SerializeField] float curTime;
+    [SerializeField] float maxTime;
+    int waveLevel;
+    int unitGenerateNum;
+    bool isRunning = false;
+    
+    private void Update()
     {
-        CurTime = MaxTime;
+        curTime -= Time.deltaTime;
+        if (curTime <= 0 && isRunning)
+        {
+            var a = Instantiate(Unit, startPosition.position, startPosition.rotation);
+            a.GetComponent<Rigidbody>().AddForce(startPosition.transform.forward * minionSpeed);
+            // Destroy(a.gameObject, 2.0f);
+            curTime = maxTime;
+            unitGenerateNum++;
+            if ( unitGenerateNum > waveLevel)
+            {
+                isRunning = false;
+            }
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UnitGenerator(int waveLv)
     {
-        CurTime -= Time.deltaTime;
-        if (CurTime <= 0)
-        {
-            var a = Instantiate(Unit, StartPosition.position, StartPosition.rotation);
-            a.GetComponent<Rigidbody>().AddForce(StartPosition.transform.forward * minion_create_speed);
-            // Destroy(a.gameObject, 2.0f);
-            CurTime = MaxTime;
-        }
+        // wave 당 정해진 숫자의 unit만 생성
+        // unit 생성 속도 조정
+        // unit 생성 수 조정
+        unitGenerateNum = 0;
+        waveLevel = waveLv;
+        curTime = maxTime;
+        isRunning = true;
     }
 }
