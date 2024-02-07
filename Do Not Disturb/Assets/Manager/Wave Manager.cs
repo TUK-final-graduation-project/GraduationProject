@@ -6,8 +6,12 @@ public class WaveManager : MonoBehaviour
 {
     public float gameTime;
     public int waveNum = 0;
-    public EnemyBaseController enemyBase;
+    public EnemyBaseController[] enemyBase;
 
+    private void Start()
+    {
+        enemyBase = FindObjectsOfType(typeof(EnemyBaseController)) as EnemyBaseController[];
+    }
     void Update()
     {
         gameTime += Time.deltaTime;
@@ -16,9 +20,12 @@ public class WaveManager : MonoBehaviour
         {
             waveNum += 1;
             Debug.Log("wave "+waveNum);
+            
             // gameTime = 0f;
-            // Unit 생성 및 player 향해 이동
-            enemyBase.UnitGenerator(waveNum);
+
+            // 각 base의 Unit 생성 및 player 향해 이동
+            foreach (EnemyBaseController b in enemyBase)
+                b.UnitGenerator(waveNum);
         }
     }
 }

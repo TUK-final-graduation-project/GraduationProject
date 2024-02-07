@@ -13,15 +13,13 @@ public class EnemyBaseController : MonoBehaviour
     int waveLevel;
     int unitGenerateNum;
     bool isRunning = false;
-    
+
     private void Update()
     {
         curTime -= Time.deltaTime;
         if (curTime <= 0 && isRunning)
         {
             var a = Instantiate(Unit, startPosition.position, startPosition.rotation);
-            a.GetComponent<Rigidbody>().AddForce(startPosition.transform.forward * minionSpeed);
-            // Destroy(a.gameObject, 2.0f);
             curTime = maxTime;
             unitGenerateNum++;
             if ( unitGenerateNum > waveLevel)

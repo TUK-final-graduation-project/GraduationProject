@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    // public Transform target;
+    //public Transform target;
+    GameObject target;
     float speed = 5;
     Vector3[] path;
     int targetIndex;
@@ -12,8 +13,8 @@ public class Unit : MonoBehaviour
     // 찾아야 할 길 요청하기
     private void Start()
     {
-        
-        AstarManager.RequestPath(transform.position, new Vector3(0, 0, 0), OnPathFound);
+        target = GameObject.Find("player");
+        AstarManager.RequestPath(transform.position, target.transform.position, OnPathFound);
 
     }
 
