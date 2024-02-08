@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class PlayerMove : MonoBehaviour
     float hAxis;
     float vAxis;
     bool wDown;
+    bool rDown;
     bool jDown;
     bool dDown;
     bool fDown;
@@ -27,8 +29,11 @@ public class PlayerMove : MonoBehaviour
     Vector3 moveVec;
     Vector3 dashVec;
 
+    [SerializeField]
     Rigidbody rigid;
-    //Animator anim;
+
+    [SerializeField]
+    Animator anim;
 
     Tools equipTool;
     int equipToolIndex = -1;      
@@ -37,7 +42,7 @@ public class PlayerMove : MonoBehaviour
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        //anim = GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -78,12 +83,14 @@ public class PlayerMove : MonoBehaviour
 
         transform.position += moveVec * speed * (wDown ? 0.8f : 1f) * Time.deltaTime;
 
-        //animator.SetBool("isWalk", moveVec != Vector3.zero);
-        //animator.SetBool("isWalk", wDown);
+        // animator
+        anim.SetBool("isWalk", moveVec != Vector3.zero);
+        anim.SetBool("isRun", rDown);
     }
 
     void Turn()
     {
+        // Rotation
         transform.LookAt(transform.position + moveVec);
     }
 
@@ -92,8 +99,8 @@ public class PlayerMove : MonoBehaviour
         if (jDown && moveVec == Vector3.zero && !isJump && !isDash && !isSwap)
         {
             rigid.AddForce(Vector3.up * 5, ForceMode.Impulse);
-            //anim.SetBool("Jump", true);
-            //anim.SetTrigger("Jump");
+            anim.SetBool("isJump", true);
+            anim.SetTrigger("Jump");
             isJump = true;
         }
     }
@@ -109,8 +116,8 @@ public class PlayerMove : MonoBehaviour
         if(fDown && isSwingReady && !isDash && !isSwap)
         {
             equipTool.Use();
-            //GetComponent<Animation>().SetTrigger("isAttack");
-            Debug.Log("Attack");
+            anim.SetTrigger("Axe");
+            Debug.Log("Axe");
             swingDelay = 0;
         }
     }
@@ -160,6 +167,8 @@ public class PlayerMove : MonoBehaviour
 
             //장착 애니메이션 활성화
             // animator.SetTrigger("doSwap");
+            anim.SetTrigger("Attack");
+            Debug.Log("Attack");
 
             isSwap = true;
 
