@@ -1,7 +1,7 @@
 #include "Astar.h"
 
 extern "C" {
-	int DLL_EXPORT SimpleTypeArgFun(Node n) {
-		return n.x + n.y;
+	int DLL_EXPORT SimpleTypeArgFun(int n) {
+		return n;
 	}
 }
