@@ -17,6 +17,7 @@ public class PlayerMove : MonoBehaviour
 
     bool swapTool1;
     bool swapTool2;
+    bool swapTool3;
 
     bool isJump;
     bool isDash;
@@ -27,16 +28,16 @@ public class PlayerMove : MonoBehaviour
     Vector3 dashVec;
 
     Rigidbody rigid;
-    Animator anim;
+    //Animator anim;
 
     Tools equipTool;
-    int equipToolIndex = -1;                // 0:도끼 1:곡괭이
+    int equipToolIndex = -1;      
     float swingDelay;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -48,6 +49,7 @@ public class PlayerMove : MonoBehaviour
         Swing();
         Dash();
         Swap();
+
     }
 
     void GetInput()
@@ -61,6 +63,7 @@ public class PlayerMove : MonoBehaviour
 
         swapTool1 = Input.GetButton("Swap1");
         swapTool2 = Input.GetButton("Swap2");
+        swapTool3 = Input.GetButton("Swap3");
     }
 
     void Move()
@@ -89,8 +92,8 @@ public class PlayerMove : MonoBehaviour
         if (jDown && moveVec == Vector3.zero && !isJump && !isDash && !isSwap)
         {
             rigid.AddForce(Vector3.up * 5, ForceMode.Impulse);
-            anim.SetBool("Jump", true);
-            anim.SetTrigger("Jump");
+            //anim.SetBool("Jump", true);
+            //anim.SetTrigger("Jump");
             isJump = true;
         }
     }
@@ -137,12 +140,15 @@ public class PlayerMove : MonoBehaviour
             return;
         if (swapTool2 && (!hasTools[1] || equipToolIndex == 1))
             return;
+        if (swapTool3 && (!hasTools[2] || equipToolIndex == 2))
+            return;
 
         int toolIndex = -1;
         if (swapTool1) toolIndex = 0;
         if (swapTool2) toolIndex = 1;
+        if (swapTool3) toolIndex = 2;
 
-        if ((swapTool1 || swapTool2) && !isDash && !isJump)
+        if ((swapTool1 || swapTool2|| swapTool3) && !isDash && !isJump)
         {
 
             //Debug.Log(toolIndex);
@@ -164,7 +170,7 @@ public class PlayerMove : MonoBehaviour
 
     void SwapOut()
     {
-        //Debug.Log("SwapOut");
+        Debug.Log("SwapOut");
         isSwap = false;
     }
 
@@ -172,7 +178,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            anim.SetBool("Idle", true);
+            //anim.SetBool("Idle", true);
             isJump = false;
         }
     }
