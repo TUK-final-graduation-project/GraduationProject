@@ -6,27 +6,28 @@ using UnityEngine.UI;
 public class WaveUI : MonoBehaviour
 {
     public WaveManager waveMgr;
+
     GameObject waveUI;
     GameObject timeUI;
+
     void Start()
     {
         waveUI = GameObject.Find("wave");
         timeUI = GameObject.Find("time");
-        waveUI.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (waveMgr.waveNum == 1)
+        if (waveMgr.gameState == WaveManager.States.ready)
         {
-            this.waveUI.SetActive(true);
+            this.timeUI.GetComponent<Text>().text = "다음 WAVE까지 남은 시간 " + waveMgr.readyTime.ToString("F1");
+            waveUI.SetActive(false);
         }
-        this.waveUI.GetComponent<Text>().text = "WAVE " + waveMgr.waveNum;
-        this.timeUI.GetComponent<Text>().text = "다음 WAVE까지 남은 시간 " + waveMgr.gameTime.ToString("F1");
-        if ( waveMgr.waveNum == 10)
+        else if (waveMgr.gameState == WaveManager.States.wave)
         {
-            this.timeUI.SetActive(false);
+            this.timeUI.GetComponent<Text>().text = "웨이브 진행 중~~ " + waveMgr.waveTime.ToString("F1");
+            waveUI.SetActive(true);
+            this.waveUI.GetComponent<Text>().text = "WAVE " + waveMgr.waveNum;
         }
     }
 }

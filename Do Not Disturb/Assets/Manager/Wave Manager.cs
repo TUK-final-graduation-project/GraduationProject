@@ -4,36 +4,67 @@ using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-    public float gameTime;
+    public enum States { ready, wave, end};
+    public States gameState = States.ready;
+
+    // game play time
+    public float readyTime;
+    public float waveTime;
+
+    // 다음 wave를 위해 준비하는 시간
+    public float readyCoolTime;
     public float waveCoolTime;
-    public int waveNum = 0;
+
+    // current wave
+    public int waveNum = 1;
+    int maxWave = 3;
+
+    // enemy base object list
     public EnemyBaseController[] enemyBase;
 
     private void Start()
     {
         enemyBase = FindObjectsOfType(typeof(EnemyBaseController)) as EnemyBaseController[];
-        gameTime = waveCoolTime;
+        readyTime = readyCoolTime;
+        waveTime = waveCoolTime;
     }
     void Update()
     {
-        if (waveNum < 10)
+        if (waveNum <= maxWave)
         {
-            // Wave n번 UI 출력
-            if (gameTime <= 0f)
-            {
-                waveNum += 1;
-                Debug.Log("wave "+waveNum);
-            
-                gameTime = waveCoolTime;
+            Test();
+        }
+    }
 
-                // 각 base의 Unit 생성 및 player 향해 이동
-                foreach (EnemyBaseController b in enemyBase)
-                    b.UnitGenerator(waveNum);
-            }
-            else
-            {
-                gameTime -= Time.deltaTime;
-            }
+    void Test()
+    {
+        switch (gameState)
+        {
+            case States.ready:
+                {
+                    readyTime -= Time.deltaTime;
+                    if (readyTime < 0f)
+                    {
+                        readyTime = readyCoolTime;
+                        gameState = States.wave;
+
+                        // 각 base의 Unit 생성 및 player 향해 이동
+                        foreach (EnemyBaseController b in enemyBase)
+                            b.UnitGenerator(waveNum);
+                    }
+                    break;
+                }
+            case States.wave:
+                {
+                    waveTime -= Time.deltaTime;
+                    if (waveTime < 0f)
+                    {
+                        waveTime = waveCoolTime;
+                        gameState = States.ready;
+                        waveNum += 1;
+                    }
+                    break;
+                }
         }
     }
 }
