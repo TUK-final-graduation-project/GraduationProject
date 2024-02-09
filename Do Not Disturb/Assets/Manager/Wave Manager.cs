@@ -16,21 +16,24 @@ public class WaveManager : MonoBehaviour
     }
     void Update()
     {
-        // Wave n번 UI 출력
-        if (gameTime <= 0f && waveNum == 0)
+        if (waveNum < 10)
         {
-            waveNum += 1;
-            Debug.Log("wave "+waveNum);
+            // Wave n번 UI 출력
+            if (gameTime <= 0f)
+            {
+                waveNum += 1;
+                Debug.Log("wave "+waveNum);
             
-            // gameTime = waveCoolTime;
+                gameTime = waveCoolTime;
 
-            // 각 base의 Unit 생성 및 player 향해 이동
-            foreach (EnemyBaseController b in enemyBase)
-                b.UnitGenerator(waveNum);
-        }
-        else
-        {
-            gameTime -= Time.deltaTime;
+                // 각 base의 Unit 생성 및 player 향해 이동
+                foreach (EnemyBaseController b in enemyBase)
+                    b.UnitGenerator(waveNum);
+            }
+            else
+            {
+                gameTime -= Time.deltaTime;
+            }
         }
     }
 }
