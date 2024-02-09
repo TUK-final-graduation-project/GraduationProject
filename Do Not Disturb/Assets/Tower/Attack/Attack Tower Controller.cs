@@ -5,33 +5,39 @@ using UnityEngine;
 public class AttackTowerController : MonoBehaviour
 {
     [Header("UNIT")]
-    [SerializeField] GameObject Fire_Unit;
-    [SerializeField] GameObject Water_Unit;
-    [SerializeField] GameObject Metal_Unit;
-    [SerializeField] GameObject Tree_Unit;
+    [SerializeField] GameObject Minion;
     [SerializeField] Transform StartPosition;
-    [SerializeField] float minion_create_speed;
+    [SerializeField] float minionSpeed;
     [SerializeField] float CurTime;
     [SerializeField] float MaxTime;
 
-    GameObject Minion;
-    
-    // Start is called before the first frame update
+    public EnemyBaseController[] enemyBase;
+    Vector3 targetBase;
+
     void Start()
     {
         CurTime = MaxTime;
-        Minion = Fire_Unit;
+        float minDistance = float.MaxValue;
+        float tmp = 0f;
+        enemyBase = FindObjectsOfType(typeof(EnemyBaseController)) as EnemyBaseController[];
+        foreach (EnemyBaseController b in enemyBase)
+        {
+            tmp = Vector3.Distance(transform.position, b.transform.position);
+            if (minDistance > tmp)
+            {
+                minDistance = tmp;
+                targetBase = b.transform.position;
+            }
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
         CurTime -= Time.deltaTime;
         if (CurTime <= 0)
         {
             var a = Instantiate(Minion, StartPosition.position, StartPosition.rotation);
-            a.GetComponent<Rigidbody>().AddForce(StartPosition.transform.forward * minion_create_speed);
-            // Destroy(a.gameObject, 2.0f);
+            a.GetComponent<UserUnit>().target = targetBase;
             CurTime = MaxTime;
         }
     }
