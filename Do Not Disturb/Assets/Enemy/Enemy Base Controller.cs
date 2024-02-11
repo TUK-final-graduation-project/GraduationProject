@@ -22,10 +22,11 @@ public class EnemyBaseController : MonoBehaviour
             var a = Instantiate(Unit, startPosition.position, startPosition.rotation);
             curTime = maxTime;
             unitGenerateNum++;
-            if ( unitGenerateNum > waveLevel)
-            {
-                isRunning = false;
-            }
+            isRunning = false;
+            //if ( unitGenerateNum > waveLevel)
+            //{
+            //    isRunning = false;
+            //}
         }
     }
 

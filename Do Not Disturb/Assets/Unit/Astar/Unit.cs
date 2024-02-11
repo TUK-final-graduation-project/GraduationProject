@@ -4,11 +4,24 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    private void OnCollisionEnter(Collision collision)
+    {
+        // collider 조정 혹은 unit tag로 구분해서
+        // 유닛이 일정 범위 내에서 마주치면
+        // stopcoroutine 호출하면
+        // 길 찾기 멈춤
+        // 싸우는 행위하고
+        // 만약 싸우던 상대가 죽었을 경우
+        // 새롭게 길 찾기 시작 >> RequestPath(현재 위치, target, OnPathFound)
+        if (collision.gameObject.tag == "Fire")
+            StopCoroutine("FollowPath");
+    }
     //public Transform target;
     GameObject target;
     float speed = 5;
     Vector3[] path;
     int targetIndex;
+    bool toNextPath = false;
 
     // 찾아야 할 길 요청하기
     private void Start()
@@ -33,10 +46,9 @@ public class Unit : MonoBehaviour
     IEnumerator FollowPath()
     {
         Vector3 currentWaypoint = path[0];
-
         while (true)
         {
-            if(transform.position == currentWaypoint)
+            if (toNextPath)
             {
                 targetIndex++;
                 if(targetIndex >= path.Length)
@@ -44,8 +56,16 @@ public class Unit : MonoBehaviour
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
+                toNextPath = false;
             }
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed*Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+            Debug.Log(transform.position + " " + currentWaypoint);
+            if (transform.position.x == currentWaypoint.x)
+            {
+                Debug.Log("true");
+                toNextPath = true;
+            }
+            Debug.Log(transform.position + " " + currentWaypoint);
             yield return null;
         }
     }
