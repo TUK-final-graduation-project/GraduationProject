@@ -21,7 +21,6 @@ public class Unit : MonoBehaviour
     float speed = 5;
     Vector3[] path;
     int targetIndex;
-    bool toNextPath = false;
 
     // 찾아야 할 길 요청하기
     private void Start()
@@ -48,7 +47,7 @@ public class Unit : MonoBehaviour
         Vector3 currentWaypoint = path[0];
         while (true)
         {
-            if (toNextPath)
+            if ((int)transform.position.x == (int)currentWaypoint.x && (int)transform.position.z == (int)currentWaypoint.z)
             {
                 targetIndex++;
                 if(targetIndex >= path.Length)
@@ -56,16 +55,8 @@ public class Unit : MonoBehaviour
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
-                toNextPath = false;
             }
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
-            Debug.Log(transform.position + " " + currentWaypoint);
-            if (transform.position.x == currentWaypoint.x)
-            {
-                Debug.Log("true");
-                toNextPath = true;
-            }
-            Debug.Log(transform.position + " " + currentWaypoint);
             yield return null;
         }
     }

@@ -23,10 +23,10 @@ public class EnemyBaseController : MonoBehaviour
             curTime = maxTime;
             unitGenerateNum++;
             isRunning = false;
-            //if ( unitGenerateNum > waveLevel)
-            //{
-            //    isRunning = false;
-            //}
+            if (unitGenerateNum > waveLevel)
+            {
+                isRunning = false;
+            }
         }
     }
 
