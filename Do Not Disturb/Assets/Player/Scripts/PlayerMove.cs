@@ -34,6 +34,9 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField]
     Animator anim;
+    
+    [SerializeField]
+    Camera cam;
 
     Tools equipTool;
     int equipToolIndex = -1;      
@@ -54,9 +57,17 @@ public class PlayerMove : MonoBehaviour
         Swing();
         Dash();
         Swap();
+       // MoveLookAt();
 
     }
-
+    void MoveLookAt()
+    {
+        
+        //Rotation값을 0으로 세팅
+       // transform.localRotation = new Quaternion(0, transform.localRotation.y, 0, transform.localRotation.w);
+        //바라보는 시점 방향으로 이동
+        //gameObject.transform.Translate(dir * 0.1f * Time.deltaTime);
+    }
     void GetInput()
     {
         hAxis = Input.GetAxisRaw("Horizontal");
@@ -73,6 +84,11 @@ public class PlayerMove : MonoBehaviour
 
     void Move()
     {
+        //메인카메라가 바라보는 방향
+        //Vector3 dir = cam.transform.localRotation * Vector3.forward;
+        //카메라가 바라보는 방향으로 캐릭터도 회전
+        //transform.localRotation = cam.transform.localRotation;
+
         moveVec = new Vector3(hAxis, 0, vAxis).normalized;
 
         if (isDash)
@@ -116,8 +132,8 @@ public class PlayerMove : MonoBehaviour
         if(fDown && isSwingReady && !isDash && !isSwap)
         {
             equipTool.Use();
-            anim.SetTrigger("Axe");
-            Debug.Log("Axe");
+            anim.SetTrigger("Pickax");
+            Debug.Log("Swing");
             swingDelay = 0;
         }
     }
