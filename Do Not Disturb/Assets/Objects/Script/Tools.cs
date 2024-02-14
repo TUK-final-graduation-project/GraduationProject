@@ -7,7 +7,6 @@ public class Tools : MonoBehaviour
     public int damage;
     public float rate;
     public BoxCollider area;
-    //public TrailRenderer trailEffect;  //ÀÜ»ó È¿°ú
 
     public void Use()
     {

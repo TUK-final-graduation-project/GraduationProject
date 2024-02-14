@@ -21,7 +21,8 @@ namespace Assets.Scripts
 
             if (sliceable == null)
             {
-                throw new NotSupportedException("비 자르기 가능한 객체를 자를 수 없습니다. 해당 객체에 sliceable 스크립트를 추가하거나 자르기를 지원하려면 sliceable에서 상속하세요.");
+                throw new NotSupportedException("자를 수 없는 객체를 잘랐습니다. 해당 객체에 sliceable 스크립트를 추가하거나 sliceable에서 상속하세요.");
+                //return sliceable;
             }
 
             // 중첩된 객체의 왼쪽 및 오른쪽 슬라이스 만들기
