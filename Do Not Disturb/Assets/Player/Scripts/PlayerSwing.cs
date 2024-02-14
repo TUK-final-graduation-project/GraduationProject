@@ -10,6 +10,7 @@ public class PlayerSwing : MonoBehaviour
     public bool isHand;             // ¸Ç ¼Õ
     public bool isAxe;              // µµ³¢
     public bool isPickax;           // °î±ªÀÌ
+    public bool isSward;            // °Ë
 
     public float range;             // Swing ¹üÀ§
     public float speed;             // Swing ¼Óµµ

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,12 +12,14 @@ public class PlayerMove : MonoBehaviour
     float hAxis;
     float vAxis;
     bool wDown;
+    bool rDown;
     bool jDown;
     bool dDown;
     bool fDown;
 
     bool swapTool1;
     bool swapTool2;
+    bool swapTool3;
 
     bool isJump;
     bool isDash;
@@ -26,17 +29,23 @@ public class PlayerMove : MonoBehaviour
     Vector3 moveVec;
     Vector3 dashVec;
 
+    [SerializeField]
     Rigidbody rigid;
-    // Animator animator;
+
+    [SerializeField]
+    Animator anim;
+    
+    [SerializeField]
+    Camera cam;
 
     Tools equipTool;
-    int equipToolIndex = -1;                // 0:도끼 1:곡괭이
+    int equipToolIndex = -1;      
     float swingDelay;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        //animator = GetComponentInChildren<Animator>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -48,8 +57,17 @@ public class PlayerMove : MonoBehaviour
         Swing();
         Dash();
         Swap();
-    }
+       // MoveLookAt();
 
+    }
+    void MoveLookAt()
+    {
+        
+        //Rotation값을 0으로 세팅
+       // transform.localRotation = new Quaternion(0, transform.localRotation.y, 0, transform.localRotation.w);
+        //바라보는 시점 방향으로 이동
+        //gameObject.transform.Translate(dir * 0.1f * Time.deltaTime);
+    }
     void GetInput()
     {
         hAxis = Input.GetAxisRaw("Horizontal");
@@ -61,10 +79,16 @@ public class PlayerMove : MonoBehaviour
 
         swapTool1 = Input.GetButton("Swap1");
         swapTool2 = Input.GetButton("Swap2");
+        swapTool3 = Input.GetButton("Swap3");
     }
 
     void Move()
     {
+        //메인카메라가 바라보는 방향
+        //Vector3 dir = cam.transform.localRotation * Vector3.forward;
+        //카메라가 바라보는 방향으로 캐릭터도 회전
+        //transform.localRotation = cam.transform.localRotation;
+
         moveVec = new Vector3(hAxis, 0, vAxis).normalized;
 
         if (isDash)
@@ -75,12 +99,14 @@ public class PlayerMove : MonoBehaviour
 
         transform.position += moveVec * speed * (wDown ? 0.8f : 1f) * Time.deltaTime;
 
-        // animator.SetBool("isWalk", moveVec != Vector3.zero);
-        // animator.SetBool("isWalk", wDown);
+        // animator
+        anim.SetBool("isWalk", moveVec != Vector3.zero);
+        anim.SetBool("isRun", rDown);
     }
 
     void Turn()
     {
+        // Rotation
         transform.LookAt(transform.position + moveVec);
     }
 
@@ -89,8 +115,8 @@ public class PlayerMove : MonoBehaviour
         if (jDown && moveVec == Vector3.zero && !isJump && !isDash && !isSwap)
         {
             rigid.AddForce(Vector3.up * 5, ForceMode.Impulse);
-            //animator.SetBool("isJump", true);
-            //animator.SetTrigger("isJump");
+            anim.SetBool("isJump", true);
+            anim.SetTrigger("Jump");
             isJump = true;
         }
     }
@@ -106,7 +132,7 @@ public class PlayerMove : MonoBehaviour
         if(fDown && isSwingReady && !isDash && !isSwap)
         {
             equipTool.Use();
-            //animation.SetTrigger("doSwing");
+            anim.SetTrigger("Pickax");
             Debug.Log("Swing");
             swingDelay = 0;
         }
@@ -137,12 +163,15 @@ public class PlayerMove : MonoBehaviour
             return;
         if (swapTool2 && (!hasTools[1] || equipToolIndex == 1))
             return;
+        if (swapTool3 && (!hasTools[2] || equipToolIndex == 2))
+            return;
 
         int toolIndex = -1;
         if (swapTool1) toolIndex = 0;
         if (swapTool2) toolIndex = 1;
+        if (swapTool3) toolIndex = 2;
 
-        if ((swapTool1 || swapTool2) && !isDash && !isJump)
+        if ((swapTool1 || swapTool2|| swapTool3) && !isDash && !isJump)
         {
 
             //Debug.Log(toolIndex);
@@ -154,6 +183,8 @@ public class PlayerMove : MonoBehaviour
 
             //장착 애니메이션 활성화
             // animator.SetTrigger("doSwap");
+            anim.SetTrigger("Attack");
+            Debug.Log("Attack");
 
             isSwap = true;
 
@@ -164,7 +195,7 @@ public class PlayerMove : MonoBehaviour
 
     void SwapOut()
     {
-        //Debug.Log("SwapOut");
+        Debug.Log("SwapOut");
         isSwap = false;
     }
 
@@ -172,7 +203,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            // animator.SetBool("Idle ", false);
+            //anim.SetBool("Idle", true);
             isJump = false;
         }
     }
