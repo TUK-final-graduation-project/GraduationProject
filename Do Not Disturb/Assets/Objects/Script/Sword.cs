@@ -9,11 +9,6 @@ public class Sword : MonoBehaviour
     private const int NUM_VERTICES = 12;
 
     [SerializeField]
-    [Tooltip("블레이드 오브젝트")]
-    private GameObject blade = null;
-
-
-    [SerializeField]
     [Tooltip("블레이드 첨단 오브젝트")]
     private GameObject tip = null;
 
@@ -25,10 +20,6 @@ public class Sword : MonoBehaviour
     [ColorUsage(true, true)]
     [Tooltip("블레이드 색상")]
     private Color color = Color.red;
-    
-    [SerializeField]
-    [Tooltip("트레일을 렌더링할 프레임 수")]
-    private int trailFrameLength = 3;
 
     [SerializeField]
     [Tooltip("자르기 각 부분에 적용되는 힘의 양")]
@@ -37,7 +28,6 @@ public class Sword : MonoBehaviour
     private Mesh mesh;
     private Vector3[] vertices;
     private int[] triangles;
-    private int frameCount;
     private Vector3 preTipPos;
     private Vector3 preBasePos;
     private Vector3 triggerEnterTipPos;
