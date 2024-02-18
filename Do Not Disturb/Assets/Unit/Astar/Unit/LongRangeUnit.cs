@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class LongRangeUnit : MonoBehaviour
 {
@@ -51,7 +52,6 @@ public class LongRangeUnit : MonoBehaviour
                 targetUnit = collider;
                 changeMaterial(collider.gameObject, detectedMat);
                 gameObject.GetComponent<UnitMove>().StopCoroutine("FollowPath");
-                Debug.Log(gameObject.name);
             }
         }
     }
@@ -61,17 +61,25 @@ public class LongRangeUnit : MonoBehaviour
         // 던지기
         if (curTime <= 0)
         {
-            Vector3 dir = (targetUnit.gameObject.transform.position - transform.position).normalized;
-            var a = Instantiate(bullet, transform.position, transform.rotation);
-            a.GetComponent<Rigidbody>().AddForce(dir * bulletSpeed, ForceMode.Impulse);
-            curTime = maxTime;
+            if (!targetUnit.GetComponent<UnitState>().isDead)
+            {
+                // 상호작용하기 - bullet 스크립트에서 상호작용
+                Vector3 dir = (targetUnit.gameObject.transform.position - transform.position).normalized;
+                var a = Instantiate(bullet, transform.position, transform.rotation);
+                a.GetComponent<Rigidbody>().AddForce(dir * bulletSpeed, ForceMode.Impulse);
+                a.GetComponent<BulletController>().target = targetUnit.gameObject;
+                curTime = maxTime;
+            }
         }
-
-        // 상호작용하기 - bullet 스크립트에서 상호작용
-
-        // target이 사라졌을 때
-        // 1. 던지기 끝
-        // 2. 다시 경로 탐색하기
-        // 3. target == null
+        if (targetUnit.GetComponent<UnitState>().isDead)
+        {
+            Debug.Log("Dead!");
+            // target이 사라졌을 때
+            // 1. 던지기 끝
+            // 2. 다시 경로 탐색하기
+            gameObject.GetComponent<UnitMove>().RequestPathToMgr();
+            // 3. target == null
+            targetUnit = null;
+        }
     }
 }

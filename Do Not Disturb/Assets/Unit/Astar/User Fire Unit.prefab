@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -4769189398924241144}
   - component: {fileID: 7575280995235703949}
   - component: {fileID: 954892735040462010}
+  - component: {fileID: 907804682565367543}
   m_Layer: 0
   m_Name: User Fire Unit
   m_TagString: Fire
@@ -168,3 +169,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {x: 0, y: 0, z: 0}
+--- !u!114 &907804682565367543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159659162268703231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe6a2e86f5ed6b6479c6ac7c5f94c84e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 100

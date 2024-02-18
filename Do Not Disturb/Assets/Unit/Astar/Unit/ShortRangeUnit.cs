@@ -27,7 +27,6 @@ public class ShortRangeUnit : MonoBehaviour
                 targetUnit = collider;
                 changeMaterial(collider.gameObject, detectedMat);
                 gameObject.GetComponent<UnitMove>().StopCoroutine("FollowPath");
-                Debug.Log(gameObject.name);
             }
         }
     }
