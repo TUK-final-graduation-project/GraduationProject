@@ -14,6 +14,8 @@ public class AttackTowerController : MonoBehaviour
     public EnemyBaseController[] enemyBase;
     Vector3 targetBase;
 
+    int minion_count = 0;
+
     void Start()
     {
         CurTime = MaxTime;
@@ -34,11 +36,13 @@ public class AttackTowerController : MonoBehaviour
     void Update()
     {
         CurTime -= Time.deltaTime;
-        if (CurTime <= 0)
+        if (CurTime <= 0 && minion_count == 0)
         {
             var a = Instantiate(Minion, StartPosition.position, StartPosition.rotation);
-            a.GetComponent<UserUnit>().target = targetBase;
+            a.name = minion_count.ToString();
+            a.GetComponent<UnitMove>().target = targetBase;
             CurTime = MaxTime;
+            minion_count++;
         }
     }
 }

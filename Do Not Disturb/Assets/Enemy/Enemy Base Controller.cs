@@ -12,7 +12,7 @@ public class EnemyBaseController : MonoBehaviour
     [SerializeField] float maxTime;
     int waveLevel;
     int unitGenerateNum;
-    bool isRunning = false;
+    bool isRunning = true;
 
     private void Update()
     {
@@ -20,13 +20,14 @@ public class EnemyBaseController : MonoBehaviour
         if (curTime <= 0 && isRunning)
         {
             var a = Instantiate(Unit, startPosition.position, startPosition.rotation);
+            a.GetComponent<UnitMove>().target = GameObject.Find("player").transform.position;
             curTime = maxTime;
             unitGenerateNum++;
             isRunning = false;
-            if (unitGenerateNum > waveLevel)
-            {
-                isRunning = false;
-            }
+            //if (unitGenerateNum > waveLevel)
+            //{
+            //    isRunning = false;
+            //}
         }
     }
 
@@ -38,6 +39,6 @@ public class EnemyBaseController : MonoBehaviour
         unitGenerateNum = 0;
         waveLevel = waveLv;
         curTime = maxTime;
-        isRunning = true;
+        // isRunning = true;
     }
 }
