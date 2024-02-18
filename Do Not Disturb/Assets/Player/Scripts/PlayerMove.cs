@@ -39,6 +39,7 @@ public class PlayerMove : MonoBehaviour
     Camera cam;
 
     Tools equipTool;
+
     int equipToolIndex = -1;      
     float swingDelay;
 
@@ -138,6 +139,7 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+
     void Dash()
     {
         if (dDown && moveVec != Vector3.zero && !isJump && !isDash && !isSwap)
@@ -184,8 +186,7 @@ public class PlayerMove : MonoBehaviour
             //장착 애니메이션 활성화
             // animator.SetTrigger("doSwap");
             anim.SetTrigger("Attack");
-            Debug.Log("Attack");
-
+         
             isSwap = true;
 
             //스왑종료 알리기
@@ -197,6 +198,11 @@ public class PlayerMove : MonoBehaviour
     {
         Debug.Log("SwapOut");
         isSwap = false;
+    }
+
+    public int GetToolIndex()
+    {
+        return equipToolIndex;  
     }
 
     private void OnCollisionEnter(Collision collision)

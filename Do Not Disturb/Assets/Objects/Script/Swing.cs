@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSwing : MonoBehaviour
+public class Swing : MonoBehaviour
 {
     public string hodingToolName;   // 현재 들고 있는 도구 이름
 
