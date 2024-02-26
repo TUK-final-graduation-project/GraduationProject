@@ -31,7 +31,7 @@ public class InventorySlot : MonoBehaviour
     {
         item = _item;
         itemCount = _count;
-        itemImage.sprite = _item.itemImage;
+        itemImage.sprite = item.itemImage;
 
         if (_item == null)
         {
