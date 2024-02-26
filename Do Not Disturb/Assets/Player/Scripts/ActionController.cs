@@ -22,7 +22,7 @@ public class ActionController : MonoBehaviour
     [SerializeField]
     private Text actionText;
     [SerializeField]
-    private Inventory theInventory;
+    private Inventory inven;
 
     // Update is called once per frame
     void Update()
@@ -43,11 +43,11 @@ public class ActionController : MonoBehaviour
     {
         if (pickupActivated && hitInfo.transform != null)
         {
-            ItemAcquisition itemAcquisition = hitInfo.transform.GetComponent<ItemAcquisition>();
-            if (itemAcquisition != null)
+            ItemAcquisition getItem = hitInfo.transform.GetComponent<ItemAcquisition>();
+            if (getItem != null && inven != null)
             {
-                Debug.Log(itemAcquisition.item.itemName + " »πµÊ«ﬂΩ¿¥œ¥Ÿ");
-                theInventory.AcquireItem(itemAcquisition.item);
+                Debug.Log(getItem.item.itemName + " »πµÊ«ﬂΩ¿¥œ¥Ÿ");
+                inven.AcquireItem(getItem.item);
                 Destroy(hitInfo.transform.gameObject);
                 InfoDisappear();
             }

@@ -29,6 +29,10 @@ public class InventorySlot : MonoBehaviour
     // 아이템 획득
     public void AddItem(Item _item, int _count = 1)
     {
+        item = _item;
+        itemCount = _count;
+        itemImage.sprite = _item.itemImage;
+
         if (_item == null)
         {
             Debug.LogError("아이템이 null입니다.");
@@ -53,10 +57,6 @@ public class InventorySlot : MonoBehaviour
             return;
         }
 
-        item = _item;
-        itemCount = _count;
-        itemImage.sprite = item.itemImage;
-
         if (item.itemType != Item.ItemType.ETC)
         {
             go_CountImage.SetActive(true);
@@ -73,11 +73,11 @@ public class InventorySlot : MonoBehaviour
 
 
     // 아이템 개수 조정.
-    public void SetSlotCount(int _count)
+    public void SetSlotCount(int count)
     {
-        itemCount += _count;
+        itemCount += count;
         text_Count.text = itemCount.ToString();
-
+        Debug.Log("count : " + itemCount);
         if (itemCount <= 0)
             ClearSlot();
     }

@@ -5,6 +5,8 @@ using UnityEngine.Rendering;
 
 namespace Assets.Scripts
 {
+
+
     class Slicer
     {
         // 평면에 따라 객체를 자르기
@@ -19,14 +21,22 @@ namespace Assets.Scripts
             var a = mesh.GetSubMesh(0);
             Sliceable sliceable = objectToCut.GetComponent<Sliceable>();
 
+            // 플레이어 태그 검사
+            if (objectToCut.CompareTag("Player"))
+            {
+                return null;  
+            }
+
             if (sliceable == null)
             {
                 throw new NotSupportedException("자를 수 없는 객체를 잘랐습니다. 해당 객체에 sliceable 스크립트를 추가하거나 sliceable에서 상속하세요.");
-                //return sliceable;
+                //Debug.Log("절단할 수 없습니다 : " + objectToCut.name);
+                return null;
             }
 
             // 중첩된 객체의 왼쪽 및 오른쪽 슬라이스 만들기
             SlicesMetadata slicesMeta = new SlicesMetadata(plane, mesh, sliceable.IsSolid, sliceable.ReverseWireTriangles, sliceable.ShareVertices, sliceable.SmoothVertices);
+            
 
             GameObject positiveObject = CreateMeshGameObject(objectToCut);
             positiveObject.name = string.Format("{0}_positive", objectToCut.name);

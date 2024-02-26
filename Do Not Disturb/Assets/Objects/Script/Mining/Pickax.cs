@@ -12,14 +12,14 @@ public class Pickax : MonoBehaviour
 
     private void Start()
     {
-      /*  // 필요한 컴포넌트를 초기화합니다.
+      /*  // 필요한 컴포넌트를 초기화
         player = GetComponent<PlayerMove>();
         rock = GetComponent<Rock>();*/
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        // player와 rock 객체가 null인지 확인합니다.
+        // player와 rock 객체가 null인지 확인.
         if (player == null || rock == null)
         {
             Debug.LogWarning("Player 또는 Rock 컴포넌트가 없습니다.");

@@ -14,7 +14,6 @@ public class Tools : MonoBehaviour
         //rock = GetComponent<Rock>();
     }
 
-
     public void Use()
     {
         StopCoroutine("Swing");
