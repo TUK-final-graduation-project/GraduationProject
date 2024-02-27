@@ -18,6 +18,7 @@ public class Node
     {
         isWalkable = _isWalkable;
         worldPosition = _worldPos;
+        worldPosition.y = 0.5f;
         gridX = nGridX;
         gridY = nGridY;
     }

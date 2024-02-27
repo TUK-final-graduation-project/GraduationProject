@@ -52,6 +52,8 @@ public class LongRangeUnit : MonoBehaviour
                 targetUnit = collider;
                 changeMaterial(collider.gameObject, detectedMat);
                 gameObject.GetComponent<UnitMove>().StopCoroutine("FollowPath");
+                gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                gameObject.GetComponent<Collider>().isTrigger = true;
             }
         }
     }
@@ -66,14 +68,14 @@ public class LongRangeUnit : MonoBehaviour
                 // 상호작용하기 - bullet 스크립트에서 상호작용
                 Vector3 dir = (targetUnit.gameObject.transform.position - transform.position).normalized;
                 var a = Instantiate(bullet, transform.position, transform.rotation);
-                a.GetComponent<Rigidbody>().AddForce(dir * bulletSpeed, ForceMode.Impulse);
+                // a.GetComponent<Rigidbody>().AddForce(dir * bulletSpeed, ForceMode.Impulse);
                 a.GetComponent<BulletController>().target = targetUnit.gameObject;
                 curTime = maxTime;
             }
         }
         if (targetUnit.GetComponent<UnitState>().isDead)
         {
-            Debug.Log("Dead!");
+            // Debug.Log("Dead!");
             // target이 사라졌을 때
             // 1. 던지기 끝
             // 2. 다시 경로 탐색하기

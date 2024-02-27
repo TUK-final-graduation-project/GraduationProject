@@ -20,6 +20,7 @@ public class UnitMove : MonoBehaviour
     public void RequestPathToMgr()
     {
         AstarManager.RequestPath(transform.position, target, OnPathFound);
+        Debug.Log(transform.position);
     }
     // 길 찾기 시작하기
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)

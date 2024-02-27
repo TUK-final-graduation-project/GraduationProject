@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6694725011867522729}
   - component: {fileID: -1828254540590335366}
   - component: {fileID: 903047753304939312}
-  - component: {fileID: 2835816414243080021}
+  - component: {fileID: 7272614617500896083}
   - component: {fileID: 8931517362163694944}
   m_Layer: 0
   m_Name: FireUnnit
@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {x: 0, y: 0, z: 0}
---- !u!114 &2835816414243080021
+--- !u!114 &7272614617500896083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,12 +159,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 159659162268703231}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 717deb986b86657489d3cd956f856865, type: 3}
+  m_Script: {fileID: 11500000, guid: 68eaad100ceaea84ebfbc402f02e04e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectedMat: {fileID: 2100000, guid: 0217e491dd6a958498dd09c1a6a2b0a3, type: 2}
+  detectedMat: {fileID: 2100000, guid: d953c7807bae38b458f9897017088ee9, type: 2}
   targetUnit: {fileID: 0}
   colliders: []
+  bullet: {fileID: 755390331851363412, guid: 1c832df2515ae704288e3a48a75a96ea, type: 3}
+  maxTime: 1
+  curTime: 0
+  bulletSpeed: 3
 --- !u!114 &8931517362163694944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,3 +182,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 100
+  isDead: 0
