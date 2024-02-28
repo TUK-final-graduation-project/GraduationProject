@@ -26,7 +26,8 @@ public class PlayerItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TryAction();
+        CanPickUp();
+        //TryAction();
     }
 
     private void TryAction()

@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 5595974990595282663}
   - component: {fileID: 2390439756158359118}
   - component: {fileID: 7916111017700694751}
-  - component: {fileID: 4141468379257222957}
   - component: {fileID: 6188122276134286495}
+  - component: {fileID: 1908785761134311862}
+  - component: {fileID: 7049667035113431012}
   m_Layer: 3
   m_Name: Temp Rock
   m_TagString: Item
@@ -85,7 +86,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4141468379257222957
+--- !u!114 &6188122276134286495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5286310970347249083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e9a82d807113d4ea0e368f56279de6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: d2675b64b8a286b449a405111fdff061, type: 2}
+--- !u!65 &1908785761134311862
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -104,9 +118,9 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0888638, y: 0.9538382, z: 1.0176713}
-  m_Center: {x: -0.025756158, y: 0.03434279, z: 0.010309201}
---- !u!114 &6188122276134286495
+  m_Size: {x: 6.4781165, y: 1.9637424, z: 6.335457}
+  m_Center: {x: -0.02853302, y: 0.481871, z: -0.014265614}
+--- !u!114 &7049667035113431012
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,7 +129,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 5286310970347249083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7e9a82d807113d4ea0e368f56279de6, type: 3}
+  m_Script: {fileID: 11500000, guid: df3946d1e1f710540ad0194c028acf12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: d2675b64b8a286b449a405111fdff061, type: 2}

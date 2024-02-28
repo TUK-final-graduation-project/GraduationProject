@@ -20,7 +20,8 @@ public class Rock : MonoBehaviour
     private GameObject go_debris;               // ±˙¡¯ πŸ¿ß
     [SerializeField]
     private GameObject go_effect_prefabs;       // √§±º ¿Ã∆Â∆Æ
-
+    [SerializeField]
+    public GameObject rock;
 
     public void Mining()
     {
@@ -40,7 +41,11 @@ public class Rock : MonoBehaviour
         Destroy(go_rock);
 
         go_debris.SetActive(true);
-        Destroy(go_debris, destroyTime-2);
+        Destroy(go_debris, destroyTime);
+        for (int i = 0; i < 5; i++)
+        {
+            Instantiate(rock, go_debris.transform.GetChild(i).gameObject.transform.position, Quaternion.identity);
+        }
+        //Invoke("CreateDropItem", 0.2f);
     }
-
 }
