@@ -52,8 +52,7 @@ public class LongRangeUnit : MonoBehaviour
                 targetUnit = collider;
                 changeMaterial(collider.gameObject, detectedMat);
                 gameObject.GetComponent<UnitMove>().StopCoroutine("FollowPath");
-                gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                gameObject.GetComponent<Collider>().isTrigger = true;
+                transform.rotation = Quaternion.identity;
             }
         }
     }
@@ -67,8 +66,7 @@ public class LongRangeUnit : MonoBehaviour
             {
                 // 상호작용하기 - bullet 스크립트에서 상호작용
                 Vector3 dir = (targetUnit.gameObject.transform.position - transform.position).normalized;
-                var a = Instantiate(bullet, transform.position, transform.rotation);
-                // a.GetComponent<Rigidbody>().AddForce(dir * bulletSpeed, ForceMode.Impulse);
+                var a = Instantiate(bullet, transform.position, Quaternion.identity);
                 a.GetComponent<BulletController>().target = targetUnit.gameObject;
                 curTime = maxTime;
             }

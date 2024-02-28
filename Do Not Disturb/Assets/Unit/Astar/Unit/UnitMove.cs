@@ -13,15 +13,14 @@ public class UnitMove : MonoBehaviour
     // 찾아야 할 길 요청하기
     private void Start()
     {
-        // target = GameObject.Find("FireBase");
         RequestPathToMgr();
-
     }
+
     public void RequestPathToMgr()
     {
         AstarManager.RequestPath(transform.position, target, OnPathFound);
-        Debug.Log(transform.position);
     }
+
     // 길 찾기 시작하기
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
