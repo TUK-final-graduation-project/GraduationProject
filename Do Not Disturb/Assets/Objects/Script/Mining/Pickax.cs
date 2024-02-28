@@ -12,12 +12,12 @@ public class Pickax : MonoBehaviour
 
     private void Start()
     {
-      /*  // 필요한 컴포넌트를 초기화
-        player = GetComponent<PlayerMove>();
-        rock = GetComponent<Rock>();*/
+        /*  // 필요한 컴포넌트를 초기화
+          player = GetComponent<PlayerMove>();
+          rock = GetComponent<Rock>();*/
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         // player와 rock 객체가 null인지 확인.
         if (player == null || rock == null)
@@ -26,11 +26,9 @@ public class Pickax : MonoBehaviour
             return;
         }
 
-        if (collision.transform.CompareTag("Rock") && player.GetToolIndex() == 1)
-        {
-            // 충돌한 오브젝트가 Rock 태그를 가지고 있고,
-            // 플레이어가 곡괭이를 사용하고 있는 경우에만 실행된다.
+        // 충돌한 오브젝트가 Rock 태그를 가지고 있고,
+        // 플레이어가 곡괭이를 사용하고 있는 경우에만 실행된다.
+        if (other.transform.tag == "Rock" && player.GetToolIndex() == 1)
             rock.Mining();
-        }
     }
 }

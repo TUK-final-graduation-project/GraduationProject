@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ActionController : MonoBehaviour
+public class PlayerItem : MonoBehaviour
 {
 
     [SerializeField]
     private float range; // 습득 가능한 최대 거리.
 
     private bool pickupActivated = false; // 습득 가능할 시 true.
-
-    private RaycastHit hitInfo; // 충돌체 정보 저장.
-
 
     // 아이템 레이어에만 반응하도록 레이어 마스크를 설정.
     [SerializeField]
@@ -24,10 +21,11 @@ public class ActionController : MonoBehaviour
     [SerializeField]
     private Inventory inven;
 
+    private Collider hitInfo; // 충돌체 정보 저장.
+
     // Update is called once per frame
     void Update()
     {
-        CheckItem();
         TryAction();
     }
 
@@ -35,10 +33,10 @@ public class ActionController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            CheckItem();
             CanPickUp();
         }
     }
+
     private void CanPickUp()
     {
         if (pickupActivated && hitInfo.transform != null)
@@ -53,28 +51,29 @@ public class ActionController : MonoBehaviour
             }
         }
     }
-
-
-    private void CheckItem()
+    private void OnTriggerEnter(Collider other)
     {
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hitInfo, range, layerMask))
+        if (other.transform.tag == "Item")
         {
-            if (hitInfo.transform.tag == "Item")
-            {
-                ItemInfoAppear();
-            }
+            hitInfo = other;
+            ItemInfoAppear();
         }
-        else
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            hitInfo = null;
             InfoDisappear();
-
-        
+        }
     }
 
     private void ItemInfoAppear()
     {
         pickupActivated = true;
         actionText.gameObject.SetActive(true);
-        actionText.text = hitInfo.transform.GetComponent<ItemAcquisition>().item.itemName + " 획득 " + "<color=yellow>" + "(E)" + "</color>";
+        actionText.text = hitInfo.transform.GetComponent<ItemAcquisition>().item.itemName
+            + " 획득 " + "<color=yellow>" + "(E)" + "</color>";
     }
     private void InfoDisappear()
     {
