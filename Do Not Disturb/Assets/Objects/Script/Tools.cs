@@ -25,7 +25,8 @@ public class Tools : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         area.enabled = true;
 
-        yield return new WaitForSeconds(0.3f);
+        // 칼날이 작용하는 시간
+        yield return new WaitForSeconds(1f);
         area.enabled = false;
 
         yield return new WaitForSeconds(0.3f);

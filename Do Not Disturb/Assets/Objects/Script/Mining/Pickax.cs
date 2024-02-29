@@ -12,9 +12,9 @@ public class Pickax : MonoBehaviour
 
     private void Start()
     {
-        /*  // 필요한 컴포넌트를 초기화
-          player = GetComponent<PlayerMove>();
-          rock = GetComponent<Rock>();*/
+        // 필요한 컴포넌트를 초기화 ....수정 필요(2/29)
+        //player = GetComponent<PlayerMove>();
+        //rock = GetComponent<Rock>();
     }
 
     private void OnTriggerEnter(Collider other)

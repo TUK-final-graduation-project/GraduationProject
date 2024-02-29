@@ -97,6 +97,8 @@ namespace Assets.Scripts
 
             var rb = gameObject.AddComponent<Rigidbody>();
             rb.useGravity = useGravity;
+
+            //Destroy(gameObject);
         }
     }
 }
