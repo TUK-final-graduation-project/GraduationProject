@@ -58,6 +58,10 @@ public class PlayerMove : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
+
+        // 마우스 커서 삭제
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update()
@@ -106,8 +110,9 @@ public class PlayerMove : MonoBehaviour
         if (isSwap || !isSwingReady)
             velocity = Vector3.zero;
 
-        rigid.MovePosition(transform.position + velocity * Time.deltaTime);
-
+        //rigid.AddForce(new Vector3(hAxis, 0, vAxis), ForceMode.Impulse);
+        //rigid.MovePosition(transform.position + velocity * Time.deltaTime);
+        rigid.AddForce(velocity * Time.deltaTime, ForceMode.VelocityChange);
         // animator
         anim.SetBool("isWalk", velocity != Vector3.zero);
         anim.SetBool("isRun", rDown);
@@ -243,5 +248,5 @@ public class PlayerMove : MonoBehaviour
         cam.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
     }
 
-   
+
 }
