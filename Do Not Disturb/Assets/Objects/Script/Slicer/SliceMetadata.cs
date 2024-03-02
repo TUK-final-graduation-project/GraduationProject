@@ -42,7 +42,7 @@ namespace Assets.Scripts
         private bool smoothVertices = false;
         private bool createReverseTriangleWindings = false;
 
-        
+
         // 객체가 실체인지 여부를 나타내는 프로퍼티
         public bool IsSolid
         {
@@ -87,16 +87,16 @@ namespace Assets.Scripts
             }
         }
 
-        
+
         // 슬라이스된 객체의 초기화 및 메시 계산을 담당하는 생성자
-        
+
         /// <param name="plane">슬라이스 평면</param>
         /// <param name="mesh">원본 메시</param>
         /// <param name="isSolid">실체인지 여부</param>
         /// <param name="createReverseTriangleWindings">역 삼각형 트라이앵글을 만들지 여부</param>
         /// <param name="shareVertices">공유된 정점 사용 여부</param>
         /// <param name="smoothVertices">정점을 부드럽게 처리할지 여부</param>
-        
+
         public SlicesMetadata(Plane plane, Mesh mesh, bool isSolid, bool createReverseTriangleWindings, bool shareVertices, bool smoothVertices)
         {
             positiveSideTriangles = new List<int>();
@@ -119,7 +119,7 @@ namespace Assets.Scripts
         }
 
         // 메시 데이터를 올바른 면에 추가하고 법선 벡터를 계산하는 메소드
-        
+
         /// <param name="side">추가할 면</param>
         /// <param name="vertex1">첫 번째 정점</param>
         /// <param name="normal1">첫 번째 정점 법선 벡터</param>
@@ -241,7 +241,7 @@ namespace Assets.Scripts
 
 
         // 정점, 법선 벡터, UV 좌표 및 삼각형을 추가하는 메소드
-      
+
         /// <param name="vertices">정점 리스트</param>
         /// <param name="normals">법선 벡터 리스트</param>
         /// <param name="uvs">UV 좌표 리스트</param>
@@ -270,7 +270,7 @@ namespace Assets.Scripts
         }
 
         // 삼각형 인덱스를 조정하여 메시를 변환하는 메소드
-        
+
         /// <param name="triangles">삼각형 리스트</param>
         private void ShiftTriangleIndeces(ref List<int> triangles)
         {
@@ -283,7 +283,7 @@ namespace Assets.Scripts
         }
 
         // 객체의 내부를 렌더링하는 메소드
-        // 모든 정점을 복제하고 역 삼각형 방향을 생성하여 비용이 많이 들 수 있습니다.
+        // 모든 정점을 복제하고 역 삼각형 방향을 생성하여 비용이 많이 들 수 있다.
         private void AddReverseTriangleWinding()
         {
             int positiveVertsStartIndex = positiveSideVertices.Count;
@@ -419,6 +419,7 @@ namespace Assets.Scripts
             Vector3[] meshNormals = mesh.normals;
             Vector2[] meshUvs = mesh.uv;
 
+            // 인덱스를 3개씩 읽으므로, 매번 3씩 증가하도록 함.
             for (int i = 0; i < meshTriangles.Length; i += 3)
             {
                 Vector3 vert1 = meshVerts[meshTriangles[i]];
@@ -521,6 +522,36 @@ namespace Assets.Scripts
             uv = InterpolateUvs(vertex1Uv, vertex2Uv, distance);
             return pointOfIntersection;
         }
+
+
+        /*private Vector3 GetRayPlaneIntersectionPointAndUv(Vector3 vertex1, Vector2 vertex1Uv, Vector3 vertex2, Vector2 vertex2Uv, out Vector2 uv)
+{
+    // 레이를 정의합니다. 두 정점을 통해 만들어진 방향 벡터로 레이의 방향을 결정합니다.
+    Ray ray = new Ray(vertex1, vertex2 - vertex1);
+
+    // 평면과 레이의 교차점을 계산합니다.
+    if (plane.Raycast(ray, out float distance))
+    {
+        // 레이의 교차점을 계산합니다.
+        Vector3 intersectionPoint = ray.GetPoint(distance);
+
+        // 두 정점 사이의 거리에 따라 UV를 보간합니다.
+        float totalDistance = Vector3.Distance(vertex1, vertex2);
+        float distanceFromVertex1 = Vector3.Distance(vertex1, intersectionPoint);
+        float interpolationFactor = distanceFromVertex1 / totalDistance;
+        uv = Vector2.Lerp(vertex1Uv, vertex2Uv, interpolationFactor);
+
+        return intersectionPoint;
+    }
+    else
+    {
+        // 레이와 평면이 평행한 경우 또는 레이가 평면과 교차하지 않는 경우, 예외 처리를 합니다.
+        Debug.LogWarning("Ray does not intersect with the plane.");
+        uv = Vector2.zero;
+        return Vector3.zero;
+    }
+}
+*/
 
         /// <summary>
         /// 평면에 대한 거리를 계산하는 메소드

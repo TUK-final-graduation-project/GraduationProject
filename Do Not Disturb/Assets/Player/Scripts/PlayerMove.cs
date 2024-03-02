@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField]
     Animator anim;
-    
+
     [SerializeField]
     Camera cam;
 
@@ -50,13 +51,17 @@ public class PlayerMove : MonoBehaviour
 
     Tools equipTool;
 
-    int equipToolIndex = -1;      
+    int equipToolIndex = -1;
     float swingDelay;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
+
+        // 마우스 커서 삭제
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update()
@@ -71,7 +76,7 @@ public class PlayerMove : MonoBehaviour
         CameraRotation();
         CharacterRotation();
     }
-   
+
     void GetInput()
     {
         yRotation = Input.GetAxisRaw("Mouse X");
@@ -93,7 +98,7 @@ public class PlayerMove : MonoBehaviour
     {
         //moveVec = new Vector3(hAxis, 0, vAxis).normalized;
 
-        
+
         Vector3 moveHorizontal = transform.right * hAxis;
         Vector3 moveVertical = transform.forward * vAxis;
 
@@ -105,8 +110,9 @@ public class PlayerMove : MonoBehaviour
         if (isSwap || !isSwingReady)
             velocity = Vector3.zero;
 
-        rigid.MovePosition(transform.position + velocity * Time.deltaTime);
-
+        //rigid.AddForce(new Vector3(hAxis, 0, vAxis), ForceMode.Impulse);
+        //rigid.MovePosition(transform.position + velocity * Time.deltaTime);
+        rigid.AddForce(velocity * Time.deltaTime, ForceMode.VelocityChange);
         // animator
         anim.SetBool("isWalk", velocity != Vector3.zero);
         anim.SetBool("isRun", rDown);
@@ -137,7 +143,7 @@ public class PlayerMove : MonoBehaviour
         swingDelay += Time.deltaTime;
         isSwingReady = equipTool.rate < swingDelay;
 
-        if(fDown && isSwingReady && !isDash && !isSwap)
+        if (fDown && isSwingReady && !isDash && !isSwap)
         {
             equipTool.Use();
             anim.SetTrigger("Pickax");
@@ -145,7 +151,6 @@ public class PlayerMove : MonoBehaviour
             swingDelay = 0;
         }
     }
-
 
     void Dash()
     {
@@ -180,7 +185,7 @@ public class PlayerMove : MonoBehaviour
         if (swapTool2) toolIndex = 1;
         if (swapTool3) toolIndex = 2;
 
-        if ((swapTool1 || swapTool2|| swapTool3) && !isDash && !isJump)
+        if ((swapTool1 || swapTool2 || swapTool3) && !isDash && !isJump)
         {
 
             //Debug.Log(toolIndex);
@@ -193,7 +198,7 @@ public class PlayerMove : MonoBehaviour
             //장착 애니메이션 활성화
             // animator.SetTrigger("doSwap");
             anim.SetTrigger("Attack");
-         
+
             isSwap = true;
 
             //스왑종료 알리기
@@ -209,7 +214,7 @@ public class PlayerMove : MonoBehaviour
 
     public int GetToolIndex()
     {
-        return equipToolIndex;  
+        return equipToolIndex;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -225,22 +230,23 @@ public class PlayerMove : MonoBehaviour
     {
         //Debug.Log("좌우 캐릭터 회전");
         // 좌우 캐릭터 회전
-       
+
         Vector3 characterRotationY = new Vector3(0f, yRotation, 0f) * lookSensitivity;
         rigid.MoveRotation(rigid.rotation * Quaternion.Euler(characterRotationY));
-       
+
     }
 
     private void CameraRotation()
     {
         //Debug.Log("상하 카메라 회전");
         // 상하 카메라 회전
-       
+
         float cameraRotationX = xRotation * lookSensitivity;
         currentCameraRotationX -= cameraRotationX;
         currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraRotationLimit, cameraRotationLimit);
 
         cam.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
     }
+
 
 }

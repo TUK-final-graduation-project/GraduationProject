@@ -31,7 +31,7 @@ namespace Assets.Scripts
             {
                 throw new NotSupportedException("자를 수 없는 객체를 잘랐습니다. 해당 객체에 sliceable 스크립트를 추가하거나 sliceable에서 상속하세요.");
                 //Debug.Log("절단할 수 없습니다 : " + objectToCut.name);
-                return null;
+                //return null;
             }
 
             // 중첩된 객체의 왼쪽 및 오른쪽 슬라이스 만들기
@@ -97,6 +97,8 @@ namespace Assets.Scripts
 
             var rb = gameObject.AddComponent<Rigidbody>();
             rb.useGravity = useGravity;
+
+            //Destroy(gameObject);
         }
     }
 }
