@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 각 항목에 대한 설명을 위한 Craft 클래스
 [System.Serializable]
 public class Craft
 {
@@ -12,71 +13,100 @@ public class Craft
 
 public class CraftMenu : MonoBehaviour
 {
-    private bool isActivated = false;  // CraftManual UI 활성 상태
-    private bool isPreviewActivated = false; // 미리 보기 활성화 상태
+    // CraftMenu의 활성 상태를 나타내는 변수
+    private bool isActivated = false;
 
+    // 미리 보기가 활성화된 상태인지를 나타내는 변수
+    private bool isPreviewActivated = false;
+
+    // 기본 베이스 UI GameObject
     [SerializeField]
-    private GameObject go_BaseUI; // 기본 베이스 UI
+    private GameObject go_BaseUI;
 
+    // 각 탭에 대한 크래프트 배열
     [SerializeField]
-    private Craft[] craftWaterTower;  // 탭
+    private Craft[] craftWaterTower;
 
-    private GameObject go_Preview; // 미리 보기 프리팹을 담을 변수
-    private GameObject go_Prefab; // 실제 생성될 프리팹을 담을 변수 
+    // 미리 보기 프리팹을 담을 변수
+    private GameObject go_Preview;
 
+    // 실제 생성될 프리팹을 담을 변수
+    private GameObject go_Prefab;
+
+    // 플레이어의 위치를 나타내는 Transform
     [SerializeField]
-    private Transform tf_Player;  // 플레이어 위치
+    private Transform tf_Player;
 
+    // 레이캐스트를 통해 충돌 정보를 저장할 변수
     private RaycastHit hitInfo;
+
+    // 레이캐스트에서 검출할 레이어 마스크
     [SerializeField]
     private LayerMask layerMask;
+
+    // 레이캐스트의 최대 거리
     [SerializeField]
     private float range;
 
-
+    // 슬롯을 클릭했을 때 호출되는 함수
     public void SlotClick(int _slotNumber)
     {
+        // 미리 보기 생성
         go_Preview = Instantiate(craftWaterTower[_slotNumber].go_PreviewPrefab, tf_Player.position + tf_Player.forward, Quaternion.identity);
+
+        // 실제 생성될 프리팹 설정
         go_Prefab = craftWaterTower[_slotNumber].go_prefab;
+
+        // 미리 보기 활성화
         isPreviewActivated = true;
+
+        // 기본 베이스 UI 비활성화
         go_BaseUI.SetActive(false);
     }
 
     void Update()
     {
+        // 탭 키를 눌렀을 때 크래프트 메뉴 열기
         if (Input.GetKeyDown(KeyCode.Tab) && !isPreviewActivated)
             Window();
 
+        // 미리 보기가 활성화된 경우 미리 보기 위치 업데이트
         if (isPreviewActivated)
             PreviewPositionUpdate();
 
+        // 마우스 오른쪽 버튼을 눌렀을 때 건설
         if (Input.GetButtonDown("Fire2"))
             Build();
 
+        // ESC 키를 눌렀을 때 취소
         if (Input.GetKeyDown(KeyCode.Escape))
             Cancel();
     }
 
+    // 미리 보기 위치 업데이트 함수
     private void PreviewPositionUpdate()
     {
+        // 레이캐스트를 통해 충돌 확인
         if (Physics.Raycast(tf_Player.position, tf_Player.forward, out hitInfo, range, layerMask))
         {
             if (hitInfo.transform != null)
             {
-                Vector3 _location = hitInfo.point;
-                go_Preview.transform.position = _location;
-
-                Debug.Log(_location);
-                Debug.Log(go_Preview.transform.position);
+                // 충돌 지점으로 미리 보기 이동
+                go_Preview.transform.position = hitInfo.point;
             }
         }
     }
 
+    // 건설 함수
     private void Build()
     {
+        // 미리 보기가 활성화되고 건설 가능한 경우에만 실행
         if (isPreviewActivated && go_Preview.GetComponent<PreviewObject>().isBuildable())
         {
+            // 실제 프리팹 생성
             Instantiate(go_Prefab, hitInfo.point, Quaternion.identity);
+
+            // 미리 보기 삭제 및 상태 초기화
             Destroy(go_Preview);
             isActivated = false;
             isPreviewActivated = false;
@@ -85,6 +115,7 @@ public class CraftMenu : MonoBehaviour
         }
     }
 
+    // 크래프트 메뉴 열기/닫기 함수
     private void Window()
     {
         if (!isActivated)
@@ -95,27 +126,33 @@ public class CraftMenu : MonoBehaviour
 
     private void OpenWindow()
     {
+        // Craft Manual UI를 활성화
         isActivated = true;
         go_BaseUI.SetActive(true);
+        Cursor.visible = true;
+        // 마우스 커서 고정 해제
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void CloseWindow()
     {
+        // Craft Manual UI를 비활성화
         isActivated = false;
         go_BaseUI.SetActive(false);
+        Cursor.visible = false;
     }
 
+    // 취소 함수
     private void Cancel()
     {
+        // 미리 보기가 활성화된 경우 삭제 및 상태 초기화
         if (isPreviewActivated)
             Destroy(go_Preview);
 
         isActivated = false;
         isPreviewActivated = false;
-
         go_Preview = null;
         go_Prefab = null;
-
         go_BaseUI.SetActive(false);
     }
 }

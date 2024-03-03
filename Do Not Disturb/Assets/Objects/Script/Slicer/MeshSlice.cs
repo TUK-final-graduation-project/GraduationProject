@@ -13,7 +13,7 @@ public class MeshSlice : MonoBehaviour
 
     public static GameObject[] Slicer(GameObject _target, Vector3 _sliceNormal, Vector3 _slicePoint, Material _ineterial)
     {
-        //Original mesh data
+        // 원본 메쉬 데이터
         Mesh orinMesh = _target.GetComponent<MeshFilter>().sharedMesh;
         Vector3[] orinVerts = orinMesh.vertices;
         Vector3[] orinNors = orinMesh.normals;
@@ -28,9 +28,9 @@ public class MeshSlice : MonoBehaviour
             if (orinMaterials[i].Equals(_ineterial)) { existInterialMatIdx = i; break; }
         }
 
-        //New mesh data
-        //aSide is dot product with slice normal less than zero
-        //bSide is dot product with slice normal above zero
+        // 새로운 메쉬 데이터
+        // aSide는 음수인 슬라이스 노말과 내적
+        // bSide는  양수인 슬라이스 노말과 내적
         List<Vector3> aSideVerts = new List<Vector3>();
         List<Vector3> bSideVerts = new List<Vector3>();
         List<Vector3> aSideNors = new List<Vector3>();
@@ -42,7 +42,7 @@ public class MeshSlice : MonoBehaviour
 
 
 
-        //Created vertices as new
+        // 새로운 점 만들기
         List<Vector3> createdVerts = new List<Vector3>();
         List<Vector3> createdNors = new List<Vector3>();
         List<Vector2> createdUvs = new List<Vector2>();
@@ -59,7 +59,7 @@ public class MeshSlice : MonoBehaviour
                 _sliceNormal, _slicePoint, ref aSideVerts, ref bSideVerts,
                 ref aSideNors, ref bSideNors, ref aSideUvs, ref bSideUvs, out aSideTris[i], out bSideTris[i], ref createdVerts, ref createdNors, ref createdUvs);
 
-            //Supplement tris data
+            // 삼각형 면 데이터 할당
             for (int j = 0; j < aSideTris[i].Count; j++)
             {
                 aSideTris[i][j] += aVertCount;
@@ -71,21 +71,21 @@ public class MeshSlice : MonoBehaviour
             }
         }
 
-        //Sort and optimize created vert
+        // 생성된 vertical 정렬 및 최적화
         List<Vector3> sortedCreatedVerts;
         SortVertices(createdVerts, out sortedCreatedVerts);
 
-        //Cap data
+        // cap (덮기) data
         List<Vector3> aSideCapVerts, bSideCapVerts;
         List<Vector3> aSideCapNors, bSideCapNors;
         List<Vector2> aSideCapUvs, bSideCapUvs;
         List<int> aSideCapTris, bSideCapTris;
 
 
-        //Make cap
+        // Make cap
         MakeCap(_sliceNormal, sortedCreatedVerts, out aSideCapVerts, out bSideCapVerts, out aSideCapNors, out bSideCapNors, out aSideCapUvs, out bSideCapUvs, out aSideCapTris, out bSideCapTris);
 
-        //Supplement cap data
+        // cap data 할당
         for (int i = 0; i < aSideCapTris.Count; i++)
         {
             aSideCapTris[i] += aSideVerts.Count;
@@ -95,7 +95,7 @@ public class MeshSlice : MonoBehaviour
             bSideCapTris[i] += bSideVerts.Count;
         }
 
-        //Finalize mesh data
+        // 메쉬 데이터 완성
         List<Vector3> aSideFinalVerts = new List<Vector3>();
         List<Vector3> bSideFinalVerts = new List<Vector3>();
         List<Vector3> aSideFinalNors = new List<Vector3>();
@@ -116,7 +116,7 @@ public class MeshSlice : MonoBehaviour
         bSideFinalUvs.AddRange(bSideUvs);
         bSideFinalUvs.AddRange(bSideCapUvs);
 
-        //Use existing interial material if there have the same material.
+        // 같은 소재일 경우 기존의 중간값을 사용
 
         if (existInterialMatIdx > 0)
         {
@@ -124,7 +124,7 @@ public class MeshSlice : MonoBehaviour
             bSideTris[existInterialMatIdx].AddRange(bSideCapTris);
         }
 
-        //Create mesh
+        // 메쉬 생성
         Mesh aMesh = new Mesh();
         Mesh bMesh = new Mesh();
         aMesh.vertices = aSideFinalVerts.ToArray();
@@ -151,7 +151,7 @@ public class MeshSlice : MonoBehaviour
 
         if (existInterialMatIdx < 0) bMesh.SetTriangles(bSideCapTris, orinSubMeshCount);
 
-        //Create sliced object
+        // 잘린 오브젝트 생성
         GameObject aObject = new GameObject(_target.name + "_A", typeof(MeshFilter), typeof(MeshRenderer));
         GameObject bObject = new GameObject(_target.name + "_B", typeof(MeshFilter), typeof(MeshRenderer));
         Material[] mats = new Material[(existInterialMatIdx < 0 ? orinSubMeshCount + 1 : orinSubMeshCount)];
@@ -173,10 +173,10 @@ public class MeshSlice : MonoBehaviour
         bObject.transform.rotation = _target.transform.rotation;
         bObject.transform.localScale = _target.transform.localScale;
 
-        //Hide original object
+        // 원본 오브젝트 비활성화
         _target.SetActive(false);
 
-        //Return cutted object
+        // 절단된 개체 반환
         return new GameObject[] { aObject, bObject };
     }
 
@@ -246,12 +246,12 @@ public class MeshSlice : MonoBehaviour
         _aSideTris = new List<int>();
         _bSideTris = new List<int>();
 
-        //Split vertices
+        // vertices 나누기
         int triCount = _subMeshTris.Length / 3;
 
         for (int i = 0; i < triCount; i++)
         {
-            //Target vertices
+            // Target vertices
             int idx0 = i * 3;
             int idx1 = idx0 + 1;
             int idx2 = idx1 + 1;
@@ -274,7 +274,7 @@ public class MeshSlice : MonoBehaviour
             float dot1 = Vector3.Dot(_sliceNormal, vert1 - _slicePoint);
             float dot2 = Vector3.Dot(_sliceNormal, vert2 - _slicePoint);
 
-            //If all vertices are at same side
+            // 모든 정점이 같은 변에 있는 경우
 
             if (dot0 < 0 && dot1 < 0 && dot2 < 0)
             {
@@ -307,7 +307,7 @@ public class MeshSlice : MonoBehaviour
                 _bSideTris.Add(_bSideTris.Count);
                 _bSideTris.Add(_bSideTris.Count);
             }
-            //If not all vertices are at smae side
+            // 모든 정점이 같은 변에 있지 않은 경우
             else
             {
                 int aloneVertIdx = Mathf.Sign(dot0) == Mathf.Sign(dot1) ? vertIdx2 : (Mathf.Sign(dot0) == Mathf.Sign(dot2) ? vertIdx1 : vertIdx0);
@@ -344,7 +344,7 @@ public class MeshSlice : MonoBehaviour
                 _createdUvs.Add(createdUv0);
                 _createdUvs.Add(createdUv1);
 
-                //Distribute vertices data to both side
+                // 정점 데이터를 양 side로 분산
                 float aloneSide = Vector3.Dot(_sliceNormal, aloneVert - _slicePoint);
 
                 if (aloneSide < 0)

@@ -5,8 +5,6 @@ using UnityEngine.Rendering;
 
 namespace Assets.Scripts
 {
-
-
     class Slicer
     {
         // 평면에 따라 객체를 자르기
@@ -82,7 +80,6 @@ namespace Assets.Scripts
             meshGameObject.transform.position = originalObject.transform.position;
 
             meshGameObject.tag = originalObject.tag;
-
             return meshGameObject;
         }
 
@@ -97,8 +94,6 @@ namespace Assets.Scripts
 
             var rb = gameObject.AddComponent<Rigidbody>();
             rb.useGravity = useGravity;
-
-            //Destroy(gameObject);
         }
     }
 }
