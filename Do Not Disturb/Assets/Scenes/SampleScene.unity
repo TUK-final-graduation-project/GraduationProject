@@ -1947,6 +1947,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 319577540}
   m_CullTransparentMesh: 1
+--- !u!1 &402072120 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3794164216797209964, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
+  m_PrefabInstance: {fileID: 282168821}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &417120430 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3478398817736196530, guid: 5ed5d33e7932e72439e5e34d2538222b, type: 3}
@@ -7460,7 +7465,7 @@ Transform:
   m_GameObject: {fileID: 1738726526}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.407, y: 0, z: 0}
+  m_LocalPosition: {x: -23.12, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -8371,7 +8376,7 @@ MonoBehaviour:
   go_BaseUI: {fileID: 1093485961}
   craftWaterTower:
   - craftName: Water
-    go_prefab: {fileID: 0}
+    go_prefab: {fileID: 402072120}
     go_PreviewPrefab: {fileID: 135973366}
   - craftName: Fire
     go_prefab: {fileID: 3794164216797209964, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
@@ -8387,6 +8392,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   range: 10
+  cam: {fileID: 963194227}
 --- !u!1 &1972347341 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5637686634731715584, guid: 5ed5d33e7932e72439e5e34d2538222b, type: 3}

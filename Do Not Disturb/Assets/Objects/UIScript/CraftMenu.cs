@@ -48,6 +48,15 @@ public class CraftMenu : MonoBehaviour
     [SerializeField]
     private float range;
 
+    [SerializeField]
+    private Camera cam;
+
+    void Start()
+    {
+        // mainCamera 변수에 현재 활성화된 메인 카메라를 할당합니다.
+        // cam = Camera.main;
+    }
+
     // 슬롯을 클릭했을 때 호출되는 함수
     public void SlotClick(int _slotNumber)
     {
@@ -71,7 +80,7 @@ public class CraftMenu : MonoBehaviour
             Window();
 
         // 미리 보기가 활성화된 경우 미리 보기 위치 업데이트
-        if (isPreviewActivated)
+        //if (isPreviewActivated)
             PreviewPositionUpdate();
 
         // 마우스 오른쪽 버튼을 눌렀을 때 건설
@@ -86,13 +95,14 @@ public class CraftMenu : MonoBehaviour
     // 미리 보기 위치 업데이트 함수
     private void PreviewPositionUpdate()
     {
-        // 레이캐스트를 통해 충돌 확인
-        if (Physics.Raycast(tf_Player.position, tf_Player.forward, out hitInfo, range, layerMask))
+        // 카메라의 위치와 방향을 사용하여 레이캐스트를 수행
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, range, layerMask))
         {
             if (hitInfo.transform != null)
             {
                 // 충돌 지점으로 미리 보기 이동
-                go_Preview.transform.position = hitInfo.point;
+                Debug.Log("lay : " + tf_Player.transform.position);
+                go_Preview.transform.position = tf_Player.transform.position;
             }
         }
     }
@@ -101,17 +111,33 @@ public class CraftMenu : MonoBehaviour
     private void Build()
     {
         // 미리 보기가 활성화되고 건설 가능한 경우에만 실행
-        if (isPreviewActivated && go_Preview.GetComponent<PreviewObject>().isBuildable())
+        if (isPreviewActivated /*&& go_Preview.GetComponent<PreviewObject>().isBuildable()*/)
         {
-            // 실제 프리팹 생성
-            Instantiate(go_Prefab, hitInfo.point, Quaternion.identity);
+            // go_Prefab이 null이 아닌지 확인
+            if (go_Prefab != null)
+            {
+                Debug.Log("diq : " + tf_Player.transform.position);
 
-            // 미리 보기 삭제 및 상태 초기화
-            Destroy(go_Preview);
-            isActivated = false;
-            isPreviewActivated = false;
-            go_Preview = null;
-            go_Prefab = null;
+                Vector3 playerPosition = tf_Player.transform.position; // tf_Player의 위치
+                Vector3 playerForward = tf_Player.transform.forward; // tf_Player의 전방 벡터
+                float distance = 1.5f; // 거리
+
+                // tf_Player의 위치에서 전방 방향으로 거리 5만큼 떨어진 위치 계산
+                Vector3 targetPosition = playerPosition + playerForward * distance;
+                // 실제 프리팹 생성
+                Instantiate(go_Prefab, targetPosition, Quaternion.identity);
+
+                // 미리 보기 삭제 및 상태 초기화
+                Destroy(go_Preview);
+                isActivated = false;
+                isPreviewActivated = false;
+                go_Preview = null;
+                go_Prefab = null;
+            }
+            else
+            {
+                Debug.LogError("go_Prefab이 null입니다.");
+            }
         }
     }
 
