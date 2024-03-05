@@ -51,6 +51,8 @@ public class CraftMenu : MonoBehaviour
     [SerializeField]
     private Camera cam;
 
+    public bool isCrafting;
+
     void Start()
     {
         // mainCamera 변수에 현재 활성화된 메인 카메라를 할당합니다.
@@ -81,7 +83,7 @@ public class CraftMenu : MonoBehaviour
 
         // 미리 보기가 활성화된 경우 미리 보기 위치 업데이트
         //if (isPreviewActivated)
-            PreviewPositionUpdate();
+        PreviewPositionUpdate();
 
         // 마우스 오른쪽 버튼을 눌렀을 때 건설
         if (Input.GetButtonDown("Fire2"))
@@ -90,19 +92,27 @@ public class CraftMenu : MonoBehaviour
         // ESC 키를 눌렀을 때 취소
         if (Input.GetKeyDown(KeyCode.Escape))
             Cancel();
+
+        isCrafting = isActivated;
     }
 
     // 미리 보기 위치 업데이트 함수
     private void PreviewPositionUpdate()
     {
         // 카메라의 위치와 방향을 사용하여 레이캐스트를 수행
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, range, layerMask))
+        //if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, range, layerMask))
         {
-            if (hitInfo.transform != null)
+            Vector3 playerPosition = tf_Player.transform.position; // tf_Player의 위치
+            Vector3 playerForward = tf_Player.transform.forward; // tf_Player의 전방 벡터
+            float distance = 1.5f; // 거리
+
+            // tf_Player의 위치에서 전방 방향으로 거리 5만큼 떨어진 위치 계산
+            Vector3 targetPosition = playerPosition + playerForward * distance;
+
+            //if (hitInfo.transform != null)
             {
                 // 충돌 지점으로 미리 보기 이동
-                Debug.Log("lay : " + tf_Player.transform.position);
-                go_Preview.transform.position = tf_Player.transform.position;
+                go_Preview.transform.position = targetPosition;
             }
         }
     }
@@ -130,6 +140,7 @@ public class CraftMenu : MonoBehaviour
                 // 미리 보기 삭제 및 상태 초기화
                 Destroy(go_Preview);
                 isActivated = false;
+                isCrafting = false;
                 isPreviewActivated = false;
                 go_Preview = null;
                 go_Prefab = null;
@@ -154,6 +165,7 @@ public class CraftMenu : MonoBehaviour
     {
         // Craft Manual UI를 활성화
         isActivated = true;
+        isCrafting = true;
         go_BaseUI.SetActive(true);
         Cursor.visible = true;
         // 마우스 커서 고정 해제
@@ -176,6 +188,7 @@ public class CraftMenu : MonoBehaviour
             Destroy(go_Preview);
 
         isActivated = false;
+        isCrafting = false;
         isPreviewActivated = false;
         go_Preview = null;
         go_Prefab = null;

@@ -49,7 +49,9 @@ public class PlayerMove : MonoBehaviour
     private float cameraRotationLimit;
     private float currentCameraRotationX = 0;
 
+
     Tools equipTool;
+    CraftMenu craftMenu;
 
     int equipToolIndex = -1;
     float swingDelay;
@@ -58,10 +60,12 @@ public class PlayerMove : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
-
+        craftMenu = FindObjectOfType<CraftMenu>();
         // 마우스 커서 삭제
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
     }
 
     void Update()
@@ -238,14 +242,17 @@ public class PlayerMove : MonoBehaviour
 
     private void CameraRotation()
     {
-        //Debug.Log("상하 카메라 회전");
-        // 상하 카메라 회전
+        if (!craftMenu.isCrafting)
+        {
+            //Debug.Log("상하 카메라 회전");
+            // 상하 카메라 회전
 
-        float cameraRotationX = xRotation * lookSensitivity;
-        currentCameraRotationX -= cameraRotationX;
-        currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraRotationLimit, cameraRotationLimit);
+            float cameraRotationX = xRotation * lookSensitivity;
+            currentCameraRotationX -= cameraRotationX;
+            currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraRotationLimit, cameraRotationLimit);
 
-        cam.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
+            cam.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
+        }
     }
 
 
