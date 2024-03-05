@@ -2,11 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
-{
-    public enum Type { Tool, Resource };
-    public Type type;
-    public int value;
+// 아이템 전용 생성메뉴 만들기
+[CreateAssetMenu(fileName = "New Item", menuName = "New Item/item")]
 
-    
+public class Item : ScriptableObject
+{
+    public string itemName; // 아이템의 이름.
+    public ItemType itemType; // 아이템의 유형.
+    public Sprite itemImage; // 아이템의 이미지.
+    public GameObject itemPrefab; // 아이템의 프리팹.
+
+
+    public enum ItemType
+    {
+        Ice,
+        Steel,
+        Wood,
+        Stone,
+        ETC
+    }
+
 }
