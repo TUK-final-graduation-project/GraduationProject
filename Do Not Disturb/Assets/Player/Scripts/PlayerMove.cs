@@ -2,12 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
     public float speed;
     public GameObject[] tools;
     public bool[] hasTools;
+
+    float yRotation;
+    float xRotation;
 
     float hAxis;
     float vAxis;
@@ -34,18 +38,34 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField]
     Animator anim;
-    
+
     [SerializeField]
     Camera cam;
 
+    [SerializeField]
+    private float lookSensitivity;
+
+    [SerializeField]
+    private float cameraRotationLimit;
+    private float currentCameraRotationX = 0;
+
+
     Tools equipTool;
-    int equipToolIndex = -1;      
+    CraftMenu craftMenu;
+
+    int equipToolIndex = -1;
     float swingDelay;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
+        craftMenu = FindObjectOfType<CraftMenu>();
+        // 마우스 커서 삭제
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
     }
 
     void Update()
@@ -57,19 +77,15 @@ public class PlayerMove : MonoBehaviour
         Swing();
         Dash();
         Swap();
-       // MoveLookAt();
+        CameraRotation();
+        CharacterRotation();
+    }
 
-    }
-    void MoveLookAt()
-    {
-        
-        //Rotation값을 0으로 세팅
-       // transform.localRotation = new Quaternion(0, transform.localRotation.y, 0, transform.localRotation.w);
-        //바라보는 시점 방향으로 이동
-        //gameObject.transform.Translate(dir * 0.1f * Time.deltaTime);
-    }
     void GetInput()
     {
+        yRotation = Input.GetAxisRaw("Mouse X");
+        xRotation = Input.GetAxisRaw("Mouse Y");
+
         hAxis = Input.GetAxisRaw("Horizontal");
         vAxis = Input.GetAxisRaw("Vertical");
         wDown = Input.GetButton("Walk");
@@ -84,23 +100,25 @@ public class PlayerMove : MonoBehaviour
 
     void Move()
     {
-        //메인카메라가 바라보는 방향
-        //Vector3 dir = cam.transform.localRotation * Vector3.forward;
-        //카메라가 바라보는 방향으로 캐릭터도 회전
-        //transform.localRotation = cam.transform.localRotation;
+        //moveVec = new Vector3(hAxis, 0, vAxis).normalized;
 
-        moveVec = new Vector3(hAxis, 0, vAxis).normalized;
+
+        Vector3 moveHorizontal = transform.right * hAxis;
+        Vector3 moveVertical = transform.forward * vAxis;
+
+        Vector3 velocity = (moveHorizontal + moveVertical).normalized * speed;
 
         if (isDash)
-            moveVec = dashVec;
+            velocity = dashVec;
 
         if (isSwap || !isSwingReady)
-            moveVec = Vector3.zero;
+            velocity = Vector3.zero;
 
-        transform.position += moveVec * speed * (wDown ? 0.8f : 1f) * Time.deltaTime;
-
+        //rigid.AddForce(new Vector3(hAxis, 0, vAxis), ForceMode.Impulse);
+        //rigid.MovePosition(transform.position + velocity * Time.deltaTime);
+        rigid.AddForce(velocity * Time.deltaTime, ForceMode.VelocityChange);
         // animator
-        anim.SetBool("isWalk", moveVec != Vector3.zero);
+        anim.SetBool("isWalk", velocity != Vector3.zero);
         anim.SetBool("isRun", rDown);
     }
 
@@ -129,7 +147,7 @@ public class PlayerMove : MonoBehaviour
         swingDelay += Time.deltaTime;
         isSwingReady = equipTool.rate < swingDelay;
 
-        if(fDown && isSwingReady && !isDash && !isSwap)
+        if (fDown && isSwingReady && !isDash && !isSwap)
         {
             equipTool.Use();
             anim.SetTrigger("Pickax");
@@ -171,7 +189,7 @@ public class PlayerMove : MonoBehaviour
         if (swapTool2) toolIndex = 1;
         if (swapTool3) toolIndex = 2;
 
-        if ((swapTool1 || swapTool2|| swapTool3) && !isDash && !isJump)
+        if ((swapTool1 || swapTool2 || swapTool3) && !isDash && !isJump)
         {
 
             //Debug.Log(toolIndex);
@@ -184,7 +202,6 @@ public class PlayerMove : MonoBehaviour
             //장착 애니메이션 활성화
             // animator.SetTrigger("doSwap");
             anim.SetTrigger("Attack");
-            Debug.Log("Attack");
 
             isSwap = true;
 
@@ -199,6 +216,11 @@ public class PlayerMove : MonoBehaviour
         isSwap = false;
     }
 
+    public int GetToolIndex()
+    {
+        return equipToolIndex;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Ground")
@@ -207,4 +229,31 @@ public class PlayerMove : MonoBehaviour
             isJump = false;
         }
     }
+
+    private void CharacterRotation()
+    {
+        //Debug.Log("좌우 캐릭터 회전");
+        // 좌우 캐릭터 회전
+
+        Vector3 characterRotationY = new Vector3(0f, yRotation, 0f) * lookSensitivity;
+        rigid.MoveRotation(rigid.rotation * Quaternion.Euler(characterRotationY));
+
+    }
+
+    private void CameraRotation()
+    {
+        if (!craftMenu.isCrafting)
+        {
+            //Debug.Log("상하 카메라 회전");
+            // 상하 카메라 회전
+
+            float cameraRotationX = xRotation * lookSensitivity;
+            currentCameraRotationX -= cameraRotationX;
+            currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraRotationLimit, cameraRotationLimit);
+
+            cam.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);
+        }
+    }
+
+
 }
