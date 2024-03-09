@@ -24,10 +24,10 @@ public class EnemyBaseController : MonoBehaviour
             curTime = maxTime;
             unitGenerateNum++;
             isRunning = false;
-            //if (unitGenerateNum > waveLevel)
-            //{
-            //    isRunning = false;
-            //}
+            if (unitGenerateNum > waveLevel)
+            {
+                isRunning = false;
+            }
         }
     }
 
@@ -39,6 +39,6 @@ public class EnemyBaseController : MonoBehaviour
         unitGenerateNum = 0;
         waveLevel = waveLv;
         curTime = maxTime;
-        // isRunning = true;
+        isRunning = true;
     }
 }

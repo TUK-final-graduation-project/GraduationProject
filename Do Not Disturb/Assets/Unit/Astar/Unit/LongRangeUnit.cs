@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 public class LongRangeUnit : MonoBehaviour
 {
     float range = 10f;
-
+    float speed = 5f;
     [Header("Material")]
     public Material detectedMat;
 
@@ -37,7 +37,8 @@ public class LongRangeUnit : MonoBehaviour
         else
         {
             curTime -= Time.deltaTime;
-            FightWithTarget();
+            MoveToTarget();
+            // FightWithTarget();
         }
     }
 
@@ -52,7 +53,6 @@ public class LongRangeUnit : MonoBehaviour
                 targetUnit = collider;
                 changeMaterial(collider.gameObject, detectedMat);
                 gameObject.GetComponent<UnitMove>().StopCoroutine("FollowPath");
-                transform.rotation = Quaternion.identity;
             }
         }
     }
@@ -73,13 +73,17 @@ public class LongRangeUnit : MonoBehaviour
         }
         if (targetUnit.GetComponent<UnitState>().isDead)
         {
-            // Debug.Log("Dead!");
             // target이 사라졌을 때
-            // 1. 던지기 끝
-            // 2. 다시 경로 탐색하기
             gameObject.GetComponent<UnitMove>().RequestPathToMgr();
-            // 3. target == null
             targetUnit = null;
         }
+    }
+
+    void MoveToTarget()
+    {
+        Vector3 dir = (targetUnit.gameObject.transform.position - transform.position).normalized;
+        Pos[] p = targetUnit.gameObject.GetComponent<UnitState>().GetNearPosition();
+        Debug.Log("여기로 가야지" + p[7].locate);
+        transform.position = Vector3.MoveTowards(transform.position, p[7].locate, speed * Time.deltaTime);
     }
 }

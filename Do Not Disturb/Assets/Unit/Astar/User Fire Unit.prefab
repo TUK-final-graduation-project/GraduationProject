@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -4769189398924241144}
   - component: {fileID: 954892735040462010}
   - component: {fileID: 907804682565367543}
-  - component: {fileID: 3622144908979613242}
+  - component: {fileID: 930974213280559689}
   m_Layer: 0
   m_Name: User Fire Unit
   m_TagString: Fire
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HP: 100
   isDead: 0
---- !u!114 &3622144908979613242
+--- !u!114 &930974213280559689
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -173,13 +173,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 159659162268703231}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68eaad100ceaea84ebfbc402f02e04e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 717deb986b86657489d3cd956f856865, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectedMat: {fileID: 2100000, guid: 8f2a0120416ee714a88e7e4a5c8d63a4, type: 2}
+  detectedMat: {fileID: 2100000, guid: a490d5a9ee678a64a8e95f25edc14909, type: 2}
   targetUnit: {fileID: 0}
   colliders: []
   bullet: {fileID: 755390331851363412, guid: 1c832df2515ae704288e3a48a75a96ea, type: 3}
-  maxTime: 3
+  maxTime: 1
   curTime: 1
-  bulletSpeed: 5
+  bulletSpeed: 10
