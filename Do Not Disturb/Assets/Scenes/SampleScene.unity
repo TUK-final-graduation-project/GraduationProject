@@ -2192,6 +2192,7 @@ GameObject:
   - component: {fileID: 459490230}
   - component: {fileID: 459490229}
   - component: {fileID: 459490228}
+  - component: {fileID: 459490231}
   m_Layer: 0
   m_Name: Forest Area
   m_TagString: Untagged
@@ -2285,6 +2286,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459490226}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &459490231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459490226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce151f99c3e327f4982c41fd639f43a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Unit: {fileID: 2938312513537221339, guid: 7b19cd3a378c0ac40ba7f2cf2eb32ff8, type: 3}
+  startPosition: {fileID: 459490227}
+  minionSpeed: 0
+  curTime: 0
+  maxTime: 0
 --- !u!1001 &537869279
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2382,6 +2400,7 @@ GameObject:
   - component: {fileID: 542011228}
   - component: {fileID: 542011227}
   - component: {fileID: 542011226}
+  - component: {fileID: 542011229}
   m_Layer: 0
   m_Name: Fire Area
   m_TagString: Untagged
@@ -2475,6 +2494,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 542011224}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &542011229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 542011224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce151f99c3e327f4982c41fd639f43a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Unit: {fileID: 2938312513537221339, guid: 7b19cd3a378c0ac40ba7f2cf2eb32ff8, type: 3}
+  startPosition: {fileID: 542011225}
+  minionSpeed: 0
+  curTime: 0
+  maxTime: 0
 --- !u!1 &549175860
 GameObject:
   m_ObjectHideFlags: 0
@@ -4450,6 +4486,7 @@ GameObject:
   - component: {fileID: 994462189}
   - component: {fileID: 994462188}
   - component: {fileID: 994462187}
+  - component: {fileID: 994462190}
   m_Layer: 0
   m_Name: Metal Area
   m_TagString: Untagged
@@ -4543,6 +4580,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 994462185}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &994462190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994462185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce151f99c3e327f4982c41fd639f43a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Unit: {fileID: 2938312513537221339, guid: 7b19cd3a378c0ac40ba7f2cf2eb32ff8, type: 3}
+  startPosition: {fileID: 994462186}
+  minionSpeed: 0
+  curTime: 0
+  maxTime: 0
 --- !u!1001 &1023058483
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5998,6 +6052,7 @@ GameObject:
   - component: {fileID: 1432606705}
   - component: {fileID: 1432606704}
   - component: {fileID: 1432606703}
+  - component: {fileID: 1432606706}
   m_Layer: 0
   m_Name: Water Area
   m_TagString: Untagged
@@ -6091,6 +6146,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1432606701}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1432606706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1432606701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce151f99c3e327f4982c41fd639f43a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Unit: {fileID: 2938312513537221339, guid: 7b19cd3a378c0ac40ba7f2cf2eb32ff8, type: 3}
+  startPosition: {fileID: 1432606702}
+  minionSpeed: 0
+  curTime: 0
+  maxTime: 0
 --- !u!1 &1440834588 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -51104761422087029, guid: 5ed5d33e7932e72439e5e34d2538222b, type: 3}
@@ -8215,16 +8287,16 @@ MonoBehaviour:
   go_BaseUI: {fileID: 1093485961}
   craftWaterTower:
   - craftName: Water
-    go_prefab: {fileID: 402072120}
+    go_prefab: {fileID: 1306803152854189505, guid: 5ce8da7c306494c4e948bbd2ce22c581, type: 3}
     go_PreviewPrefab: {fileID: 2551435627485656196, guid: c9feb1efedf7e314ab2153b8772fbe11, type: 3}
   - craftName: Fire
-    go_prefab: {fileID: 3794164216797209964, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
+    go_prefab: {fileID: 1306803152854189505, guid: 5ce8da7c306494c4e948bbd2ce22c581, type: 3}
     go_PreviewPrefab: {fileID: 2551435627485656196, guid: c9feb1efedf7e314ab2153b8772fbe11, type: 3}
   - craftName: Steel
-    go_prefab: {fileID: 3794164216797209964, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
+    go_prefab: {fileID: 1306803152854189505, guid: 5ce8da7c306494c4e948bbd2ce22c581, type: 3}
     go_PreviewPrefab: {fileID: 2551435627485656196, guid: c9feb1efedf7e314ab2153b8772fbe11, type: 3}
   - craftName: Forest
-    go_prefab: {fileID: 3794164216797209964, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
+    go_prefab: {fileID: 1306803152854189505, guid: 5ce8da7c306494c4e948bbd2ce22c581, type: 3}
     go_PreviewPrefab: {fileID: 2551435627485656196, guid: c9feb1efedf7e314ab2153b8772fbe11, type: 3}
   tf_Player: {fileID: 790254824}
   layerMask:
