@@ -20,7 +20,7 @@ public class EnemyBaseController : MonoBehaviour
         if (curTime <= 0 && isRunning)
         {
             var a = Instantiate(Unit, startPosition.position, startPosition.rotation);
-            a.GetComponent<UnitMove>().target = GameObject.Find("player").transform.position;
+            a.GetComponent<UnitMove>().target = GameObject.Find("Player").transform.position;
             curTime = maxTime;
             unitGenerateNum++;
             isRunning = false;
