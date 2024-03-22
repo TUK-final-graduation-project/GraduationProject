@@ -44,7 +44,7 @@ public class VisualizeGrid : MonoBehaviour
         {
             foreach(NodeClass node in grid)
             {
-                Gizmos.color = (node.isWalkable) ? Color.red : Color.green;
+                Gizmos.color = (node.isWalkable) ? Color.green : Color.red;
                 Gizmos.DrawCube(node.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
         }
