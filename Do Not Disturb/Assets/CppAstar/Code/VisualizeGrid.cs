@@ -7,7 +7,7 @@ public class VisualizeGrid : MonoBehaviour
     public LayerMask unWalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
-    NodeClass[,] grid;
+    public NodeClass[,] grid;
 
     float nodeDiameter;
     int gridSizeX;
@@ -19,6 +19,10 @@ public class VisualizeGrid : MonoBehaviour
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x/nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y/nodeDiameter);
         CreateGrid();
+        foreach (NodeClass node in grid)
+        {
+            CppBackend.SimpleReturn((node.worldPosition.x), (node.worldPosition.z), node.isWalkable);
+        }
     }
 
     void CreateGrid()
@@ -49,4 +53,5 @@ public class VisualizeGrid : MonoBehaviour
             }
         }
     }
+
 }
