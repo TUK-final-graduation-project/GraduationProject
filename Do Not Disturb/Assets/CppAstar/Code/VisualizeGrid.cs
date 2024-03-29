@@ -18,11 +18,8 @@ public class VisualizeGrid : MonoBehaviour
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x/nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y/nodeDiameter);
+        CppBackend.SendWorldSizeInUnity(gridSizeX, gridSizeY);
         CreateGrid();
-        foreach (NodeClass node in grid)
-        {
-            CppBackend.SimpleReturn((node.worldPosition.x), (node.worldPosition.z), node.isWalkable);
-        }
     }
 
     void CreateGrid()
@@ -37,6 +34,7 @@ public class VisualizeGrid : MonoBehaviour
                 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius/2, unWalkableMask));
                 grid[x, y] = new NodeClass(walkable, worldPoint);
+                CppBackend.SendNodeInfoInUnity(x, y, walkable);
             }
         }
     }

@@ -127,11 +127,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CAstar.cpp" />
     <ClCompile Include="backend.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="CNode.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CAstar.h" />
     <ClInclude Include="backend.h" />
+    <ClInclude Include="CNode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
