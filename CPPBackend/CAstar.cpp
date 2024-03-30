@@ -29,12 +29,14 @@ void CAstar::SetNodeInfo(int x, int y, bool isWalkable)
 
 void CAstar::SetStartNode(int x, int y)
 {
-
+	startNode.x = x;
+	startNode.y = y;
 }
 
 void CAstar::SetEndNode(int x, int y)
 {
-
+	endNode.x = x;
+	endNode.y = y;
 }
 
 void CAstar::FindPath()
@@ -118,6 +120,7 @@ void CAstar::make_route(std::vector<CNode> closeList)
 
 			if (innerIt != outerIt->end()) {
 				// innerIt->type = 'O';
+				path.push_back(*innerIt);
 				break; // 값 찾으면 루프 종료
 			}
 		}

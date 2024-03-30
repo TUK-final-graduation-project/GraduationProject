@@ -8,6 +8,11 @@ extern "C" {
 	int DLL_EXPORT Re(int* arr, int size);
 	int DLL_EXPORT SendWorldSize(int x, int y);
 	bool DLL_EXPORT SendNodeInfo(int x, int y, bool isWalkable);
+	int DLL_EXPORT SendStartNode(int x, int y);
+	int DLL_EXPORT SendEndNode(int x, int y);
+	bool DLL_EXPORT CompStartNode(int x, int y);
+	bool DLL_EXPORT CompEndNode(int x, int y);
+	int DLL_EXPORT ReceivePath();
 }
 
 #endif
