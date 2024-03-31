@@ -36,7 +36,7 @@ public:
 		return c;
 	}
 	int GetPathSize() {
-		FindPath();
+		// FindPath();
 		return path.size();
 	}
 	void make_route(std::vector<CNode> closeList);
