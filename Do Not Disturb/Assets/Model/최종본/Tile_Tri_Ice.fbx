@@ -8,11 +8,11 @@ FBXHeaderExtension:  {
 		Version: 1000
 		Year: 2024
 		Month: 3
-		Day: 28
-		Hour: 14
-		Minute: 25
-		Second: 37
-		Millisecond: 318
+		Day: 31
+		Hour: 3
+		Minute: 0
+		Second: 6
+		Millisecond: 243
 	}
 	Creator: "FBX SDK/FBX Plugins version 2020.0.1"
 	SceneInfo: "SceneInfo::GlobalInfo", "UserData" {
@@ -34,15 +34,15 @@ FBXHeaderExtension:  {
 			P: "Original|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "Original|ApplicationName", "KString", "", "", "3ds Max"
 			P: "Original|ApplicationVersion", "KString", "", "", "2021"
-			P: "Original|DateTime_GMT", "DateTime", "", "", "28/03/2024 05:25:37.318"
+			P: "Original|DateTime_GMT", "DateTime", "", "", "30/03/2024 18:00:06.242"
 			P: "Original|FileName", "KString", "", "", "C:\Users\USER\Desktop\GraduationProject\Do Not Disturb\Assets\Model\최종본\Tile_Tri_Ice.fbx"
 			P: "LastSaved", "Compound", "", ""
 			P: "LastSaved|ApplicationVendor", "KString", "", "", "Autodesk"
 			P: "LastSaved|ApplicationName", "KString", "", "", "3ds Max"
 			P: "LastSaved|ApplicationVersion", "KString", "", "", "2021"
-			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "28/03/2024 05:25:37.318"
+			P: "LastSaved|DateTime_GMT", "DateTime", "", "", "30/03/2024 18:00:06.242"
 			P: "Original|ApplicationActiveProject", "KString", "", "", "C:\Users\USER\Documents\3ds Max 2021"
-			P: "Original|ApplicationNativeFile", "KString", "", "", "C:\Users\USER\Documents\3ds Max 2021\scenes\타일\블럭 삼각형.max"
+			P: "Original|ApplicationNativeFile", "KString", "", "", "C:\Users\USER\Documents\3ds Max 2021\scenes\타일\얼음 블럭 삼각형.max"
 		}
 	}
 }
@@ -77,7 +77,7 @@ GlobalSettings:  {
 
 Documents:  {
 	Count: 1
-	Document: 2892059690416, "", "Scene" {
+	Document: 2206809546432, "", "Scene" {
 		Properties70:  {
 			P: "SourceObject", "object", "", ""
 			P: "ActiveAnimStackName", "KString", "", "", ""
@@ -266,7 +266,7 @@ Definitions:  {
 ;------------------------------------------------------------------
 
 Objects:  {
-	Geometry: 2891031381344, "Geometry::", "Mesh" {
+	Geometry: 2207070954000, "Geometry::", "Mesh" {
 		Properties70:  {
 		}
 		Vertices: *279 {
@@ -362,7 +362,7 @@ Objects:  {
 			}
 		}
 	}
-	Model: 2892011873040, "Model::blockCornerLarge", "Mesh" {
+	Model: 2206084170416, "Model::blockCornerLarge", "Mesh" {
 		Version: 232
 		Properties70:  {
 			P: "RotationOrder", "enum", "", "",4
@@ -370,7 +370,7 @@ Objects:  {
 			P: "InheritType", "enum", "", "",1
 			P: "ScalingMax", "Vector3D", "Vector", "",0,0,0
 			P: "DefaultAttributeIndex", "int", "Integer", "",0
-			P: "Lcl Rotation", "Lcl Rotation", "", "A+",6.17388703424576e-07,-7.05677805588651e-06,129.999996506819
+			P: "Lcl Rotation", "Lcl Rotation", "", "A+",5.00895694519727e-06,-5.00895531675325e-06,89.9999906653315
 			P: "currentUVSet", "KString", "", "U", "map1"
 			P: "UDP3DSMAX", "KString", "", "U", "MapChannel:1 = map1&cr;&lf;"
 			P: "MaxHandle", "int", "Integer", "UH",8
@@ -378,7 +378,7 @@ Objects:  {
 		Shading: T
 		Culling: "CullingOff"
 	}
-	Material: 2892012193760, "Material::02 - Default", "" {
+	Material: 2206810995824, "Material::02 - Default", "" {
 		Version: 102
 		ShadingModel: "phong"
 		MultiLayer: 0
@@ -400,7 +400,7 @@ Objects:  {
 			P: "Reflectivity", "double", "Number", "",0
 		}
 	}
-	Material: 2892012203840, "Material::01 - Default", "" {
+	Material: 2206810981424, "Material::01 - Default", "" {
 		Version: 102
 		ShadingModel: "phong"
 		MultiLayer: 0
@@ -422,13 +422,13 @@ Objects:  {
 			P: "Reflectivity", "double", "Number", "",0
 		}
 	}
-	AnimationStack: 2891421271392, "AnimStack::Take 001", "" {
+	AnimationStack: 2207078969584, "AnimStack::Take 001", "" {
 		Properties70:  {
 			P: "LocalStop", "KTime", "Time", "",153953860000
 			P: "ReferenceStop", "KTime", "Time", "",153953860000
 		}
 	}
-	AnimationCurve: 2891963280560, "AnimCurve::", "" {
+	AnimationCurve: 2207078825296, "AnimCurve::", "" {
 		Default: 0
 		KeyVer: 4009
 		KeyTime: *1 {
@@ -449,7 +449,7 @@ Objects:  {
 			a: 1
 		} 
 	}
-	AnimationCurve: 2891963280400, "AnimCurve::", "" {
+	AnimationCurve: 2207078818896, "AnimCurve::", "" {
 		Default: 0
 		KeyVer: 4009
 		KeyTime: *1 {
@@ -470,14 +470,14 @@ Objects:  {
 			a: 1
 		} 
 	}
-	AnimationCurve: 2891963280720, "AnimCurve::", "" {
+	AnimationCurve: 2207078818416, "AnimCurve::", "" {
 		Default: 0
 		KeyVer: 4009
 		KeyTime: *1 {
 			a: 0
 		} 
 		KeyValueFloat: *1 {
-			a: -50
+			a: -90.00001
 		} 
 		;KeyAttrFlags: Cubic|TangeantUser|WeightedRight
 		KeyAttrFlags: *1 {
@@ -491,14 +491,14 @@ Objects:  {
 			a: 1
 		} 
 	}
-	AnimationCurveNode: 2891421267648, "AnimCurveNode::R", "" {
+	AnimationCurveNode: 2207078973120, "AnimCurveNode::R", "" {
 		Properties70:  {
-			P: "d|X", "Number", "", "A",6.17388703424576e-07
-			P: "d|Y", "Number", "", "A",-7.05677805588651e-06
-			P: "d|Z", "Number", "", "A",129.999996506819
+			P: "d|X", "Number", "", "A",5.00895694519727e-06
+			P: "d|Y", "Number", "", "A",-5.00895531675325e-06
+			P: "d|Z", "Number", "", "A",89.9999906653315
 		}
 	}
-	AnimationLayer: 2892019366496, "AnimLayer::BaseLayer", "" {
+	AnimationLayer: 2205935139664, "AnimLayer::BaseLayer", "" {
 	}
 }
 
@@ -508,34 +508,34 @@ Objects:  {
 Connections:  {
 	
 	;Model::blockCornerLarge, Model::RootNode
-	C: "OO",2892011873040,0
+	C: "OO",2206084170416,0
 	
 	;AnimLayer::BaseLayer, AnimStack::Take 001
-	C: "OO",2892019366496,2891421271392
+	C: "OO",2205935139664,2207078969584
 	
 	;AnimCurveNode::R, AnimLayer::BaseLayer
-	C: "OO",2891421267648,2892019366496
+	C: "OO",2207078973120,2205935139664
 	
 	;Geometry::, Model::blockCornerLarge
-	C: "OO",2891031381344,2892011873040
+	C: "OO",2207070954000,2206084170416
 	
 	;Material::02 - Default, Model::blockCornerLarge
-	C: "OO",2892012193760,2892011873040
+	C: "OO",2206810995824,2206084170416
 	
 	;Material::01 - Default, Model::blockCornerLarge
-	C: "OO",2892012203840,2892011873040
+	C: "OO",2206810981424,2206084170416
 	
 	;AnimCurveNode::R, Model::blockCornerLarge
-	C: "OP",2891421267648,2892011873040, "Lcl Rotation"
+	C: "OP",2207078973120,2206084170416, "Lcl Rotation"
 	
 	;AnimCurve::, AnimCurveNode::R
-	C: "OP",2891963280560,2891421267648, "d|X"
+	C: "OP",2207078825296,2207078973120, "d|X"
 	
 	;AnimCurve::, AnimCurveNode::R
-	C: "OP",2891963280400,2891421267648, "d|Y"
+	C: "OP",2207078818896,2207078973120, "d|Y"
 	
 	;AnimCurve::, AnimCurveNode::R
-	C: "OP",2891963280720,2891421267648, "d|Z"
+	C: "OP",2207078818416,2207078973120, "d|Z"
 }
 ;Takes section
 ;----------------------------------------------------
