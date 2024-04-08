@@ -1,5 +1,6 @@
 #include "CNode.h"
 #include <vector>
+#include <array>
 
 using namespace std;
 
@@ -39,14 +40,16 @@ public:
 		// FindPath();
 		return path.size();
 	}
-	void make_route(std::vector<CNode> closeList);
+	void make_route();
 
 private:
 	vector<vector<CNode>> grid;
+	// vector<vector<CNode>> grid;
 	// CNode** grid;
 	int worldSizeX;
 	int worldSizeY;
 	CNode startNode;
 	CNode endNode;
 	vector<CNode> path;
+	vector<CNode> closeList{};
 };

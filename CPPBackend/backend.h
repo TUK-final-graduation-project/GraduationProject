@@ -13,6 +13,7 @@ extern "C" {
 	bool DLL_EXPORT CompStartNode(int x, int y);
 	bool DLL_EXPORT CompEndNode(int x, int y);
 	int DLL_EXPORT ReceivePath();
+	void DLL_EXPORT DeleteAstar();
 }
 
 #endif

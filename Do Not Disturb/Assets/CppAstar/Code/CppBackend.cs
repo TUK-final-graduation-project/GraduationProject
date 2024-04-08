@@ -33,6 +33,9 @@ public class CppBackend : MonoBehaviour
     [DllImport("backend")]
     private static extern int ReceivePath();
 
+    [DllImport("backend")]
+    private static extern void DeleteAstar();
+
     public static void SimpleReturn(float x, float y, bool isWalkable)
     {
         string s = Marshal.PtrToStringAnsi(SimpleReturnFun(x, y, isWalkable));
@@ -72,5 +75,6 @@ public class CppBackend : MonoBehaviour
     public static void ReceivePathInUnity()
     {
         Debug.Log(ReceivePath());
+        DeleteAstar();
     }
 }

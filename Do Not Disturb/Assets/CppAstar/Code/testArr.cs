@@ -1,26 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
+[StructLayout(LayoutKind.Sequential)]
+public class TestC
+{
+    public bool isWalkable;
+    public float x;
+
+    public TestC(bool n_isWalkable, float n_WorldPos)
+    {
+        isWalkable = n_isWalkable;
+        x = n_WorldPos;
+    }
+}
 public class testArr : MonoBehaviour
 {
-    int[,] arr;
-    // Start is called before the first frame update
-    void Start()
+    [DllImport("testcpp")]
+    private static extern float SimpleReturnFun(TestC t);
+
+    public TestC testclass = new TestC(false, 3f);
+
+    private void Start()
     {
-        int k = 0;
-        arr = new int[3,3];
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                arr[i,j] = k;
-                k++;
-            }
-        }
-        for ( int i =0; i < 3; i++)
-        {
-            Debug.Log(arr[1, i]);
-        }
+        Debug.Log(SimpleReturnFun(testclass));
     }
+
 }

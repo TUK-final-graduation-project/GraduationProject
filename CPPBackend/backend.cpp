@@ -2,6 +2,7 @@
 #include "backend.h"
 #include "string"
 #include "CAstar.h"
+#include "CPathMgr.h"
 
 using namespace std;
 
@@ -26,7 +27,8 @@ extern "C" {
 	int DLL_EXPORT SendWorldSize(int x, int y)
 	{
 		c.SetGridSize(x, y);
-		return c.GetGridSizeX();
+		CPathMgr::GetInstance()->SetGridSize(x, y);
+		return CPathMgr::GetInstance()->GetGridSizeX();
 	}
 	bool DLL_EXPORT SendNodeInfo(int x, int y, bool isWalkable)
 	{
@@ -59,6 +61,11 @@ extern "C" {
 	}
 	int DLL_EXPORT ReceivePath()
 	{
+		CPathMgr::GetInstance()->Release();
 		return c.GetPathSize();
+	}
+	void DLL_EXPORT DeleteAstar()
+	{
+		c.~CAstar();
 	}
 }

@@ -41,7 +41,7 @@ void CAstar::SetEndNode(int x, int y)
 
 void CAstar::FindPath()
 {
-	std::vector<CNode> closeList{};
+
 	std::multiset<CNode> openList{};
 	closeList.push_back(startNode);
 
@@ -78,28 +78,27 @@ void CAstar::FindPath()
 					closeList.push_back(nextNode);
 					running = false;
 
-					// 닫힌 목록 출력
+					// path.push_back(closeList.back());
+					//std::vector<std::vector<CNode>>::iterator outerIt;
+					//std::vector<CNode>::iterator innerIt;
 					//for (const auto& node : closeList) {
-					//	std::cout << "closeList, x, y, type: " << node.x << ", " << node.y << ", " << node.type << std::endl;
+					//	for (outerIt = grid.begin(); outerIt != grid.end(); ++outerIt) {
+					//		innerIt = std::find(outerIt->begin(), outerIt->end(), node);
+
+					//		if (innerIt != outerIt->end()) {
+					//			// innerIt->type = 'O';
+					//			path.push_back(*innerIt);
+					//			break; // 값 찾으면 루프 종료
+					//		}
+					//	}
 					//}
-					make_route(closeList);
 				}
 			}
 		}
 		if (running)
 		{
-			// 열린 목록의 가장 처음 노드 닫힌 목록에 넣고 열린 목록 초기화
-
-			// 열린 목록 출력
-			//for (const auto& node : openList) {
-			//	std::cout << "openList, x, y, type: " << node.x << ", " << node.y << ", " << node.type << std::endl;
-			//}
 			closeList.push_back(*(openList.begin()));
 			openList.clear();
-			// 닫힌 목록 출력
-			//for (const auto& node : closeList) {
-			//	std::cout << "closeList, x, y, type: " << node.x << ", " << node.y << ", " << node.type << std::endl;
-			//}
 		}
 	}
 }
@@ -110,21 +109,22 @@ double CAstar::GetGCost(CNode a, CNode b)
 	return double(a.g + cost);
 }
 
-void CAstar::make_route(std::vector<CNode> closeList)
+void CAstar::make_route()
 {
-	std::vector<std::vector<CNode>>::iterator outerIt;
-	std::vector<CNode>::iterator innerIt;
-	for (const auto& node : closeList) {
-		for (outerIt = grid.begin(); outerIt != grid.end(); ++outerIt) {
-			innerIt = std::find(outerIt->begin(), outerIt->end(), node);
+	//std::vector<std::vector<CNode>>::iterator outerIt;
+	//std::vector<CNode>::iterator innerIt;
+	//for (const auto& node : closeList) {
+	//	for (outerIt = grid.begin(); outerIt != grid.end(); ++outerIt) {
+	//		innerIt = std::find(outerIt->begin(), outerIt->end(), node);
 
-			if (innerIt != outerIt->end()) {
-				// innerIt->type = 'O';
-				path.push_back(*innerIt);
-				break; // 값 찾으면 루프 종료
-			}
-		}
-	}
+	//		if (innerIt != outerIt->end()) {
+	//			// innerIt->type = 'O';
+	//			path.push_back(*innerIt);
+	//			break; // 값 찾으면 루프 종료
+	//		}
+	//	}
+	//}
+
 }
 
 double CAstar::GetHCost(CNode a)

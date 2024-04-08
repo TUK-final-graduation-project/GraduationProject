@@ -130,11 +130,15 @@
     <ClCompile Include="CAstar.cpp" />
     <ClCompile Include="backend.cpp" />
     <ClCompile Include="CNode.cpp" />
+    <ClCompile Include="CPathMgr.cpp" />
+    <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CAstar.h" />
     <ClInclude Include="backend.h" />
     <ClInclude Include="CNode.h" />
+    <ClInclude Include="CPathMgr.h" />
+    <ClInclude Include="test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
