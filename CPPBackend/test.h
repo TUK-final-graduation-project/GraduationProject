@@ -1,8 +1,7 @@
-class Nodeclass {
-public:
-	bool iswalkable;
-	float x;
-};
+typedef struct _stMyST {
+	int nData;
+	bool bTrue;
+} MYStruct;
 
 #ifndef TEST_H
 #define TEST_H
@@ -10,7 +9,7 @@ public:
 #define DLL_EXPORT __declspec(dllexport)
 
 extern "C" {
-	float DLL_EXPORT SimpleReturnFun(Nodeclass n);
+	DLL_EXPORT float SimpleReturnFun(MYStruct* n, int nCount);
 }
 
 #endif

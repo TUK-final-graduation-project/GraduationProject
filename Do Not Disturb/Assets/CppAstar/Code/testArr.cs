@@ -1,31 +1,37 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
 [StructLayout(LayoutKind.Sequential)]
-public class TestC
+public struct MyStruct
 {
-    public bool isWalkable;
-    public float x;
+    [MarshalAs(UnmanagedType.I4)]
+    int nData;
+    [MarshalAs(UnmanagedType.I1)]
+    bool bTrue;
 
-    public TestC(bool n_isWalkable, float n_WorldPos)
+    public MyStruct(int _nData, bool _bTrue)
     {
-        isWalkable = n_isWalkable;
-        x = n_WorldPos;
+        this.nData = _nData;
+        this.bTrue = _bTrue;
     }
 }
 public class testArr : MonoBehaviour
 {
     [DllImport("testcpp")]
-    private static extern float SimpleReturnFun(TestC t);
+    private static extern float SimpleReturnFun(MyStruct[] list, [MarshalAs(UnmanagedType.I4)] int nCount);
 
-    public TestC testclass = new TestC(false, 3f);
 
     private void Start()
     {
-        Debug.Log(SimpleReturnFun(testclass));
+        IList<MyStruct> objList = new List<MyStruct>();
+        objList.Add(new MyStruct(20, false));
+        objList.Add(new MyStruct(11, false));
+
+        Debug.Log(SimpleReturnFun(objList.ToArray(), objList.Count));
     }
 
 }

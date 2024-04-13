@@ -1,5 +1,5 @@
 #include "test.h"
-float DLL_EXPORT SimpleReturnFun(Nodeclass n)
+float DLL_EXPORT SimpleReturnFun(MYStruct* n, int nCount)
 {
-	return n.x;
+	return n[0].nData;
 }
