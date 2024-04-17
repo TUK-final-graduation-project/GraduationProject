@@ -38,7 +38,7 @@ public class AttackTowerController : MonoBehaviour
         CurTime -= Time.deltaTime;
         if (CurTime <= 0 && minion_count == 0)
         {
-            var a = Instantiate(Minion, StartPosition.position, StartPosition.rotation);
+            var a = Instantiate(Minion, StartPosition.position, Quaternion.identity);
             a.name = minion_count.ToString();
             a.GetComponent<UnitMove>().target = targetBase;
             CurTime = MaxTime;
