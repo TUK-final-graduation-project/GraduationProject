@@ -1,25 +1,36 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-[StructLayout(LayoutKind.Sequential)]
 public class NodeClass
 {
-    [MarshalAs(UnmanagedType.I1)]
-    bool isWalkable;                     // 갈 수 있는 곳인지 여부 판단
-    [MarshalAs(UnmanagedType.I4)]
-    int x;
-    [MarshalAs(UnmanagedType.I4)]
-    int y;// 노드의 월드 좌표 정보
-    [MarshalAs(UnmanagedType.I4)]
-    int z;// 노드의 월드 좌표 정보
+    public bool isWalkable;
+    public Vector3 worldPos;
 
-    public NodeClass(bool n_isWalkable, int _x, int _y, int _z)
+    public NodeClass(bool n_isWalkable, Vector3 _worldPos)
     {
         isWalkable = n_isWalkable;
-        x = _x; 
-        y = _y;
-        z = _z;
+        worldPos = _worldPos;
+    }
+}
+
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
+public struct SendNode
+{
+    [MarshalAs(UnmanagedType.I4)]
+    public int x;
+    [MarshalAs(UnmanagedType.I4)]
+    public int y;
+    [MarshalAs(UnmanagedType.I1)]
+    bool isWalkable;
+
+    public SendNode(int _x, int _y, bool _isWalkable)
+    {
+        this.x = _x;
+        this.y = _y;
+        this.isWalkable = _isWalkable;
     }
 }

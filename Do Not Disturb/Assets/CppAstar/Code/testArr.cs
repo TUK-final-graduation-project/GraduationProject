@@ -3,15 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
-[StructLayout(LayoutKind.Sequential)]
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct MyStruct
 {
     [MarshalAs(UnmanagedType.I4)]
-    int nData;
+    public int nData;
     [MarshalAs(UnmanagedType.I1)]
-    bool bTrue;
+    public bool bTrue;
 
     public MyStruct(int _nData, bool _bTrue)
     {
@@ -19,19 +20,51 @@ public struct MyStruct
         this.bTrue = _bTrue;
     }
 }
+
 public class testArr : MonoBehaviour
 {
     [DllImport("testcpp")]
-    private static extern float SimpleReturnFun(MyStruct[] list, [MarshalAs(UnmanagedType.I4)] int nCount);
+    public static extern int RecvGridInfo(MyStruct[] list, [MarshalAs(UnmanagedType.I4)] int nCount, [MarshalAs(UnmanagedType.I4)] int kCount, [MarshalAs(UnmanagedType.I4)] int index);
 
+    [DllImport("testcpp")]
+    public static extern void SendRoute(out IntPtr list, [MarshalAs(UnmanagedType.I4)] out int nCount);
 
-    private void Start()
+    public static void GetGridInfo()
     {
-        IList<MyStruct> objList = new List<MyStruct>();
-        objList.Add(new MyStruct(20, false));
-        objList.Add(new MyStruct(11, false));
-
-        Debug.Log(SimpleReturnFun(objList.ToArray(), objList.Count));
+        int nCount = 0;
+        IntPtr info = IntPtr.Zero;
+        // SendRoute(out info, out nCount);
+        int nSize = Marshal.SizeOf(typeof(MyStruct));
+        for (int nIndex = 0; nIndex < nCount; nIndex++)
+        {
+            MyStruct str = (MyStruct)Marshal.PtrToStructure(info, typeof(MyStruct));
+            info = (IntPtr)(info.ToInt64() + nSize);
+            Debug.Log(str.nData);
+        }
+        Debug.Log(nCount);
     }
 
+
+    //private void Start()
+    //{
+    //    IList<MyStruct> myStructs = new List<MyStruct>();
+    //    myStructs.Add(new MyStruct(100, false));
+    //    myStructs.Add(new MyStruct(22, true));
+    //    myStructs.Add(new MyStruct(13, false));
+    //    myStructs.Add(new MyStruct(44, true));
+
+    //    SimpleReturnFun(myStructs.ToArray(), 2, 2);
+
+    //    int nCount = 0;
+    //    IntPtr info;
+    //    MyFunc(out info, out nCount);
+    //    int nSize = Marshal.SizeOf(typeof(MyStruct));
+    //    for (int nIndex = 0; nIndex < nCount; nIndex++)
+    //    {
+    //        MyStruct str = (MyStruct)Marshal.PtrToStructure(info, typeof(MyStruct));
+    //        info = (IntPtr)(info.ToInt64() + nSize);
+    //        Debug.Log(str.nData);
+    //    }
+    //    Debug.Log(nCount);
+    //}
 }

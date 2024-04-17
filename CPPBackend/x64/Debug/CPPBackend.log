@@ -1,10 +1,28 @@
 ﻿  CAstar.cpp
+D:\GraduationProject\CPPBackend\CAstar.h(41,19): warning C4267: 'return': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  (소스 파일 'CAstar.cpp'을(를) 컴파일하는 중)
+  
+D:\GraduationProject\CPPBackend\CAstar.cpp(66,26): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GraduationProject\CPPBackend\CAstar.cpp(67,26): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   backend.cpp
-  CNode.cpp
-  코드를 생성하고 있습니다...
 D:\GraduationProject\CPPBackend\backend.h(7,14): error C2059: 구문 오류: '__declspec(dllexport)'
   (소스 파일 'backend.cpp'을(를) 컴파일하는 중)
   
-D:\GraduationProject\CPPBackend\backend.cpp(11,14): error C2059: 구문 오류: '__declspec(dllexport)'
-D:\GraduationProject\CPPBackend\backend.cpp(11,76): error C2143: 구문 오류: ';'이(가) '{' 앞에 없습니다.
-D:\GraduationProject\CPPBackend\backend.cpp(11,76): error C2447: '{': 함수 헤더가 없습니다. 이전 스타일의 형식 목록입니까?
+D:\GraduationProject\CPPBackend\CAstar.h(41,19): warning C4267: 'return': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  (소스 파일 'backend.cpp'을(를) 컴파일하는 중)
+  
+D:\GraduationProject\CPPBackend\backend.cpp(12,14): error C2059: 구문 오류: '__declspec(dllexport)'
+D:\GraduationProject\CPPBackend\backend.cpp(12,76): error C2143: 구문 오류: ';'이(가) '{' 앞에 없습니다.
+D:\GraduationProject\CPPBackend\backend.cpp(12,76): error C2447: '{': 함수 헤더가 없습니다. 이전 스타일의 형식 목록입니까?
+D:\GraduationProject\CPPBackend\backend.cpp(30,28): error C2039: 'SetGridSize': 'CPathMgr'의 멤버가 아닙니다.
+  D:\GraduationProject\CPPBackend\CPathMgr.h(2,7):
+  'CPathMgr' 선언을 참조하십시오.
+  
+D:\GraduationProject\CPPBackend\backend.cpp(31,35): error C2039: 'GetGridSizeX': 'CPathMgr'의 멤버가 아닙니다.
+  D:\GraduationProject\CPPBackend\CPathMgr.h(2,7):
+  'CPathMgr' 선언을 참조하십시오.
+  
+  CNode.cpp
+  CPathMgr.cpp
+  test.cpp
+  코드를 생성하고 있습니다...

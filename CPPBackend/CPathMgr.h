@@ -1,15 +1,26 @@
-#pragma once
+#include "test.h"
 #include "CNode.h"
+#include <vector>
+#include <array>
 
 class CPathMgr
 {
 private:
 	static CPathMgr* g_pInstance;
 
+	NodeClass startNode;
+	NodeClass endNode;
+	std::vector<NodeClass> closeList{};
+public:
+	NodeClass* grid;
+
 	int i_worldSizeX;
 	int i_worldSizeY;
-
-public:
+	
+	void setPlayerTarget(int playerX, int playerY, int targetX, int targetY);
+	int getPlayerX() {
+		return startNode.x;
+	}
 	static CPathMgr* GetInstance() 
 	{
 		if (g_pInstance == nullptr) {
@@ -26,11 +37,8 @@ public:
 		}
 	}
 
-	void SetGridSize(int x, int y);
+	void FindPath();
 
-	int GetGridSizeX() {
-		return i_worldSizeX;
-	}
 private:
 	CPathMgr();
 	~CPathMgr();
