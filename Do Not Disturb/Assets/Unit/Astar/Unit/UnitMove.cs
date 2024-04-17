@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class UnitMove : MonoBehaviour
 {
-    //public Transform target;
     public Vector3 target;
     float speed = 5;
     Vector3[] path;
