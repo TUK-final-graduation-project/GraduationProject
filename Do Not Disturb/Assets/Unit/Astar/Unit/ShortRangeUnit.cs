@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class ShortRangeUnit : MonoBehaviour
 {
-    float range = 5f;
+    float range = 10f;
 
     [Header("Material")]
     public Material detectedMat;
@@ -17,7 +18,7 @@ public class ShortRangeUnit : MonoBehaviour
     public GameObject bullet;
     [SerializeField] float maxTime = 3f;
     [SerializeField] float curTime = 1f;
-    public float bulletSpeed = 2f;
+    public float bulletSpeed = 30f;
 
     void changeMaterial(GameObject go, Material changeMat)
     {
@@ -36,7 +37,7 @@ public class ShortRangeUnit : MonoBehaviour
         else
         {
             curTime -= Time.deltaTime;
-            // FightWithTarget();
+            FightWithTarget();
         }
     }
 
@@ -46,11 +47,12 @@ public class ShortRangeUnit : MonoBehaviour
 
         foreach (Collider collider in colliders)
         {
-            if (collider.gameObject != gameObject && collider.gameObject.tag == "Fire")
+            if (collider.gameObject != gameObject && collider.gameObject.tag == "ComUnit")
             {
                 targetUnit = collider;
                 changeMaterial(collider.gameObject, detectedMat);
                 gameObject.GetComponent<UnitMove>().StopCoroutine("FollowPath");
+                transform.rotation = Quaternion.identity;
             }
         }
     }
@@ -64,11 +66,7 @@ public class ShortRangeUnit : MonoBehaviour
             {
                 // 상호작용하기 - bullet 스크립트에서 상호작용
                 Vector3 dir = (targetUnit.gameObject.transform.position - transform.position).normalized;
-                Debug.Log("타겟: " + targetUnit.gameObject.transform.position);
-                Debug.Log("나: " + transform.position);
-                Debug.Log(dir);
                 var a = Instantiate(bullet, transform.position, Quaternion.identity);
-                a.GetComponent<Rigidbody>().AddForce(dir * bulletSpeed, ForceMode.Impulse);
                 a.GetComponent<BulletController>().target = targetUnit.gameObject;
                 curTime = maxTime;
             }
