@@ -32,8 +32,6 @@ public class Unit : MonoBehaviour
     Rigidbody rigid;
     BoxCollider boxCollider;
 
-    Material mat;
-
     NavMeshAgent nav;
     Animator anim;
 
@@ -41,7 +39,6 @@ public class Unit : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
-        mat = GetComponentInChildren<MeshRenderer>().material;
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         curTarget = target;
@@ -52,6 +49,11 @@ public class Unit : MonoBehaviour
     {
         if (nav.enabled)
         {
+            if(curTarget == null)
+            {
+                attackTarget = null;
+                curTarget = target;
+            }
             nav.SetDestination(curTarget.transform.position);
             nav.isStopped = !isChase;
         }
@@ -68,12 +70,12 @@ public class Unit : MonoBehaviour
 
         if (type == Type.Melee)
         {
-            targetRadius = 1f;
+            targetRadius = 5f;
             targetRange = 12f;
         }
         else if (type == Type.Range)
         {
-            targetRadius = 0.5f;
+            targetRadius = 5f;
             targetRange = 25f;
         }
         RaycastHit[] rayHits = { };
@@ -89,8 +91,8 @@ public class Unit : MonoBehaviour
         }
         if (rayHits.Length > 0 && !isAttack)
         {
-            Debug.Log( gameObject.name + "attack");
             attackTarget = rayHits[0].collider.gameObject;
+            // Debug.Log(attackTarget.name + " attack");
             curTarget = attackTarget;
             StartCoroutine(Attack());
         }
@@ -111,7 +113,7 @@ public class Unit : MonoBehaviour
             rigid.velocity = Vector3.zero;
             meleeArea.enabled = false;
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(0.5f);
         }
         else if (type == Type.Range)
         {
@@ -120,10 +122,10 @@ public class Unit : MonoBehaviour
             Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
             rigidBullet.velocity = transform.forward * 20;
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(0.5f);
         }
 
-        isChase = true;
+        //isChase = true;
         isAttack = false;
         anim.SetBool("isAttack", false);
     }
@@ -137,9 +139,11 @@ public class Unit : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Targeting();
+        if( attackTarget == null)
+            Targeting();
         FreezeVelocity();
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "UserAttack" && team == Team.Com)
@@ -172,7 +176,23 @@ public class Unit : MonoBehaviour
     IEnumerator OnDamage()
     {
         isDamage = true;
-        yield return new WaitForSeconds(1f); // 1檬 公利
-        isDamage = false;
+
+        yield return new WaitForSeconds(0.1f);
+
+        if(HP <= 0)
+        {
+            gameObject.layer = 12;
+            anim.SetTrigger("doDie");
+            isChase = false;
+            nav.enabled = false;
+            isDamage = false;
+
+            Destroy(gameObject, 4);
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f); // 1檬 公利
+            isDamage = false;
+        }
     }
 }
