@@ -18,8 +18,6 @@ public class Unit : MonoBehaviour
     public bool isChase;
     public bool isAttack;
     public GameObject target;
-    public GameObject attackTarget;
-    public GameObject curTarget;
     bool isDamage;
 
 
@@ -41,7 +39,6 @@ public class Unit : MonoBehaviour
         boxCollider = GetComponent<BoxCollider>();
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
-        curTarget = target;
 
         Invoke("ChaseStart", 1);
     }
@@ -49,12 +46,7 @@ public class Unit : MonoBehaviour
     {
         if (nav.enabled)
         {
-            if(curTarget == null)
-            {
-                attackTarget = null;
-                curTarget = target;
-            }
-            nav.SetDestination(curTarget.transform.position);
+            nav.SetDestination(target.transform.position);
             nav.isStopped = !isChase;
         }
     }
@@ -63,6 +55,7 @@ public class Unit : MonoBehaviour
         isChase = true;
         anim.SetBool("isWalk", true);
     }
+
     void Targeting()
     {
         float targetRadius = 0;
@@ -70,12 +63,12 @@ public class Unit : MonoBehaviour
 
         if (type == Type.Melee)
         {
-            targetRadius = 5f;
+            targetRadius = 1f;
             targetRange = 12f;
         }
         else if (type == Type.Range)
         {
-            targetRadius = 5f;
+            targetRadius = 0.5f;
             targetRange = 25f;
         }
         RaycastHit[] rayHits = { };
@@ -91,9 +84,7 @@ public class Unit : MonoBehaviour
         }
         if (rayHits.Length > 0 && !isAttack)
         {
-            attackTarget = rayHits[0].collider.gameObject;
-            // Debug.Log(attackTarget.name + " attack");
-            curTarget = attackTarget;
+            Debug.Log(rayHits[0].collider.gameObject.name);
             StartCoroutine(Attack());
         }
     }
@@ -118,14 +109,16 @@ public class Unit : MonoBehaviour
         else if (type == Type.Range)
         {
             yield return new WaitForSeconds(0.5f);
+            //Debug.Log(transform.forward);
+            //Debug.Log(transform.rotation);
             GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
             Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
-            rigidBullet.velocity = transform.forward * 20;
+            rigidBullet.velocity = transform.forward * 50;
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(2f);
         }
 
-        //isChase = true;
+        isChase = true;
         isAttack = false;
         anim.SetBool("isAttack", false);
     }
@@ -139,8 +132,7 @@ public class Unit : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if( attackTarget == null)
-            Targeting();
+        Targeting();
         FreezeVelocity();
     }
 
@@ -156,7 +148,8 @@ public class Unit : MonoBehaviour
                 {
                     Destroy(other.gameObject);
                 }
-                StartCoroutine(OnDamage());
+                Vector3 reactVec = transform.position - other.transform.position;
+                StartCoroutine(OnDamage(reactVec, false));
             }
         }
         else if(other.tag == "ComAttack" && team == Team.User)
@@ -169,11 +162,12 @@ public class Unit : MonoBehaviour
                 {
                     Destroy(other.gameObject);
                 }
-                StartCoroutine(OnDamage());
+                Vector3 reactVec = transform.position - other.transform.position;
+                StartCoroutine(OnDamage(reactVec, false));
             }
         }
     }
-    IEnumerator OnDamage()
+    IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
     {
         isDamage = true;
 
@@ -181,11 +175,15 @@ public class Unit : MonoBehaviour
 
         if(HP <= 0)
         {
-            gameObject.layer = 12;
+            gameObject.layer = gameObject.layer + 1;
             anim.SetTrigger("doDie");
             isChase = false;
             nav.enabled = false;
             isDamage = false;
+
+            reactVec = reactVec.normalized;
+            reactVec += Vector3.up;
+            rigid.AddForce(reactVec * 5, ForceMode.Impulse);
 
             Destroy(gameObject, 4);
         }
