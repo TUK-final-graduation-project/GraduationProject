@@ -24,10 +24,10 @@ public class UserSpawnPoint : MonoBehaviour
     public GameObject r_IceUnit;
     public GameObject r_TreeUnit;
 
-
     GameObject unit;
 
-    private void Awake()
+
+    private void Start()
     {
         switch (element)
         {
@@ -45,7 +45,17 @@ public class UserSpawnPoint : MonoBehaviour
                 break;
         }
 
-        GameObject _iUnit = Instantiate(unit, transform.position, transform.rotation);
-        _iUnit.GetComponent<Unit>().target = target;
+        StartCoroutine(Spawn());
+    }
+
+    IEnumerator Spawn()
+    {
+        while(true)
+        {
+            GameObject _iUnit = Instantiate(unit, transform.position, transform.rotation);
+            _iUnit.GetComponent<Unit>().target = target;
+
+            yield return new WaitForSeconds(2f);
+        }
     }
 }

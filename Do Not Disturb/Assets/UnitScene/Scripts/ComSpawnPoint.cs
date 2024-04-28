@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ComSoawnPoint : MonoBehaviour
+public class ComSpawnPoint : MonoBehaviour
 {
     public enum Element { fire, earth, ice, tree };
     public enum Type { Melee, Range };
@@ -44,8 +44,23 @@ public class ComSoawnPoint : MonoBehaviour
                 unit = type == Type.Melee ? m_TreeUnit : r_TreeUnit;
                 break;
         }
+    }
 
-        GameObject _iUnit = Instantiate(unit, transform.position, transform.rotation);
-        _iUnit.GetComponent<Unit>().target = target;
+    public IEnumerator Spawn(int num)
+    {
+        for (int i = 0; i < num; i++)
+        {
+            GameObject _iUnit = Instantiate(unit, transform.position, transform.rotation);
+            _iUnit.GetComponent<Unit>().target = target;
+
+            yield return new WaitForSeconds(0.5f);
+        }
+        yield return new WaitForSeconds(0.1f);
+    }
+
+    public void StartSpawn(int num)
+    {
+        StopCoroutine(Spawn(num));
+        StartCoroutine(Spawn(num));
     }
 }
