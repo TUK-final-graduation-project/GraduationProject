@@ -30,8 +30,8 @@ public class Unit : MonoBehaviour
     Rigidbody rigid;
     BoxCollider boxCollider;
 
-    NavMeshAgent nav;
-    Animator anim;
+    public NavMeshAgent nav;
+    public Animator anim;
 
     private void Awake()
     {
