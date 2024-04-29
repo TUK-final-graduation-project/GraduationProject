@@ -17,7 +17,7 @@ public class WaveManager : MonoBehaviour
 
     // current wave
     public int waveNum = 1;
-    int maxWave = 10;
+    int maxWave = 1;
 
     // enemy base object list
     public EnemyBaseController[] enemyBase;
