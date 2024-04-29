@@ -51,7 +51,7 @@ public class PlayerMove : MonoBehaviour
 
 
     Tools equipTool;
-    CraftMenu craftMenu;
+    //CraftMenu craftMenu;
 
     int equipToolIndex = -1;
     float swingDelay;
@@ -60,7 +60,7 @@ public class PlayerMove : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
-        craftMenu = FindObjectOfType<CraftMenu>();
+        //craftMenu = FindObjectOfType<CraftMenu>();
         // 마우스 커서 삭제
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -242,7 +242,7 @@ public class PlayerMove : MonoBehaviour
 
     private void CameraRotation()
     {
-        if (!craftMenu.isCrafting)
+        //if (!craftMenu.isCrafting)
         {
             //Debug.Log("상하 카메라 회전");
             // 상하 카메라 회전
