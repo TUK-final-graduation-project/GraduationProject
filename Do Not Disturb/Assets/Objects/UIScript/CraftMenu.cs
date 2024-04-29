@@ -112,7 +112,7 @@ public class CraftMenu : MonoBehaviour
             //if (hitInfo.transform != null)
             {
                 // 충돌 지점으로 미리 보기 이동
-                go_Preview.transform.position = targetPosition;
+                //go_Preview.transform.position = targetPosition;
             }
         }
     }
