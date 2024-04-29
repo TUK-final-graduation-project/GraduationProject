@@ -44,16 +44,19 @@ public class ComSpawnPoint : MonoBehaviour
                 unit = type == Type.Melee ? m_TreeUnit : r_TreeUnit;
                 break;
         }
+
+        Debug.Log(unit.gameObject.name);
     }
 
     public IEnumerator Spawn(int num)
     {
         for (int i = 0; i < num; i++)
         {
-            GameObject _iUnit = Instantiate(unit, transform.position, transform.rotation);
-            _iUnit.GetComponent<Unit>().target = target;
+            Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
+            GameObject _iUnit = Instantiate(unit, transform.position, targetRotation);
+            _iUnit.GetComponent<UnitCs>().target = target;
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(2f);
         }
         yield return new WaitForSeconds(0.1f);
     }

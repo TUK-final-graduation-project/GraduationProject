@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class UserSpawnPoint : MonoBehaviour
@@ -26,7 +28,6 @@ public class UserSpawnPoint : MonoBehaviour
 
     GameObject unit;
 
-
     private void Start()
     {
         switch (element)
@@ -43,8 +44,11 @@ public class UserSpawnPoint : MonoBehaviour
             case Element.tree:
                 unit = type == Type.Melee ? m_TreeUnit : r_TreeUnit;
                 break;
-        }
 
+        }
+        //unit.GetComponent<UnitCs>().target = target;
+        //GameObject _iUnit = Instantiate(unit, transform.position, transform.rotation);
+        //_iUnit.GetComponent<UnitCs>().RequestPathToMgr();
         StartCoroutine(Spawn());
     }
 
@@ -52,8 +56,11 @@ public class UserSpawnPoint : MonoBehaviour
     {
         while(true)
         {
-            GameObject _iUnit = Instantiate(unit, transform.position, transform.rotation);
-            _iUnit.GetComponent<Unit>().target = target;
+            Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
+            GameObject _iUnit = Instantiate(unit, transform.position, targetRotation);
+            _iUnit.GetComponent<UnitCs>().target = target;
+
+            // _iUnit.GetComponent<UnitCs>().RequestPathToMgr();
 
             yield return new WaitForSeconds(2f);
         }

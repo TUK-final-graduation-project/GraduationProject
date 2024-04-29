@@ -8,9 +8,8 @@ public class TargetZone : MonoBehaviour
     {
         if(collision.gameObject.tag == "Unit")
         {
-            collision.gameObject.GetComponent<Unit>().nav.enabled = false;
-            collision.gameObject.GetComponent<Unit>().anim.SetBool("isWalk", false);
-            Debug.Log(collision.gameObject.name);
+            collision.gameObject.GetComponent<UnitCs>().anim.SetBool("isWalk", false);
+            // Debug.Log(collision.gameObject.name);
         }
     }
 }
