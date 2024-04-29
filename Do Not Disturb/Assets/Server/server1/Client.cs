@@ -17,16 +17,22 @@ public class Client : MonoBehaviour
     StreamWriter writer;
     StreamReader reader;
     Player_Movement player;
+    AnotherPlayer anotherPlayer;
+
+    public Vector3 playerPosition;
 
     void Start()
     {
         // Player_Movement 스크립트를 가지고 있는 게임 오브젝트를 찾습니다.
         player = FindObjectOfType<Player_Movement>();
+        anotherPlayer = FindObjectOfType<AnotherPlayer>();
     }
 
     public void ConnectToServer()
     {
         if (socketReady) return;
+
+        Debug.Log("ConnectToServer() 호출");
 
         string ip = IPInput.text == "" ? "127.0.0.1" : IPInput.text;
         int port = PortInput.text == "" ? 7777 : int.Parse(PortInput.text);
@@ -53,8 +59,9 @@ public class Client : MonoBehaviour
         if (socketReady && stream.DataAvailable)
         {
             string data = reader.ReadLine();
-            if (data != null)
+            if (data != null) {
                 OnIncomingData(data);
+            }
         }
 
         // 매 프레임마다 경과된 시간을 누적하고, 일정 간격이 되면 플레이어의 위치를 서버로 전송합니다.
@@ -63,6 +70,7 @@ public class Client : MonoBehaviour
         {
             SendPlayerPosition();
             timeSinceLastSend = 0f; // 누적된 시간 초기화
+            
         }
     }
 
@@ -71,6 +79,7 @@ public class Client : MonoBehaviour
     {
         if (data == "%NAME")
         {
+            // 랜덤값을 사용자 이름으로 넣어준다
             clientName = NickInput.text == "" ? "Guest" + UnityEngine.Random.Range(1000, 10000) : NickInput.text;
             Send($"&NAME|{clientName}");
             return;
@@ -84,6 +93,14 @@ public class Client : MonoBehaviour
         if (!socketReady) return;
 
         writer.WriteLine(data);
+        writer.Flush();
+    }
+
+    void Send(Vector3 position)
+    {
+        if (!socketReady) return;
+
+        writer.WriteLine(position);
         writer.Flush();
     }
 
@@ -107,10 +124,10 @@ public class Client : MonoBehaviour
 
         // 플레이어의 위치 정보를 JSON 형식으로 변환합니다.
         Vector3 playerPosition = player.transform.position;
-        string positionData = JsonUtility.ToJson(playerPosition);
+        //string positionData = JsonUtility.ToJson(playerPosition);
 
         // 서버로 위치 정보를 전송합니다.
-        Send(positionData);
+        Send(playerPosition);
     }
 
     void OnApplicationQuit()
@@ -126,5 +143,10 @@ public class Client : MonoBehaviour
         reader.Close();
         socket.Close();
         socketReady = false;
+    }
+
+    public Vector3 getPlayerPosition()
+    {
+        return playerPosition;
     }
 }

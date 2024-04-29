@@ -38,7 +38,6 @@ public class Player_Movement : MonoBehaviour
 
         Vector3 velocity = (moveHorizontal + moveVertical).normalized * moveSpeed;
 
-
         velocity = Vector3.zero;
 
         charRigidbody.AddForce(velocity * Time.deltaTime, ForceMode.VelocityChange);
