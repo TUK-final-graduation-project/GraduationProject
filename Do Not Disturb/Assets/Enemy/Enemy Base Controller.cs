@@ -1,27 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class EnemyBaseController : MonoBehaviour
 {
     [Header("UNIT")]
     [SerializeField] GameObject Unit;
-    [SerializeField] Transform startPosition;
-    [SerializeField] float minionSpeed;
-    [SerializeField] float curTime;
-    [SerializeField] float maxTime;
+    [SerializeField] float unitCreateCurTime;
+    [SerializeField] float unitCreateCoolTime;
+
     int waveLevel;
     int unitGenerateNum;
     bool isRunning = true;
 
+    Transform startPosition;
+
+    private void Start()
+    {
+        startPosition = transform;   
+    }
     private void Update()
     {
-        curTime -= Time.deltaTime;
-        if (curTime <= 0 && isRunning)
+        unitCreateCurTime -= Time.deltaTime;
+        if (unitCreateCurTime <= 0 && isRunning)
         {
             var a = Instantiate(Unit, startPosition.position, startPosition.rotation);
             a.GetComponent<UnitMove>().target = GameObject.Find("Player").transform.position;
-            curTime = maxTime;
+            unitCreateCurTime = unitCreateCoolTime;
             unitGenerateNum++;
             isRunning = false;
             if (unitGenerateNum > waveLevel)
@@ -38,7 +44,7 @@ public class EnemyBaseController : MonoBehaviour
         // unit 생성 수 조정
         unitGenerateNum = 0;
         waveLevel = waveLv;
-        curTime = maxTime;
+        unitCreateCurTime = unitCreateCoolTime;
         isRunning = true;
     }
 }

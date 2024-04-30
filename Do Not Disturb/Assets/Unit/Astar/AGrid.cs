@@ -86,15 +86,10 @@ public class AGrid : MonoBehaviour
     //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
     //    if (grid != null)
     //    {
-    //        Node playerNode = GetNodeFromWorldPoint(player.position);
+    //        // Node playerNode = GetNodeFromWorldPoint(player.position);
     //        foreach (Node n in grid)
     //        {
     //            Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
-    //            if (path != null)
-    //                if (path.Contains(n))
-    //                    Gizmos.color = Color.black;
-    //            if (playerNode == n)
-    //                Gizmos.color = Color.cyan;
     //            Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
     //        }
     //    }

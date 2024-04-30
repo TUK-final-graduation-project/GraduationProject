@@ -1290,66 +1290,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1001 &282168821
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 169725450143375308, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 5.0514555
-      objectReference: {fileID: 0}
-    - target: {fileID: 169725450143375308, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 169725450143375308, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.44200897
-      objectReference: {fileID: 0}
-    - target: {fileID: 169725450143375308, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 169725450143375308, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 169725450143375308, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 169725450143375308, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 169725450143375308, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 169725450143375308, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 169725450143375308, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3794164216797209964, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-      propertyPath: m_Name
-      value: Tower
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3794164216797209964, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 402072126}
-  m_SourcePrefab: {fileID: 100100000, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
 --- !u!1 &282430128 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4377414695893934153, guid: 5ed5d33e7932e72439e5e34d2538222b, type: 3}
@@ -1888,23 +1828,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd666d5621eca19478ccaa733dad356f, type: 3}
---- !u!1 &402072120 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3794164216797209964, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
-  m_PrefabInstance: {fileID: 282168821}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &402072126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 402072120}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a03c595ce8ba421449382e78672675cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &417120430 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3478398817736196530, guid: 5ed5d33e7932e72439e5e34d2538222b, type: 3}
@@ -3158,7 +3081,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -3218,7 +3141,7 @@ Transform:
   m_GameObject: {fileID: 705507993}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 5.96, y: 7.33, z: 9.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4407,7 +4330,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 35
+  field of view: 26.991467
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -9294,5 +9217,4 @@ SceneRoots:
   - {fileID: 1939164654}
   - {fileID: 1738726527}
   - {fileID: 1358581212}
-  - {fileID: 282168821}
   - {fileID: 389208721}
