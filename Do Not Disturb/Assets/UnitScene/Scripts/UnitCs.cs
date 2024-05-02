@@ -46,6 +46,8 @@ public class UnitCs : MonoBehaviour
 
     public void RequestPathToMgr()
     {
+        Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
+        transform.rotation = targetRotation;
         AstarManager.RequestPath(transform.position, target.transform.position, OnPathFound);
         anim.SetBool("isWalk", true);
         isChase = true;
@@ -83,7 +85,6 @@ public class UnitCs : MonoBehaviour
         }
     }
 
- 
 
     void Targeting()
     {
@@ -216,7 +217,7 @@ public class UnitCs : MonoBehaviour
             reactVec += Vector3.up;
             rigid.AddForce(reactVec * 5, ForceMode.Impulse);
 
-            Destroy(gameObject, 4);
+            Destroy(gameObject);
         }
         else
         {

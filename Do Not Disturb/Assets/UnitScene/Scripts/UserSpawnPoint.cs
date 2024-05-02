@@ -15,6 +15,9 @@ public class UserSpawnPoint : MonoBehaviour
 
     public GameObject target;
 
+    [Header("target base")]
+    public ComSpawnPoint[] spawnPoints;
+
     [Header("spawn unit type")]
     public GameObject m_FireUnit;
     public GameObject m_EarthUnit;
@@ -27,7 +30,7 @@ public class UserSpawnPoint : MonoBehaviour
     public GameObject r_TreeUnit;
 
     GameObject unit;
-
+    ComSpawnPoint targetPoints;
     private void Start()
     {
         switch (element)
@@ -45,6 +48,23 @@ public class UserSpawnPoint : MonoBehaviour
                 unit = type == Type.Melee ? m_TreeUnit : r_TreeUnit;
                 break;
 
+        }
+
+        float minDistance = float.MaxValue;
+
+        spawnPoints = FindObjectsOfType(typeof(ComSpawnPoint)) as ComSpawnPoint[];
+        float tmp = 0;
+        foreach (ComSpawnPoint b in spawnPoints)
+        {
+            if (!b.isConquer)
+            {
+                tmp = Vector3.Distance(transform.position, b.transform.position);
+                if (minDistance > tmp)
+                {
+                    minDistance = tmp;
+                    target = b.gameObject;
+                }
+            }
         }
         //unit.GetComponent<UnitCs>().target = target;
         //GameObject _iUnit = Instantiate(unit, transform.position, transform.rotation);

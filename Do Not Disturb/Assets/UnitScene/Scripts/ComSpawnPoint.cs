@@ -10,6 +10,8 @@ public class ComSpawnPoint : MonoBehaviour
     [Header("spawn point type")]
     public Element element;
     public Type type;
+    public int HP;
+    public bool isConquer = false;
 
     public GameObject target;
 
@@ -65,5 +67,13 @@ public class ComSpawnPoint : MonoBehaviour
     {
         StopCoroutine(Spawn(num));
         StartCoroutine(Spawn(num));
+    }
+    public void OnDamage()
+    {
+        HP -= 50;
+        if ( HP < 0)
+        {
+            isConquer = true;
+        }
     }
 }
