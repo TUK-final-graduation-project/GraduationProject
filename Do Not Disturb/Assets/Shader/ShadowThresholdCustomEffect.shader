@@ -41,46 +41,22 @@ Shader "ImageEffect/postProcess_background"
 
             sampler2D _MainTex;
 
-            // // 기본
-            // fixed4 frag (v2f i) : SV_Target
-            // {
-            //     fixed4 col = tex2D(_MainTex, i.uv);
-            //     // just invert the colors
-            //     col.rgb = 1 - col.rgb;
-            //     return col;
-            // }
-            //
-            // // 반전
-            // fixed4 frag(v2f i) : SV_Target
-            // {
-            //     fixed col = tex2D(_MainTex, i.uv);
-            //     float luminance = (col.r*0.29+col.g*0.59+col.b*0.12);
-            //   
-            //     return luminance;
-            // }
-            //
-            // // 흑백
-            // fixed4 frag(v2f i) : SV_Target
-            // {
-            //     fixed col = tex2D(_MainTex, i.uv);
-            //     float luminance = (col.r*0.29+col.g*0.59+col.b*0.12);
-            //   
-            //     if(luminance > _ShadowThreshold)
-            //     {
-            //         col.rgb = 1;
-            //     }else
-            //     {
-            //         col.rgb = 0;
-            //     }
-            //     return luminance;
-            // }
-            //
-            // // 흑백 (+흰 부분은 원래 색으로)
+            // 기본
+            fixed4 frag (v2f i) : SV_Target
+            {
+                fixed4 col = tex2D(_MainTex, i.uv);
+                // just invert the colors
+                col.rgb = 1 - col.rgb;
+                return col;
+            }
+   
+            
+            //// 적용 버전
             //  fixed4 frag(v2f i) : SV_Target
             // {
             //     fixed col = tex2D(_MainTex, i.uv);
-            //     float luminance = (col.r*0.29+col.g*0.59+col.b*0.12);
-            //  
+            //     float luminance = (col.r*0.29 + col.g*0.59 + col.b*0.12);
+                
             //     if(luminance > _ShadowThreshold)
             //     {
             //         col.rgb = 1;
@@ -88,26 +64,9 @@ Shader "ImageEffect/postProcess_background"
             //     {
             //         col.rgb = 0;
             //     }
-            //     col.rgb = lerp (col.rgb, tex.rgb, col.r);
+            //     col.rgb = lerp (_ShadowColor.rgb, tex.rgb, col.r);
             //     return col;
             // }
-            
-            // 적용 버전
-             fixed4 frag(v2f i) : SV_Target
-            {
-                fixed col = tex2D(_MainTex, i.uv);
-                float luminance = (col.r*0.29 + col.g*0.59 + col.b*0.12);
-                
-                if(luminance > _ShadowThreshold)
-                {
-                    col.rgb = 1;
-                }else
-                {
-                    col.rgb = 0;
-                }
-                col.rgb = lerp (_ShadowColor.rgb, tex.rgb, col.r);
-                return col;
-            }
 
 
             ENDCG
