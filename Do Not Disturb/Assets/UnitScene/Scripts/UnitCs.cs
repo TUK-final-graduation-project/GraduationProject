@@ -225,4 +225,11 @@ public class UnitCs : MonoBehaviour
             isDamage = false;
         }
     }
+
+    public void HitByBomb(Vector3 explosionPos)
+    {
+        HP -= 100;
+        Vector3 reactVec = transform.position - explosionPos;
+        StartCoroutine(OnDamage(reactVec, true));
+    }
 }

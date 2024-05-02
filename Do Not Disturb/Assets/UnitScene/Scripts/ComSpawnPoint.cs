@@ -65,7 +65,7 @@ public class ComSpawnPoint : MonoBehaviour
 
     public void StartSpawn(int num)
     {
-        StopCoroutine(Spawn(num));
+        //StopCoroutine(Spawn(num));
         StartCoroutine(Spawn(num));
     }
     public void OnDamage()
