@@ -33,6 +33,10 @@ public class TargetZone : MonoBehaviour
                         }
                     }
                 }
+                if (collision.gameObject.GetComponent<UnitCs>().target == gameObject)
+                {
+                    // game end
+                }
             }
             else
             {

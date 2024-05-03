@@ -22,7 +22,8 @@ public class ComSpawnPoint : MonoBehaviour
     public GameObject r_FireUnit;
     public GameObject r_IceUnit;
 
-
+    public Tower[] towers;
+    
     GameObject unit;
 
     private void Awake()
@@ -61,7 +62,19 @@ public class ComSpawnPoint : MonoBehaviour
 
     public void StartSpawn(int num)
     {
-        //StopCoroutine(Spawn(num));
+        float minDistance = float.MaxValue;
+        float tmp = 0;
+        towers = FindObjectsOfType(typeof(Tower)) as Tower[];
+        foreach (Tower tower in towers)
+        {
+            tmp = Vector3.Distance(transform.position, tower.transform.position);
+            if (minDistance > tmp)
+            {
+                minDistance = tmp;
+                target = tower.gameObject;
+            }
+        }
+        StopCoroutine(Spawn(num));
         StartCoroutine(Spawn(num));
     }
     public void OnDamage()

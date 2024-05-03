@@ -18,7 +18,8 @@ public class UnitCs : MonoBehaviour
     public bool isAttack;
     public GameObject target;
     bool isDamage;
-
+    public GameObject ComTarget;
+    public Tower[] towers;
 
     [Header("Melee Unit")]
     public BoxCollider meleeArea;
@@ -162,8 +163,29 @@ public class UnitCs : MonoBehaviour
             rigid.angularVelocity = Vector3.zero;
         }
     }
+
+    void FindNextTarget()
+    {
+        target = ComTarget;
+        float minDistance = float.MaxValue;
+        float tmp = 0;
+        towers = FindObjectsOfType(typeof(Tower)) as Tower[];
+        foreach (Tower tower in towers)
+        {
+            tmp = Vector3.Distance(transform.position, tower.transform.position);
+            if (minDistance > tmp)
+            {
+                minDistance = tmp;
+                target = tower.gameObject;
+            }
+        }
+    }
     private void FixedUpdate()
     {
+        if ( target == null)
+        {
+            FindNextTarget();
+        }
         Targeting();
         FreezeVelocity();
     }

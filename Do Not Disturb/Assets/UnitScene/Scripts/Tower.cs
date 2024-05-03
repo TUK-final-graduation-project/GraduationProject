@@ -25,9 +25,6 @@ public class Tower : MonoBehaviour
 
     void Targeting()
     {
-        float targetRadius = 10f;
-        float targetRange = 70f;
-
         RaycastHit[] rayHits = { };
         Vector3 dir = new Vector3(0, 0, 1);
 
