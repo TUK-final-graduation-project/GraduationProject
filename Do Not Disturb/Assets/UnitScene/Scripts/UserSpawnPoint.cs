@@ -19,33 +19,32 @@ public class UserSpawnPoint : MonoBehaviour
     public ComSpawnPoint[] spawnPoints;
 
     [Header("spawn unit type")]
-    public GameObject m_FireUnit;
     public GameObject m_EarthUnit;
-    public GameObject m_IceUnit;
     public GameObject m_TreeUnit;
 
     public GameObject r_FireUnit;
-    public GameObject r_EarthUnit;
     public GameObject r_IceUnit;
-    public GameObject r_TreeUnit;
 
     GameObject unit;
     ComSpawnPoint targetPoints;
+
+    public int HP;
+    public bool isConquer = false;
     private void Start()
     {
         switch (element)
         {
             case Element.fire:
-                unit = type == Type.Melee ? m_FireUnit : r_FireUnit;
+                unit = r_FireUnit;
                 break;
             case Element.earth:
-                unit = type == Type.Melee ? m_EarthUnit : r_EarthUnit;
+                unit = m_EarthUnit;
                 break;
             case Element.ice:
-                unit = type == Type.Melee ? m_IceUnit : r_IceUnit;
+                unit = r_IceUnit;
                 break;
             case Element.tree:
-                unit = type == Type.Melee ? m_TreeUnit : r_TreeUnit;
+                unit = m_TreeUnit;
                 break;
 
         }
@@ -83,6 +82,15 @@ public class UserSpawnPoint : MonoBehaviour
             // _iUnit.GetComponent<UnitCs>().RequestPathToMgr();
 
             yield return new WaitForSeconds(2f);
+        }
+    }
+
+    public void OnDamage()
+    {
+        HP -= 50;
+        if (HP < 0)
+        {
+            isConquer = true;
         }
     }
 }

@@ -39,7 +39,7 @@ public class UnitCs : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
-        anim = GetComponentInChildren<Animator>();
+        // anim = GetComponentInChildren<Animator>();
 
         Invoke("RequestPathToMgr", 1);
     }
@@ -49,7 +49,7 @@ public class UnitCs : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
         transform.rotation = targetRotation;
         AstarManager.RequestPath(transform.position, target.transform.position, OnPathFound);
-        anim.SetBool("isWalk", true);
+       // anim.SetBool("isWalk", true);
         isChase = true;
     }
 
@@ -123,7 +123,7 @@ public class UnitCs : MonoBehaviour
     {
         isChase = false;
         isAttack = true;
-        anim.SetBool("isAttack", true);
+       // anim.SetBool("isAttack", true);
 
         if (type == Type.Melee)
         {
@@ -151,7 +151,7 @@ public class UnitCs : MonoBehaviour
 
         isChase = true;
         isAttack = false;
-        anim.SetBool("isAttack", false);
+       // anim.SetBool("isAttack", false);
         StartCoroutine("FollowPath");
     }
     void FreezeVelocity()
@@ -202,13 +202,14 @@ public class UnitCs : MonoBehaviour
     IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
     {
         isDamage = true;
-
+        isChase = false;
+        StopCoroutine("FollowPath");
         yield return new WaitForSeconds(0.1f);
 
         if (HP <= 0)
         {
             gameObject.layer = gameObject.layer + 1;
-            anim.SetTrigger("doDie");
+          //  anim.SetTrigger("doDie");
             isChase = false;
             // nav.enabled = false;
             isDamage = false;
@@ -223,6 +224,8 @@ public class UnitCs : MonoBehaviour
         {
             yield return new WaitForSeconds(1f); // 1ÃÊ ¹«Àû
             isDamage = false;
+            isChase = true;
+            StartCoroutine("FollowPath");
         }
     }
 

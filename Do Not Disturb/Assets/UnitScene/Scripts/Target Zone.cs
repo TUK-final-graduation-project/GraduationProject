@@ -14,7 +14,7 @@ public class TargetZone : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Unit")
+        if(collision.gameObject.tag == "Unit" && collision.gameObject.layer == 10 )
         {
             if ( transform.parent.gameObject.GetComponent<ComSpawnPoint>().isConquer)
             {
@@ -37,7 +37,7 @@ public class TargetZone : MonoBehaviour
             else
             {
                 Destroy(collision.gameObject);
-                collision.gameObject.GetComponent<UnitCs>().anim.SetBool("isWalk", false);
+               // collision.gameObject.GetComponent<UnitCs>().anim.SetBool("isWalk", false);
                 // Debug.Log(collision.gameObject.name);
                 if ( gameObject.layer == 17)
                 {
