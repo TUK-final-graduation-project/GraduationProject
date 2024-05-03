@@ -15,7 +15,7 @@ public class Bomb : MonoBehaviour
 
     IEnumerator Explosion()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
         rigid.velocity = Vector3.zero;
         rigid.angularVelocity = Vector3.zero;
        // meshObj.SetActive(false);

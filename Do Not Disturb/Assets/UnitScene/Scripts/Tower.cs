@@ -15,6 +15,7 @@ public class Tower : MonoBehaviour
     public GameObject grenadeObject;
     public bool isAttack = false;
 
+    public GameObject rotateObj;
     GameObject target;
     private void Update()
     {
@@ -45,18 +46,34 @@ public class Tower : MonoBehaviour
     {
 
         isAttack = true;
+
         switch (type)
         {
             case Type.Focus:
-                yield return new WaitForSeconds(0.1f);
-                Focus();
-                yield return new WaitForSeconds(0.5f);
-                break;
+                {
+                    yield return new WaitForSeconds(0.1f);
+                    rotateObj.GetComponent<Rotate>().isRotate = false;
+                    if (target != null)
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
+                        rotateObj.transform.rotation = targetRotation;
+                        Focus();
+                    }
+                    yield return new WaitForSeconds(0.5f);
+                    rotateObj.GetComponent<Rotate>().isRotate = true;
+                    break;
+                }
             case Type.Wide:
-                yield return new WaitForSeconds(0.1f);
-                Wide();
-                yield return new WaitForSeconds(10f);
-                break;
+                {
+                    yield return new WaitForSeconds(0.1f);
+                    rotateObj.GetComponent<Rotate>().isRotate = false;
+                    Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
+                    rotateObj.transform.rotation = targetRotation;
+                    Wide();
+                    yield return new WaitForSeconds(10f);
+                    rotateObj.GetComponent<Rotate>().isRotate = true;
+                    break;
+                }
             case Type.Blade:
                 yield return new WaitForSeconds(0.1f);
                 Blade();
@@ -68,12 +85,10 @@ public class Tower : MonoBehaviour
 
     void Wide()
     {
-        Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
-        targetRotation = new Quaternion(0, targetRotation.y, 0, 0);
-        releasePoint.transform.parent.transform.rotation = targetRotation;
-        Vector3 nextVec = target.transform.position - transform.position;
+
+        Vector3 nextVec = releasePoint.transform.forward;
         nextVec.Normalize();
-        nextVec.y = 10;
+        // nextVec.y = 10;
 
         GameObject instantGrenade = Instantiate(grenadeObject, releasePoint.transform.position, transform.rotation);
         Rigidbody rigidGrenade = instantGrenade.GetComponent<Rigidbody>();
@@ -83,8 +98,16 @@ public class Tower : MonoBehaviour
     }
 
     void Focus() 
-    { 
+    {
+        Vector3 nextVec = releasePoint.transform.forward;
+        nextVec.Normalize();
+        // nextVec.y = 10;
 
+        GameObject instantGrenade = Instantiate(grenadeObject, releasePoint.transform.position, transform.rotation);
+        Rigidbody rigidGrenade = instantGrenade.GetComponent<Rigidbody>();
+        rigidGrenade.AddForce(nextVec, ForceMode.Impulse);
+        //rigidGrenade.AddTorque(Vector3.back, ForceMode.Impulse);
+        rigidGrenade.velocity = nextVec * 2;
     }
 
     void Blade()

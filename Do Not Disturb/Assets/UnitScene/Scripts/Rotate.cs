@@ -8,6 +8,7 @@ public class Rotate : MonoBehaviour
     public Type type;
     public int degree = 30;
 
+    public bool isRotate = true;
     Vector3 dir;
     private void Start()
     {
@@ -23,6 +24,9 @@ public class Rotate : MonoBehaviour
     }
     void Update()
     {
-        transform.Rotate(dir * Time.deltaTime * degree);
+        if(isRotate)
+        {
+            transform.Rotate(dir * Time.deltaTime * degree);
+        }
     }
 }
