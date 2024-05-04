@@ -79,4 +79,46 @@ public class Inventory : MonoBehaviour
             }
         }
     }
+
+    //public int GetItemCount(string _itemName)
+    //{
+    //    int temp = SearchSlotItem(slots, _itemName);
+    //    return temp != 0 ? temp : SearchSlotItem(quickSlots, _itemName);
+    //}
+
+    //private int SearchSlotItem(InventorySlot[] _slots, string _itemName)
+    //{
+    //    for (int i = 0; i < _slots.Length; i++)
+    //    {
+    //        if (_slots[i].item != null)
+    //        {
+    //            if (_itemName == _slots[i].item.itemName)
+    //                return _slots[i].itemCount;
+    //        }
+    //    }
+
+    //    return 0;
+    //}
+
+    //public void SetItemCount(string _itemName, int _itemCount)
+    //{
+    //    if (!ItemCountAdjust(slots, _itemName, _itemCount))
+    //        ItemCountAdjust(quickSlots, _itemName, _itemCount);
+    //}
+
+    //private bool ItemCountAdjust(InventorySlot[] _slots, string _itemName, int _itemCount)
+    //{
+    //    for (int i = 0; i < _slots.Length; i++)
+    //    {
+    //        if (_slots[i].item != null)
+    //        {
+    //            if (_itemName == _slots[i].item.itemName)
+    //            {
+    //                _slots[i].SetSlotCount(-_itemCount);
+    //                return true;
+    //            }
+    //        }
+    //    }
+    //    return false; // ÀÎº¥Åä¸®¿¡ ¾ø¾î¼­ Äü½½·Ô¿¡¼­ »©¾ß µÊ
+    //}
 }

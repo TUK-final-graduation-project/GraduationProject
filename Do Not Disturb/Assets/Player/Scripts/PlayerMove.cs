@@ -50,12 +50,12 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField]
     private float cameraRotationLimit;
-    private float currentCameraRotationX = 0;
-    private float currentCameraRotationY = 0;
+    //private float currentCameraRotationX = 0;
+    //private float currentCameraRotationY = 0;
 
 
     Tools equipTool;
-    CraftMenu craftMenu;
+    //CraftMenu craftMenu;
 
     int equipToolIndex = -1;
     float swingDelay;
@@ -65,9 +65,9 @@ public class PlayerMove : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
-        craftMenu = FindObjectOfType<CraftMenu>();
+        //craftMenu = FindObjectOfType<CraftMenu>();
+        
         // 마우스 커서 삭제
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -272,7 +272,7 @@ public class PlayerMove : MonoBehaviour
 
     private void CameraRotation()
     {
-        if (!craftMenu.isCrafting)
+        //if (!craftMenu.isCrafting)
         {
             //Debug.Log("상하 카메라 회전");
             // 상하 카메라 회전
