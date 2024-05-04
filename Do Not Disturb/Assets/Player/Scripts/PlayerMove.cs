@@ -218,8 +218,8 @@ public class PlayerMove : MonoBehaviour
 
         toolIndex = -1;
         if (swapTool1) { toolIndex = 0; sward = true; axe = false; pickax = false; }
-        if (swapTool2) { toolIndex = 1; sward = false; axe = true; pickax = false; }
-        if (swapTool3) {toolIndex = 2; sward = false; axe = false; pickax = true; }
+        if (swapTool2) { toolIndex = 1; sward = false; axe = false; pickax = true; }
+        if (swapTool3) {toolIndex = 2; sward = false; axe = true; pickax = false; }
 
         if ((swapTool1 || swapTool2 || swapTool3) && !isDash && !isJump)
         {
