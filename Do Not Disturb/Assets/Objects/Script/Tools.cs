@@ -22,11 +22,11 @@ public class Tools : MonoBehaviour
 
     IEnumerator Swing()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.7f);
         area.enabled = true;
 
         // 칼날이 작용하는 시간
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         area.enabled = false;
 
         yield return new WaitForSeconds(0.3f);

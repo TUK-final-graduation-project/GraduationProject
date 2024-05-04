@@ -2279,10 +2279,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Unit: {fileID: 2938312513537221339, guid: 7b19cd3a378c0ac40ba7f2cf2eb32ff8, type: 3}
-  startPosition: {fileID: 459490227}
-  minionSpeed: 0
-  curTime: 0
-  maxTime: 0
+  unitCreateCurTime: 0
+  unitCreateCoolTime: 0
 --- !u!1001 &537869279
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2487,10 +2485,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Unit: {fileID: 2938312513537221339, guid: 7b19cd3a378c0ac40ba7f2cf2eb32ff8, type: 3}
-  startPosition: {fileID: 542011225}
-  minionSpeed: 0
-  curTime: 0
-  maxTime: 0
+  unitCreateCurTime: 0
+  unitCreateCoolTime: 0
 --- !u!1 &549175860
 GameObject:
   m_ObjectHideFlags: 0
@@ -4166,9 +4162,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f947e85863465484d8e04f9c862b0431, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 1498438661}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f947e85863465484d8e04f9c862b0431, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1716304595}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f947e85863465484d8e04f9c862b0431, type: 3}
@@ -4573,10 +4566,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Unit: {fileID: 2938312513537221339, guid: 7b19cd3a378c0ac40ba7f2cf2eb32ff8, type: 3}
-  startPosition: {fileID: 994462186}
-  minionSpeed: 0
-  curTime: 0
-  maxTime: 0
+  unitCreateCurTime: 0
+  unitCreateCoolTime: 0
 --- !u!1001 &1023058483
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6139,10 +6130,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Unit: {fileID: 2938312513537221339, guid: 7b19cd3a378c0ac40ba7f2cf2eb32ff8, type: 3}
-  startPosition: {fileID: 1432606702}
-  minionSpeed: 0
-  curTime: 0
-  maxTime: 0
+  unitCreateCurTime: 0
+  unitCreateCoolTime: 0
 --- !u!1 &1440834588 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -51104761422087029, guid: 5ed5d33e7932e72439e5e34d2538222b, type: 3}
@@ -6285,10 +6274,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Unit: {fileID: 97690299423046507, guid: 9c9617c0438f3104089a8afe0308a958, type: 3}
-  startPosition: {fileID: 0}
-  minionSpeed: 0
-  curTime: 0
-  maxTime: 0
+  unitCreateCurTime: 0
+  unitCreateCoolTime: 0
 --- !u!65 &1479711544
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6360,37 +6347,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479711541}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1498438660
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1498438661}
-  m_Layer: 0
-  m_Name: FollowCam
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1498438661
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1498438660}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 790254824}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1537262063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6538,7 +6494,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 790254825}
-  rock: {fileID: 2080837929}
 --- !u!54 &1537262072
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7124,7 +7079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c7db55140388694bbbbc14e4f8e4e31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectTofollow: {fileID: 1498438661}
+  objectTofollow: {fileID: 0}
   followSpeed: 10
   sensitivity: 100
   clampAngle: 70

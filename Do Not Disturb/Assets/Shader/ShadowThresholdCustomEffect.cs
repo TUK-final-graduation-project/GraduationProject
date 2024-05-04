@@ -3,22 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Unity.VisualScripting.Member;
 
+[ExecuteInEditMode]
+[RequireComponent(typeof(Camera))]
+
 public class ShadowThresholdCustomEffect : MonoBehaviour
 {
-    /*void OnRenderImage()
-    {
-        //Graphics.Blit(source, destination, shadowMaterial);
+    public Material shadowMaterial;
+    public Color shadowColor;
+    [Range(0,1)]
+    public float shadowThreshold;
 
-    }*/
-    // Start is called before the first frame update
-    void Start()
+    void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        shadowMaterial.SetFloat("_ShadowThreshold", shadowThreshold);
+        shadowMaterial.SetColor("_ShadowColor", shadowColor);
+        if (shadowMaterial != null)
+        {
+            Graphics.Blit(source, destination, shadowMaterial);
+        }
+        else
+        {
+            Debug.Log("Material이 설정되지 않았습니다.");
+        }
     }
 }
