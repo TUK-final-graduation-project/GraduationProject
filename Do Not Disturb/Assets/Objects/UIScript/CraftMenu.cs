@@ -25,7 +25,7 @@ public class CraftMenu : MonoBehaviour
 
     // 각 탭에 대한 크래프트 배열
     [SerializeField]
-    private Craft[] craftWaterTower;
+    private Craft[] craftTower;     // WATER, FIRE, EARTH, FOREST
 
     // 미리 보기 프리팹을 담을 변수
     private GameObject go_Preview;
@@ -63,10 +63,10 @@ public class CraftMenu : MonoBehaviour
     public void SlotClick(int _slotNumber)
     {
         // 미리 보기 생성
-        go_Preview = Instantiate(craftWaterTower[_slotNumber].go_PreviewPrefab, tf_Player.position + tf_Player.forward, Quaternion.identity);
+        go_Preview = Instantiate(craftTower[_slotNumber].go_PreviewPrefab, tf_Player.position + tf_Player.forward, Quaternion.identity);
 
         // 실제 생성될 프리팹 설정
-        go_Prefab = craftWaterTower[_slotNumber].go_prefab;
+        go_Prefab = craftTower[_slotNumber].go_prefab;
 
         // 미리 보기 활성화
         isPreviewActivated = true;

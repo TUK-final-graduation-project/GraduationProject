@@ -7,16 +7,6 @@ public class Pickax : MonoBehaviour
     [SerializeField]
     PlayerMove player;
 
-    //[SerializeField]
-    //Rock rock;
-
-    private void Awake()
-    {
-        // 필요한 컴포넌트를 초기화 ....수정 필요(2/29)
-        //player = GetComponent<PlayerMove>();
-        //rock = GetComponent<Rock>();
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         // player와 rock 객체가 null인지 확인.
