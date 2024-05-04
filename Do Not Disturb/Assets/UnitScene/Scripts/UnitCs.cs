@@ -36,6 +36,10 @@ public class UnitCs : MonoBehaviour
     Vector3[] path;
     int targetIndex;
 
+    public GameObject meshObj;
+    public GameObject effectObj;
+
+    bool isDead = false;
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -183,12 +187,16 @@ public class UnitCs : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if ( target == null)
+        if (!isDead)
         {
-            FindNextTarget();
+            if ( target == null)
+            {
+                FindNextTarget();
+            }
+            Targeting();
+            FreezeVelocity();
+
         }
-        Targeting();
-        FreezeVelocity();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -241,7 +249,7 @@ public class UnitCs : MonoBehaviour
             reactVec += Vector3.up;
             rigid.AddForce(reactVec * 5, ForceMode.Impulse);
 
-            Destroy(gameObject);
+            OnDestroy();
         }
         else
         {
@@ -251,7 +259,15 @@ public class UnitCs : MonoBehaviour
             StartCoroutine("FollowPath");
         }
     }
+    public void OnDestroy()
+    {
+        StopCoroutine("FollowPath");
+        isDead = true;
+        meshObj.SetActive(false);
+        effectObj.SetActive(true);
 
+        Destroy(gameObject, 3);
+    }
     public void HitByBomb(Vector3 explosionPos)
     {
         HP -= 100;

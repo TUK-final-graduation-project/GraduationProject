@@ -8,7 +8,7 @@ public class UserTargetZone : MonoBehaviour
     {
         if (collision.gameObject.tag == "Unit" && collision.gameObject.layer == 12)
         {
-            Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<UnitCs>().OnDestroy();
             // collision.gameObject.GetComponent<UnitCs>().anim.SetBool("isWalk", false);
             // Debug.Log(collision.gameObject.name);
             if (gameObject.layer == 16)
