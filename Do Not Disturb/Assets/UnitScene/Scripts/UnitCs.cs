@@ -179,6 +179,7 @@ public class UnitCs : MonoBehaviour
                 target = tower.gameObject;
             }
         }
+        RequestPathToMgr();
     }
     private void FixedUpdate()
     {

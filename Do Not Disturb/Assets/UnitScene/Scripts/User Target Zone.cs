@@ -13,7 +13,14 @@ public class UserTargetZone : MonoBehaviour
             // Debug.Log(collision.gameObject.name);
             if (gameObject.layer == 16)
             {
-                transform.parent.gameObject.GetComponent<UserSpawnPoint>().OnDamage();
+                if (transform.parent.gameObject.GetComponent<UserSpawnPoint>())
+                {
+                    transform.parent.gameObject.GetComponent<UserSpawnPoint>().OnDamage();
+                }
+                else
+                {
+                    transform.parent.gameObject.GetComponent<UserHome>().OnDamage();
+                }
             }
         }
     }

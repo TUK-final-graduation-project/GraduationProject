@@ -13,6 +13,7 @@ public class ComSpawnPoint : MonoBehaviour
     public int HP;
     public bool isConquer = false;
 
+    public GameObject comTarget;
     public GameObject target;
 
     [Header("spawn unit type")]
@@ -54,6 +55,7 @@ public class ComSpawnPoint : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
             GameObject _iUnit = Instantiate(unit, transform.position, targetRotation);
             _iUnit.GetComponent<UnitCs>().target = target;
+            _iUnit.GetComponent<UnitCs>().ComTarget = comTarget;
 
             yield return new WaitForSeconds(2f);
         }

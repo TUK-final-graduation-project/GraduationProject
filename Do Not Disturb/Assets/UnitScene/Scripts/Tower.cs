@@ -121,6 +121,8 @@ public class Tower : MonoBehaviour
         if ( HP < 0 )
         {
             isConquer = true;
+
+            Destroy(transform.parent.gameObject);
         }
     }
 }
