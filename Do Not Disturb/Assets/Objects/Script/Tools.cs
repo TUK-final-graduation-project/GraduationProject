@@ -9,9 +9,7 @@ public class Tools : MonoBehaviour
 
     private void Start()
     {
-        // 필요한 컴포넌트를 초기화
-        //player = GetComponent<PlayerMove>();
-        //rock = GetComponent<Rock>();
+
     }
 
     public void Use()
