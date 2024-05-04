@@ -46,6 +46,6 @@ public class Rock : MonoBehaviour
         {
             Instantiate(rock, go_debris.transform.GetChild(i).gameObject.transform.position, Quaternion.identity);
         }
-        //Invoke("CreateDropItem", 0.2f);
+        Invoke("CreateDropItem", 0.2f);
     }
 }
