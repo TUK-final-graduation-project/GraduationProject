@@ -20,11 +20,9 @@ namespace Assets.Scripts
             Sliceable sliceable = objectToCut.GetComponent<Sliceable>();
 
             // 플레이어 태그 검사
-            if (objectToCut.CompareTag("Player"))
-            {
-                return null;  
-            }
-
+            //if (objectToCut.CompareTag("Player")||objectToCut.CompareTag("Ground"))
+            //    return null;  
+            
             if (sliceable == null)
             {
                 throw new NotSupportedException("자를 수 없는 객체를 잘랐습니다. 해당 객체에 sliceable 스크립트를 추가하거나 sliceable에서 상속하세요.");

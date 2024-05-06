@@ -61,7 +61,6 @@ public class Sword : MonoBehaviour
         Vector3 side2 = triggerExitTipPos - triggerEnterBasePos;
 
         // 삼각형 위의 점을 얻어 노말을 계산
-        // https://docs.unity3d.com/Manual/ComputingNormalPerpendicularVector.html
         Vector3 normal = Vector3.Cross(side1, side2).normalized;
 
         // 노말을 자르려는 객체의 로컬 변환(transform)과 일치하도록 변환

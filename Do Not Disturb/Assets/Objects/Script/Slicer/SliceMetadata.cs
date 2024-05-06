@@ -516,6 +516,7 @@ namespace Assets.Scripts
         /// <param name="vertex2Uv">두 번째 정점의 UV</param>
         /// <param name="uv">새로운 UV</param>
         /// <returns>교차 지점</returns>
+
         private Vector3 GetRayPlaneIntersectionPointAndUv(Vector3 vertex1, Vector2 vertex1Uv, Vector3 vertex2, Vector2 vertex2Uv, out Vector2 uv)
         {
             float distance = GetDistanceRelativeToPlane(vertex1, vertex2, out Vector3 pointOfIntersection);
@@ -550,7 +551,7 @@ namespace Assets.Scripts
             Vector2 uv = Vector2.Lerp(uv1, uv2, distance);
             return uv;
         }
-
+      
         /// <summary>
         /// 세 정점에 대한 법선 벡터를 계산하는 메소드
         /// </summary>
