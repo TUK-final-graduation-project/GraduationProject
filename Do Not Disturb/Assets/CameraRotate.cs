@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraRotate : MonoBehaviour
 {
-    [SerializeField] private float rotCamXAxisSpeed = 5f; // 카메라 x축 회전속도
+    //[SerializeField] private float rotCamXAxisSpeed = 5f; // 카메라 x축 회전속도
     [SerializeField] private float rotCamYAxisSpeed = 3f; // 카메라 y축 회전속도
 
     private float limitMinX = -80; // 카메라 x축 회전 범위 (최소)

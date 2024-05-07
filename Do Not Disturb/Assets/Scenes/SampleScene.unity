@@ -2574,7 +2574,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &556910112
 Transform:
   m_ObjectHideFlags: 0
@@ -3375,7 +3375,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 1
 --- !u!95 &790254827
 Animator:
@@ -6628,7 +6628,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1558434970
 Transform:
   m_ObjectHideFlags: 0
@@ -6660,7 +6660,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1579441831
 Transform:
   m_ObjectHideFlags: 0
@@ -8220,19 +8220,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   go_BaseUI: {fileID: 1093485961}
-  craftWaterTower:
-  - craftName: Water
-    go_prefab: {fileID: 1306803152854189505, guid: 5ce8da7c306494c4e948bbd2ce22c581, type: 3}
-    go_PreviewPrefab: {fileID: 2551435627485656196, guid: c9feb1efedf7e314ab2153b8772fbe11, type: 3}
-  - craftName: Fire
-    go_prefab: {fileID: 1306803152854189505, guid: 5ce8da7c306494c4e948bbd2ce22c581, type: 3}
-    go_PreviewPrefab: {fileID: 2551435627485656196, guid: c9feb1efedf7e314ab2153b8772fbe11, type: 3}
-  - craftName: Steel
-    go_prefab: {fileID: 1306803152854189505, guid: 5ce8da7c306494c4e948bbd2ce22c581, type: 3}
-    go_PreviewPrefab: {fileID: 2551435627485656196, guid: c9feb1efedf7e314ab2153b8772fbe11, type: 3}
-  - craftName: Forest
-    go_prefab: {fileID: 1306803152854189505, guid: 5ce8da7c306494c4e948bbd2ce22c581, type: 3}
-    go_PreviewPrefab: {fileID: 2551435627485656196, guid: c9feb1efedf7e314ab2153b8772fbe11, type: 3}
+  craftTower:
+  - craftName: WaterTower
+    go_prefab: {fileID: 2551435627485656196, guid: c9feb1efedf7e314ab2153b8772fbe11, type: 3}
+    go_PreviewPrefab: {fileID: 3794164216797209964, guid: 667a82638629ee444ae9828cd79152d8, type: 3}
   tf_Player: {fileID: 790254824}
   layerMask:
     serializedVersion: 2
@@ -8343,7 +8334,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2060317281
 Transform:
   m_ObjectHideFlags: 0

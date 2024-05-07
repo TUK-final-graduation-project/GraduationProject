@@ -23,9 +23,12 @@ public class CraftMenu : MonoBehaviour
     [SerializeField]
     private GameObject go_BaseUI;
 
+    // 선택 탭 결정
+    private int selectTab = -1;
+
     // 각 탭에 대한 크래프트 배열
     [SerializeField]
-    private Craft[] craftTower;     // WATER, FIRE, EARTH, FOREST
+    private Craft[] craftTower;     // 4종류
 
     // 미리 보기 프리팹을 담을 변수
     private GameObject go_Preview;
@@ -58,10 +61,15 @@ public class CraftMenu : MonoBehaviour
         // mainCamera 변수에 현재 활성화된 메인 카메라를 할당합니다.
         // cam = Camera.main;
     }
-
+    public void TabClick(int _tabNumber)
+    {
+        selectTab = _tabNumber;
+        Debug.Log("탭 click: " + _tabNumber);
+    }
     // 슬롯을 클릭했을 때 호출되는 함수
     public void SlotClick(int _slotNumber)
     {
+        Debug.Log("click slot : " + _slotNumber);
         // 미리 보기 생성
         go_Preview = Instantiate(craftTower[_slotNumber].go_PreviewPrefab, tf_Player.position + tf_Player.forward, Quaternion.identity);
 
