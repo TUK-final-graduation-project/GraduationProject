@@ -23,9 +23,12 @@ public class CraftMenu : MonoBehaviour
     [SerializeField]
     private GameObject go_BaseUI;
 
+    // 선택 탭 결정
+    private int selectTab = -1;
+
     // 각 탭에 대한 크래프트 배열
     [SerializeField]
-    private Craft[] craftTower;     // WATER, FIRE, EARTH, FOREST
+    private Craft[] craftTower;     // 4종류
 
     // 미리 보기 프리팹을 담을 변수
     private GameObject go_Preview;
@@ -48,6 +51,10 @@ public class CraftMenu : MonoBehaviour
     [SerializeField]
     private float range;
 
+    // 생성 위치와의 거리
+    [SerializeField]
+    float distance = 2f;
+
     [SerializeField]
     private Camera cam;
 
@@ -58,12 +65,17 @@ public class CraftMenu : MonoBehaviour
         // mainCamera 변수에 현재 활성화된 메인 카메라를 할당합니다.
         // cam = Camera.main;
     }
-
+    public void TabClick(int _tabNumber)
+    {
+        selectTab = _tabNumber;
+        Debug.Log("탭 click: " + _tabNumber);
+    }
     // 슬롯을 클릭했을 때 호출되는 함수
     public void SlotClick(int _slotNumber)
     {
+        Debug.Log("click slot : " + _slotNumber);
         // 미리 보기 생성
-        go_Preview = Instantiate(craftTower[_slotNumber].go_PreviewPrefab, tf_Player.position + tf_Player.forward, Quaternion.identity);
+        go_Preview = Instantiate(craftTower[_slotNumber].go_PreviewPrefab, tf_Player.position + tf_Player.forward* distance, Quaternion.identity);
 
         // 실제 생성될 프리팹 설정
         go_Prefab = craftTower[_slotNumber].go_prefab;
@@ -104,9 +116,9 @@ public class CraftMenu : MonoBehaviour
         {
             Vector3 playerPosition = tf_Player.transform.position; // tf_Player의 위치
             Vector3 playerForward = tf_Player.transform.forward; // tf_Player의 전방 벡터
-            float distance = 1.5f; // 거리
 
-            // tf_Player의 위치에서 전방 방향으로 거리 5만큼 떨어진 위치 계산
+
+            // tf_Player의 위치에서 전방 방향으로 distance 떨어진 위치 계산
             Vector3 targetPosition = playerPosition + playerForward * distance;
 
             //if (hitInfo.transform != null)

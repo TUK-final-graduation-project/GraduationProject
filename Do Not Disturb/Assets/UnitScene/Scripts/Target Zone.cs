@@ -40,7 +40,8 @@ public class TargetZone : MonoBehaviour
             }
             else
             {
-                Destroy(collision.gameObject);
+
+                Destroy(collision.gameObject, 3);
                // collision.gameObject.GetComponent<UnitCs>().anim.SetBool("isWalk", false);
                 // Debug.Log(collision.gameObject.name);
                 if ( gameObject.layer == 17)

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-   // public GameObject meshObj;
-    //public GameObject effectObj;
+    public GameObject meshObj;
+    public GameObject effectObj;
     public Rigidbody rigid;
 
     private void Start()
@@ -15,11 +15,11 @@ public class Bomb : MonoBehaviour
 
     IEnumerator Explosion()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         rigid.velocity = Vector3.zero;
         rigid.angularVelocity = Vector3.zero;
-       // meshObj.SetActive(false);
-       // effectObj.SetActive(true);
+        meshObj.SetActive(false);
+        effectObj.SetActive(true);
 
         RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, 15, Vector3.up, 0f, LayerMask.GetMask("Com"));
 
@@ -28,6 +28,6 @@ public class Bomb : MonoBehaviour
             hitObj.transform.GetComponent<UnitCs>().HitByBomb(transform.position);
         }
 
-        Destroy(gameObject);
+        Destroy(gameObject, 4);
     }
 }

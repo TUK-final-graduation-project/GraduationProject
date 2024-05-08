@@ -36,8 +36,8 @@ public class TowerTargetZone : MonoBehaviour
             }
             else
             {
-                Destroy(collision.gameObject);
-               // collision.gameObject.GetComponent<UnitCs>().anim.SetBool("isWalk", false);
+                collision.gameObject.GetComponent<UnitCs>().OnDestroy();
+                // collision.gameObject.GetComponent<UnitCs>().anim.SetBool("isWalk", false);
                 // Debug.Log(collision.gameObject.name);
                 transform.parent.gameObject.GetComponent<Tower>().OnDamage();
             }

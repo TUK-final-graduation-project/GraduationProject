@@ -53,19 +53,22 @@ public class PlayerMove : MonoBehaviour
     //private float currentCameraRotationX = 0;
     //private float currentCameraRotationY = 0;
 
-
     Tools equipTool;
-    //CraftMenu craftMenu;
 
     int equipToolIndex = -1;
     float swingDelay;
     int toolIndex = -1;
 
+    public bool togleCameraRotate;
+    public float smoothness = 10f;
+
     void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
-        //craftMenu = FindObjectOfType<CraftMenu>();
+        cam = Camera.main;
+
+        togleCameraRotate = false;
         
         // 마우스 커서 삭제
         Cursor.lockState = CursorLockMode.Locked;
@@ -106,7 +109,21 @@ public class PlayerMove : MonoBehaviour
         Dash();
         Swap();
 
+        // 둘러보기 활성화
+        if (Input.GetKey(KeyCode.LeftShift)) { togleCameraRotate = true; }  
+        else { togleCameraRotate = false; }  
+
     }
+
+    /*void LateUpdate()
+    {
+        if(togleCameraRotate != true)
+        {
+            Vector3 playerRotate = Vector3.Scale(cam.transform.forward, new Vector3(1, 0, 1));
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(playerRotate), Time.deltaTime * smoothness);
+
+        }
+    }*/
     void Move()
     {
         // 카메라의 방향을 고려하여 이동 방향 벡터 계산
@@ -258,30 +275,6 @@ public class PlayerMove : MonoBehaviour
         {
             //anim.SetBool("Idle", true);
             isJump = false;
-        }
-    }
-
-    private void CharacterRotation()
-    {
-        //Debug.Log("yRotation  : " + yRotation);
-        // 좌우 캐릭터 회전
-/*
-        Vector3 characterRotationY = new Vector3(0f, yRotation, 0f) * lookSensitivity;
-        rigid.MoveRotation(rigid.rotation * Quaternion.Euler(characterRotationY));*/
-    }
-
-    private void CameraRotation()
-    {
-        //if (!craftMenu.isCrafting)
-        {
-            //Debug.Log("상하 카메라 회전");
-            // 상하 카메라 회전
-
-           /* float cameraRotationX = xRotation * lookSensitivity;
-            currentCameraRotationX -= cameraRotationX;
-            currentCameraRotationX = Mathf.Clamp(currentCameraRotationX, -cameraRotationLimit, cameraRotationLimit);
-
-            cam.transform.localEulerAngles = new Vector3(currentCameraRotationX, 0f, 0f);*/
         }
     }
 
