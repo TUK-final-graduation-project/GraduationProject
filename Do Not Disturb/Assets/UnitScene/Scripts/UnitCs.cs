@@ -185,13 +185,34 @@ public class UnitCs : MonoBehaviour
         }
         RequestPathToMgr();
     }
+    void FindNextTargetWithComTarget()
+    {
+        target = ComTarget;
+        float minDistance = Vector3.Distance(transform.position, ComTarget.transform.position);
+        float tmp = 0;
+        towers = FindObjectsOfType(typeof(Tower)) as Tower[];
+        foreach (Tower tower in towers)
+        {
+            tmp = Vector3.Distance(transform.position, tower.transform.position);
+            if (minDistance > tmp)
+            {
+                minDistance = tmp;
+                target = tower.gameObject;
+            }
+        }
+        RequestPathToMgr();
+    }
     private void FixedUpdate()
     {
         if (!isDead)
         {
-            if ( target == null)
+            //if ( target == null)
+            //{
+            //    FindNextTarget();
+            //}
+            if ( target == null || target == ComTarget)
             {
-                FindNextTarget();
+                FindNextTargetWithComTarget();
             }
             Targeting();
             FreezeVelocity();

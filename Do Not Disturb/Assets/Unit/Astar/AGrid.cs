@@ -8,11 +8,13 @@ public class AGrid : MonoBehaviour
     public LayerMask unWalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
-    Node[,] grid;
+    public Node[,] grid;
 
-    float nodeDiameter;
+    public float nodeDiameter;
     int gridSizeX;
     int gridSizeY;
+
+    public UnitCs unit;
 
     void Start()
     {
@@ -20,6 +22,10 @@ public class AGrid : MonoBehaviour
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x/ nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y/ nodeDiameter);
         CreateGrid();
+    }
+    private void Update()
+    {
+        unit = FindObjectOfType(typeof(UnitCs)) as UnitCs;
     }
 
     // 그리드 만들기
@@ -79,19 +85,25 @@ public class AGrid : MonoBehaviour
     }
 
     public List<Node> path;
-
     //그리드 그리기
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
-    //    if (grid != null)
-    //    {
-    //        // Node playerNode = GetNodeFromWorldPoint(player.position);
-    //        foreach (Node n in grid)
-    //        {
-    //            Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
-    //            Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-    //        }
-    //    }
-    //}
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+        if (grid != null)
+        {
+            // Node playerNode = GetNodeFromWorldPoint(player.position);
+            foreach (Node n in grid)
+            {
+                Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
+                if ( path != null)
+                {
+                    if (path.Contains(n))
+                    {
+                        Gizmos.color = Color.black;
+                    }
+                }
+                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+            }
+        }
+    }
 }

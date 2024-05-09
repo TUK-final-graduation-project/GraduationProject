@@ -99,6 +99,7 @@ public class PathFinding : MonoBehaviour
         }
         Vector3[] waypoints = SimplifyPath(path);
         Array.Reverse(waypoints);
+        grid.path = path;
         return waypoints;
     }
 

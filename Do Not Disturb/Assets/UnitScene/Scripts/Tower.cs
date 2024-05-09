@@ -66,7 +66,8 @@ public class Tower : MonoBehaviour
                     rotateObj.GetComponent<Rotate>().isRotate = false;
                     Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
                     rotateObj.transform.rotation = targetRotation;
-                    Wide();
+                    // 데모를 위한 block
+                    //Wide();
                     yield return new WaitForSeconds(10f);
                     rotateObj.GetComponent<Rotate>().isRotate = true;
                     break;

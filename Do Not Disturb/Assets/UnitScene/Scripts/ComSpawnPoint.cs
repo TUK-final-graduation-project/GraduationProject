@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class ComSpawnPoint : MonoBehaviour
@@ -46,6 +47,7 @@ public class ComSpawnPoint : MonoBehaviour
         }
 
         Debug.Log(unit.gameObject.name);
+        StartSpawn(1);
     }
 
     public IEnumerator Spawn(int num)
