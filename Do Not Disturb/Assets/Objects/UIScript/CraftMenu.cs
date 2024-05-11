@@ -62,8 +62,8 @@ public class CraftMenu : MonoBehaviour
 
     void Start()
     {
-        // mainCamera 변수에 현재 활성화된 메인 카메라를 할당합니다.
-        // cam = Camera.main;
+        // mainCamera 변수에 현재 활성화된 메인 카메라를 할당
+        cam = Camera.main;
     }
     public void TabClick(int _tabNumber)
     {
@@ -155,6 +155,9 @@ public class CraftMenu : MonoBehaviour
                 isPreviewActivated = false;
                 go_Preview = null;
                 go_Prefab = null;
+                //// 마우스 커서 삭제
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
             else
             {
@@ -188,6 +191,9 @@ public class CraftMenu : MonoBehaviour
         // Craft Manual UI를 비활성화
         isActivated = false;
         go_BaseUI.SetActive(false);
+
+        //// 마우스 커서 삭제
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
@@ -204,5 +210,9 @@ public class CraftMenu : MonoBehaviour
         go_Preview = null;
         go_Prefab = null;
         go_BaseUI.SetActive(false);
+
+        //// 마우스 커서 삭제
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }
