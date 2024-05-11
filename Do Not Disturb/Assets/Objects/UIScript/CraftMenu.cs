@@ -62,8 +62,8 @@ public class CraftMenu : MonoBehaviour
 
     void Start()
     {
-        // mainCamera 변수에 현재 활성화된 메인 카메라를 할당합니다.
-        // cam = Camera.main;
+        // mainCamera 변수에 현재 활성화된 메인 카메라를 할당
+        cam = Camera.main;
     }
     public void TabClick(int _tabNumber)
     {
@@ -142,8 +142,7 @@ public class CraftMenu : MonoBehaviour
 
                 Vector3 playerPosition = tf_Player.transform.position; // tf_Player의 위치
                 Vector3 playerForward = tf_Player.transform.forward; // tf_Player의 전방 벡터
-                float distance = 1.5f; // 거리
-
+                
                 // tf_Player의 위치에서 전방 방향으로 거리 5만큼 떨어진 위치 계산
                 Vector3 targetPosition = playerPosition + playerForward * distance;
                 // 실제 프리팹 생성
@@ -156,6 +155,9 @@ public class CraftMenu : MonoBehaviour
                 isPreviewActivated = false;
                 go_Preview = null;
                 go_Prefab = null;
+                //// 마우스 커서 삭제
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
             else
             {
@@ -189,6 +191,9 @@ public class CraftMenu : MonoBehaviour
         // Craft Manual UI를 비활성화
         isActivated = false;
         go_BaseUI.SetActive(false);
+
+        //// 마우스 커서 삭제
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
@@ -205,5 +210,9 @@ public class CraftMenu : MonoBehaviour
         go_Preview = null;
         go_Prefab = null;
         go_BaseUI.SetActive(false);
+
+        //// 마우스 커서 삭제
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }
