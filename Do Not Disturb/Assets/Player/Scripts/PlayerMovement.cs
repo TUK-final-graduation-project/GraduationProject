@@ -10,60 +10,102 @@ public class PlayerMovement : MonoBehaviour
     public float finalSpeed;
     public float smoothness = 10.0f;
 
-    Animator _animator;
-    Camera _camera;
-    CharacterController _controllor;
+    Animator anim;
+    Camera cam;
+    CharacterController controll;
+    [SerializeField]
+    Rigidbody rigid;
+
 
     public bool toggleCameraRotation;
-    public bool run;
+    public bool isRun;
+    public bool isJump;
+
+    bool jDown;         // space bar 입력
+
 
     // Start is called before the first frame update
     void Start()
     {
-        _animator = this.GetComponent<Animator>();
-        _camera = Camera.main;
-        _controllor = this.GetComponent<CharacterController>();     
+        anim = this.GetComponent<Animator>();
+        cam = Camera.main;
+        controll = this.GetComponent<CharacterController>();
+        rigid = this.GetComponent<Rigidbody>();
+    }
+
+    void FixedUpdate()
+    {
+        // 키 입력 처리 
+        jDown = Input.GetButton("Jump");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.LeftAlt))
+        if (Input.GetKey(KeyCode.LeftAlt))
         {
-            toggleCameraRotation = true;   
-        } else { 
-            toggleCameraRotation = false; 
-        }
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            run = true;
+            toggleCameraRotation = true;
         }
         else
         {
-            run = false;
+            toggleCameraRotation = false;
         }
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            isRun = true;
+        }
+        else
+        {
+            isRun = false;
+        }
+
+
+        // 점프
+        //Jump();
         InputMovement();
     }
 
     void LateUpdate()
     {
-        if(toggleCameraRotation!=true)
+        if (toggleCameraRotation != true)
         {
-            Vector3 playerRotate = Vector3.Scale(_camera.transform.forward, new Vector3(1,0,1));
+            Vector3 playerRotate = Vector3.Scale(cam.transform.forward, new Vector3(1, 0, 1));
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(playerRotate), Time.deltaTime * smoothness);
-        }    
+        }
     }
 
     void InputMovement()
     {
-        finalSpeed = (run) ? runSpeed : speed; 
+
+        finalSpeed = (isRun) ? runSpeed : speed;
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
         Vector3 moveDirection = forward * Input.GetAxis("Vertical") + right * Input.GetAxis("Horizontal");
 
-        _controllor.Move(moveDirection.normalized*finalSpeed*Time.deltaTime);
-        float percent = ((run) ? 1: 0.5f) * moveDirection.magnitude;
-        _animator.SetFloat("Blend", percent, 0.5f, Time.deltaTime);
+        controll.Move(moveDirection.normalized * finalSpeed * Time.deltaTime);
+        float percent = ((isRun) ? 1 : 0.5f) * moveDirection.magnitude;
+        anim.SetFloat("Blend", percent, 0.5f, Time.deltaTime);
     }
+
+    void Jump()
+    {
+        if (jDown && !isJump)
+        {
+            rigid.AddForce(Vector3.up * 5, ForceMode.Impulse);
+            anim.SetBool("isJump", true);
+            anim.SetTrigger("Jump");
+            isJump = true;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            //anim.SetBool("Idle", true);
+            isJump = false;
+        }
+    }
+
 }

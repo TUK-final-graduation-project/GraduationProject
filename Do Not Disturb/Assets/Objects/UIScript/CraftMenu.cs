@@ -142,8 +142,7 @@ public class CraftMenu : MonoBehaviour
 
                 Vector3 playerPosition = tf_Player.transform.position; // tf_Player의 위치
                 Vector3 playerForward = tf_Player.transform.forward; // tf_Player의 전방 벡터
-                float distance = 1.5f; // 거리
-
+                
                 // tf_Player의 위치에서 전방 방향으로 거리 5만큼 떨어진 위치 계산
                 Vector3 targetPosition = playerPosition + playerForward * distance;
                 // 실제 프리팹 생성
