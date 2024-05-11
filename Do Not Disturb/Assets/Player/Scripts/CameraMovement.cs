@@ -24,7 +24,7 @@ public class CameraMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // 따라가는 오브젝트를 바라보는 방향 벡터
+       /* // 따라가는 오브젝트를 바라보는 방향 벡터
         Vector3 lookDirection = objectTofollow.position - transform.position;
 
         lookDirection.y = 0; // 수평 방향으로만 바라보도록 y값을 0으로 설정
@@ -34,33 +34,34 @@ public class CameraMovement : MonoBehaviour
         transform.rotation = targetRotation;
 
         rotX = 0f;
-        rotY = 0f;
+        rotY = 0f;*/
 
-        dirNormalized = lookDirection.normalized;
+        rotX = transform.localRotation.eulerAngles.x;
+        rotY = transform.localRotation.eulerAngles.y;
+
+        dirNormalized = realCamera.localPosition.normalized;
         finalDistance = realCamera.localPosition.magnitude;
 
         //// 마우스 커서 삭제
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         // 마우스 회전 값 구하기
-        rotX += -Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+        rotX += -(Input.GetAxis("Mouse Y")) * sensitivity * Time.deltaTime;
         rotY += Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
 
         rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
-
         Quaternion rot = Quaternion.Euler(rotX, rotY, 0);
         transform.rotation = rot;
     }
 
-    private void LateUpdate()
+    void LateUpdate()
     {
         transform.position = Vector3.MoveTowards(transform.position, objectTofollow.position, followSpeed * Time.deltaTime);
-
         finalDir = transform.TransformPoint(dirNormalized * maxDistance);
 
         RaycastHit hit;

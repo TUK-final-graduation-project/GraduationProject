@@ -18,8 +18,8 @@ public class PlayerMove : MonoBehaviour
     bool wDown;
     bool rDown;
     bool jDown;
-    bool dDown;
     bool fDown;
+    bool dDown;
 
     bool swapTool1;
     bool swapTool2;
