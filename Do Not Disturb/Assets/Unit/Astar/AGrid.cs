@@ -21,6 +21,7 @@ public class AGrid : MonoBehaviour
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x/ nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y/ nodeDiameter);
+        lineRenderer = GetComponent<LineRenderer>();
         CreateGrid();
     }
     private void Update()
@@ -124,6 +125,24 @@ public class AGrid : MonoBehaviour
                 }
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
+        }
+    }
+
+    private LineRenderer lineRenderer;
+    public Transform[] points;
+
+    public void drawLineDebug()
+    {
+       
+        SetupLine(points);
+    }
+
+    void SetupLine(Transform[] points)
+    {
+        lineRenderer.positionCount = path.Count;
+        for (int i = 0; i < path.Count; i++)
+        {
+            lineRenderer.SetPosition(i, path[i].worldPosition);
         }
     }
 }
