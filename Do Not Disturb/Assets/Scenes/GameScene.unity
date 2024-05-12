@@ -1073,7 +1073,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &325716373
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3084,7 +3084,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &759278362
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3894,12 +3894,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   go_BaseUI: {fileID: 325716372}
   craftTower:
-  - craftName: Wide
-    go_prefab: {fileID: 5627780704580011384, guid: 87a7a825f9f12ab4e8dd068bb4e397cc, type: 3}
-    go_PreviewPrefab: {fileID: 5627780704580011384, guid: 5711a6c6cd8a92b40bbecf6138ec31ce, type: 3}
   - craftName: Focus
     go_prefab: {fileID: 8371502022845930716, guid: b4f0e3804c8feef4490f80c0a0ecadf8, type: 3}
     go_PreviewPrefab: {fileID: 8371502022845930716, guid: 46ad25fdd9708354ba16d966a2968450, type: 3}
+  - craftName: Wide
+    go_prefab: {fileID: 5627780704580011384, guid: 87a7a825f9f12ab4e8dd068bb4e397cc, type: 3}
+    go_PreviewPrefab: {fileID: 5627780704580011384, guid: 5711a6c6cd8a92b40bbecf6138ec31ce, type: 3}
   - craftName: Blade
     go_prefab: {fileID: 2682639570873943216, guid: 8b87ffe454f9f8545a5f9a24543e17a8, type: 3}
     go_PreviewPrefab: {fileID: 2682639570873943216, guid: 52a9613741f566540a9e9c50a18e10dd, type: 3}
