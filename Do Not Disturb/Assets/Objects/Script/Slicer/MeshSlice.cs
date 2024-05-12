@@ -457,7 +457,7 @@ public class MeshSlice : MonoBehaviour
 
         if (_relatedVerts.Count < 2) return;
 
-        //Calculate center of the cap
+        // 캡의 중심을 계산
         Vector3 center = Vector3.zero;
 
         foreach (Vector3 v in _relatedVerts)
@@ -466,12 +466,12 @@ public class MeshSlice : MonoBehaviour
         }
         center /= _relatedVerts.Count;
 
-        //Add center vert to both side at last
+        // 마지막, 양쪽에 중앙 수직 추가
         _aSideVerts.Add(center);
         _bSideVerts.Add(center);
 
-        //Calculate cap data
-        //Normal
+        // -- cap data 계산
+        // Normal
         for (int i = 0; i < _aSideVerts.Count; i++)
         {
             _aSideNors.Add(_faceNormal);
@@ -479,7 +479,7 @@ public class MeshSlice : MonoBehaviour
         }
 
         //Uv
-        //Basis on sliced plane
+        // 절단면 기준
         Vector3 forward = Vector3.zero;
         forward.x = _faceNormal.y;
         forward.y = -_faceNormal.x;
@@ -499,9 +499,9 @@ public class MeshSlice : MonoBehaviour
         _aSideUvs.Add(new Vector2(0.5f, 0.5f));
         _bSideUvs.Add(new Vector2(0.5f, 0.5f));
 
-        //Triangle
+        // Triangle
         int centerIdx = _aSideVerts.Count - 1;
-        //Check first triangle face where
+        // 첫 번째 삼각형 면 Check
         float faceDir = Vector3.Dot(_faceNormal, Vector3.Cross(_relatedVerts[0] - center, _relatedVerts[1] - _relatedVerts[0]));
 
         //Store tris
