@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 2390439756158359118}
   - component: {fileID: 7916111017700694751}
   - component: {fileID: 6188122276134286495}
+  - component: {fileID: 1142794580084400416}
   - component: {fileID: 1908785761134311862}
   - component: {fileID: 7049667035113431012}
   - component: {fileID: 3429176517200786122}
-  - component: {fileID: 1142794580084400416}
   m_Layer: 3
   m_Name: Rock Item
   m_TagString: Item
@@ -101,6 +101,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: d2675b64b8a286b449a405111fdff061, type: 2}
+--- !u!65 &1142794580084400416
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5286310970347249083}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.3507347, y: 2.5037081, z: 1.9056749}
+  m_Center: {x: 0.104649365, y: -0.013007702, z: 0.08714795}
 --- !u!65 &1908785761134311862
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -120,8 +141,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 6.4781165, y: 1.9637424, z: 6.335457}
-  m_Center: {x: -0.02853302, y: 0.481871, z: -0.014265614}
+  m_Size: {x: 6.4781165, y: 5, z: 6.335457}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7049667035113431012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,24 +182,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &1142794580084400416
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5286310970347249083}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.3507347, y: 2.5037081, z: 1.9056749}
-  m_Center: {x: 0.104649365, y: -0.013007702, z: 0.08714795}
