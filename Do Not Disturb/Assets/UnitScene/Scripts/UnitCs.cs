@@ -61,7 +61,7 @@ public class UnitCs : MonoBehaviour
     // 길 찾기 시작하기
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
-        if (pathSuccessful)
+        if (pathSuccessful && this != null)
         {
             path = newPath;
             StopCoroutine("FollowPath");
