@@ -31,7 +31,7 @@ public class UnitCs : MonoBehaviour
 
     public Animator anim;
 
-    float speed = 5;
+    float speed = 10;
     Vector3[] path;
     int targetIndex;
 
@@ -216,7 +216,7 @@ public class UnitCs : MonoBehaviour
             //}
             if ( target == null || target == ComTarget)
             {
-                // FindNextTargetWithComTarget();
+                FindNextTargetWithComTarget();
             }
             Targeting();
             FreezeVelocity();

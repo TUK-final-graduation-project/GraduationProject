@@ -124,7 +124,7 @@ public class Tower : MonoBehaviour
         {
             isConquer = true;
 
-            Destroy(transform.parent.gameObject);
+            Destroy(transform.parent.gameObject, 5);
         }
     }
 }
