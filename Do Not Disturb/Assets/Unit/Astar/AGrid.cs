@@ -21,7 +21,7 @@ public class AGrid : MonoBehaviour
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x/ nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y/ nodeDiameter);
-       //  lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();
         CreateGrid();
     }
     private void Update()
@@ -133,7 +133,6 @@ public class AGrid : MonoBehaviour
 
     public void drawLineDebug()
     {
-       
         SetupLine(points);
     }
 
