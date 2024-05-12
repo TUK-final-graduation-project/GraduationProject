@@ -13,9 +13,7 @@ public class PlayerMovement : MonoBehaviour
     Animator anim;
     Camera cam;
     CharacterController controll;
-    [SerializeField]
     Rigidbody rigid;
-
 
     public bool toggleCameraRotation;
     public bool isRun;
