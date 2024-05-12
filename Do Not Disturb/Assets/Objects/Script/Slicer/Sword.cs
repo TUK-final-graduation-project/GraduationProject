@@ -25,6 +25,9 @@ public class Sword : MonoBehaviour
     [Tooltip("자르기 각 부분에 적용되는 힘의 양")]
     private float cutForce = 3f;
 
+    [SerializeField]
+    public bool DestroySliced;
+
     private Mesh mesh;
     private Vector3[] vertices;
     private int[] triangles;
@@ -90,5 +93,9 @@ public class Sword : MonoBehaviour
         Rigidbody rigidbody = slices[1].GetComponent<Rigidbody>();
         Vector3 newNormal = transformedNormal + Vector3.up * cutForce;
         rigidbody.AddForce(newNormal, ForceMode.Impulse);
+
+        // 3초 후 객체 삭제
+        Destroy(slices[0], 3);
+        Destroy(slices[1], 3);
     }
 }
