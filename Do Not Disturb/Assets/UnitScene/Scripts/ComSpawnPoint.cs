@@ -47,7 +47,7 @@ public class ComSpawnPoint : MonoBehaviour
         }
 
         Debug.Log(unit.gameObject.name);
-        StartSpawn(1);
+        // StartSpawn(1);
     }
 
     public IEnumerator Spawn(int num)
@@ -68,6 +68,7 @@ public class ComSpawnPoint : MonoBehaviour
     {
         float minDistance = float.MaxValue;
         float tmp = 0;
+        target = comTarget;
         towers = FindObjectsOfType(typeof(Tower)) as Tower[];
         foreach (Tower tower in towers)
         {
