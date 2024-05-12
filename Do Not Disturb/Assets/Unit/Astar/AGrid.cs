@@ -21,7 +21,7 @@ public class AGrid : MonoBehaviour
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x/ nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y/ nodeDiameter);
-        lineRenderer = GetComponent<LineRenderer>();
+       //  lineRenderer = GetComponent<LineRenderer>();
         CreateGrid();
     }
     private void Update()
@@ -107,26 +107,26 @@ public class AGrid : MonoBehaviour
     //        }
     //    }
     //}
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
-        if (grid != null)
-        {
-            // Node playerNode = GetNodeFromWorldPoint(player.position);
-            foreach (Node n in grid)
-            {
-                Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
-                if (path != null)
-                {
-                    if (path.Contains(n))
-                    {
-                        Gizmos.color = Color.black;
-                    }
-                }
-                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-            }
-        }
-    }
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+    //    if (grid != null)
+    //    {
+    //        // Node playerNode = GetNodeFromWorldPoint(player.position);
+    //        foreach (Node n in grid)
+    //        {
+    //            Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
+    //            if (path != null)
+    //            {
+    //                if (path.Contains(n))
+    //                {
+    //                    Gizmos.color = Color.black;
+    //                }
+    //            }
+    //            Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+    //        }
+    //    }
+    //}
 
     private LineRenderer lineRenderer;
     public Transform[] points;

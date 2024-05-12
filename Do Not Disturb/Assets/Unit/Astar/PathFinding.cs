@@ -100,7 +100,7 @@ public class PathFinding : MonoBehaviour
         Vector3[] waypoints = SimplifyPath(path);
         Array.Reverse(waypoints);
         grid.path = path;
-        grid.drawLineDebug();
+        // grid.drawLineDebug();
         return waypoints;
     }
 
