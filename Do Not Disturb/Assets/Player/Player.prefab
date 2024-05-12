@@ -232,7 +232,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4965465124781638991
 Transform:
   m_ObjectHideFlags: 0
@@ -2457,6 +2457,7 @@ GameObject:
   - component: {fileID: 7619265769805099449}
   - component: {fileID: 3347088854269136705}
   - component: {fileID: 5639739003118141210}
+  - component: {fileID: 4830537598079876010}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2614,6 +2615,14 @@ MonoBehaviour:
   - {fileID: 946456355986515341}
   hasTools: 010101
   anim: {fileID: 1549371582996582903}
+--- !u!33 &4830537598079876010
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8926352752076417506}
+  m_Mesh: {fileID: 8911961673586061307, guid: 7cfe3009b592cd24eabc3d197398a784, type: 3}
 --- !u!1001 &280951728190286127
 PrefabInstance:
   m_ObjectHideFlags: 0
