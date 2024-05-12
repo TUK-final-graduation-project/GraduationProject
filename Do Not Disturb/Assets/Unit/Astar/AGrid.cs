@@ -21,6 +21,7 @@ public class AGrid : MonoBehaviour
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x/ nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y/ nodeDiameter);
+        lineRenderer = GetComponent<LineRenderer>();
         CreateGrid();
     }
     private void Update()
@@ -86,7 +87,27 @@ public class AGrid : MonoBehaviour
 
     public List<Node> path;
     //그리드 그리기
-    private void OnDrawGizmos()
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+    //    if (grid != null)
+    //    {
+    //        // Node playerNode = GetNodeFromWorldPoint(player.position);
+    //        foreach (Node n in grid)
+    //        {
+    //            Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
+    //            if ( path != null)
+    //            {
+    //                if (path.Contains(n))
+    //                {
+    //                    Gizmos.color = Color.black;
+    //                }
+    //            }
+    //            Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+    //        }
+    //    }
+    //}
+    private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
         if (grid != null)
@@ -95,7 +116,7 @@ public class AGrid : MonoBehaviour
             foreach (Node n in grid)
             {
                 Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
-                if ( path != null)
+                if (path != null)
                 {
                     if (path.Contains(n))
                     {
@@ -104,6 +125,24 @@ public class AGrid : MonoBehaviour
                 }
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
+        }
+    }
+
+    private LineRenderer lineRenderer;
+    public Transform[] points;
+
+    public void drawLineDebug()
+    {
+       
+        SetupLine(points);
+    }
+
+    void SetupLine(Transform[] points)
+    {
+        lineRenderer.positionCount = path.Count;
+        for (int i = 0; i < path.Count; i++)
+        {
+            lineRenderer.SetPosition(i, path[i].worldPosition);
         }
     }
 }
