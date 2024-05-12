@@ -6,6 +6,7 @@ using UnityEngine;
 public class PathFinding : MonoBehaviour
 {
     AstarManager requestManager;
+    public TestSceneManager testSceneManager;
     AGrid grid;
 
     // 시작 전 grid class 생성
@@ -100,7 +101,10 @@ public class PathFinding : MonoBehaviour
         Vector3[] waypoints = SimplifyPath(path);
         Array.Reverse(waypoints);
         grid.path = path;
-        grid.drawLineDebug();
+        if (testSceneManager.isAstar)
+        {
+            grid.drawLineDebug();
+        }
         return waypoints;
     }
 

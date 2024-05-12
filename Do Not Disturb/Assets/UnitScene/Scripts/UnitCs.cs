@@ -28,7 +28,6 @@ public class UnitCs : MonoBehaviour
     public GameObject bullet;
 
     Rigidbody rigid;
-    BoxCollider boxCollider;
 
     public Animator anim;
 
@@ -43,8 +42,7 @@ public class UnitCs : MonoBehaviour
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        boxCollider = GetComponent<BoxCollider>();
-        // anim = GetComponentInChildren<Animator>();
+        anim = GetComponentInChildren<Animator>();
 
         Invoke("RequestPathToMgr", 1);
     }
@@ -54,7 +52,7 @@ public class UnitCs : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
         transform.rotation = targetRotation;
         AstarManager.RequestPath(transform.position, target.transform.position, OnPathFound);
-       // anim.SetBool("isWalk", true);
+        //anim.SetBool("isWalk", true);
         isChase = true;
     }
 
@@ -76,6 +74,9 @@ public class UnitCs : MonoBehaviour
 
         while (true)
         {
+            // Debug.Log("cur: " + currentWaypoint + ", unit: " + transform.position);
+            //Debug.Log("int z: " + (int)transform.position.z);
+            //Debug.Log("int cur z: " + (int)currentWaypoint.z);
             if ((int)transform.position.x == (int)currentWaypoint.x && (int)transform.position.z == (int)currentWaypoint.z)
             {
                 targetIndex++;
@@ -124,11 +125,12 @@ public class UnitCs : MonoBehaviour
             StopCoroutine("FollowPath");
         }
     }
+
     IEnumerator Attack()
     {
         isChase = false;
         isAttack = true;
-       // anim.SetBool("isAttack", true);
+       anim.SetBool("isAttack", true);
 
         if (type == Type.Melee)
         {
@@ -156,9 +158,10 @@ public class UnitCs : MonoBehaviour
 
         isChase = true;
         isAttack = false;
-       // anim.SetBool("isAttack", false);
+        anim.SetBool("isAttack", false);
         StartCoroutine("FollowPath");
     }
+
     void FreezeVelocity()
     {
         if (isChase)
@@ -185,6 +188,7 @@ public class UnitCs : MonoBehaviour
         }
         RequestPathToMgr();
     }
+
     void FindNextTargetWithComTarget()
     {
         target = ComTarget;
@@ -212,7 +216,7 @@ public class UnitCs : MonoBehaviour
             //}
             if ( target == null || target == ComTarget)
             {
-                FindNextTargetWithComTarget();
+                // FindNextTargetWithComTarget();
             }
             Targeting();
             FreezeVelocity();
