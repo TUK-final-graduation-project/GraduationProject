@@ -107,32 +107,33 @@ public class AGrid : MonoBehaviour
     //        }
     //    }
     //}
-    //private void OnDrawGizmosSelected()
-    //{
-    //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
-    //    if (grid != null)
-    //    {
-    //        // Node playerNode = GetNodeFromWorldPoint(player.position);
-    //        foreach (Node n in grid)
-    //        {
-    //            Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
-    //            if (path != null)
-    //            {
-    //                if (path.Contains(n))
-    //                {
-    //                    Gizmos.color = Color.black;
-    //                }
-    //            }
-    //            Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
-    //        }
-    //    }
-    //}
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+        if (grid != null)
+        {
+            // Node playerNode = GetNodeFromWorldPoint(player.position);
+            foreach (Node n in grid)
+            {
+                Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
+                if (path != null)
+                {
+                    if (path.Contains(n))
+                    {
+                        Gizmos.color = Color.black;
+                    }
+                }
+                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+            }
+        }
+    }
 
     private LineRenderer lineRenderer;
     public Transform[] points;
 
     public void drawLineDebug()
     {
+       
         SetupLine(points);
     }
 

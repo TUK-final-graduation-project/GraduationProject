@@ -28,6 +28,7 @@ public class UnitCs : MonoBehaviour
     public GameObject bullet;
 
     Rigidbody rigid;
+    BoxCollider boxCollider;
 
     public Animator anim;
 
@@ -42,7 +43,8 @@ public class UnitCs : MonoBehaviour
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        anim = GetComponentInChildren<Animator>();
+        boxCollider = GetComponent<BoxCollider>();
+        // anim = GetComponentInChildren<Animator>();
 
         Invoke("RequestPathToMgr", 1);
     }
@@ -52,7 +54,7 @@ public class UnitCs : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
         transform.rotation = targetRotation;
         AstarManager.RequestPath(transform.position, target.transform.position, OnPathFound);
-        //anim.SetBool("isWalk", true);
+       // anim.SetBool("isWalk", true);
         isChase = true;
     }
 
@@ -126,7 +128,7 @@ public class UnitCs : MonoBehaviour
     {
         isChase = false;
         isAttack = true;
-       anim.SetBool("isAttack", true);
+       // anim.SetBool("isAttack", true);
 
         if (type == Type.Melee)
         {
@@ -154,7 +156,7 @@ public class UnitCs : MonoBehaviour
 
         isChase = true;
         isAttack = false;
-        anim.SetBool("isAttack", false);
+       // anim.SetBool("isAttack", false);
         StartCoroutine("FollowPath");
     }
     void FreezeVelocity()

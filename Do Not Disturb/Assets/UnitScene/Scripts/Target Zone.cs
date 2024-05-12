@@ -41,8 +41,8 @@ public class TargetZone : MonoBehaviour
             else
             {
 
-                collision.gameObject.GetComponent<UnitCs>().OnDestroy();
-                // collision.gameObject.GetComponent<UnitCs>().anim.SetBool("isWalk", false);
+                Destroy(collision.gameObject, 3);
+               // collision.gameObject.GetComponent<UnitCs>().anim.SetBool("isWalk", false);
                 // Debug.Log(collision.gameObject.name);
                 if ( gameObject.layer == 17)
                 {

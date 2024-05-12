@@ -15,7 +15,7 @@ public class TowerTargetZone : MonoBehaviour
         if (collision.gameObject.tag == "Unit")
         {
             // 데모를 위한 block
-            collision.gameObject.GetComponent<UnitCs>().OnDestroy();
+            //collision.gameObject.GetComponent<UnitCs>().OnDestroy();
 
             // collision.gameObject.GetComponent<UnitCs>().anim.SetBool("isWalk", false);
             // Debug.Log(collision.gameObject.name);

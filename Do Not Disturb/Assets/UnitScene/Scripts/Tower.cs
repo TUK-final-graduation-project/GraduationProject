@@ -43,7 +43,7 @@ public class Tower : MonoBehaviour
     {
 
         isAttack = true;
-        Quaternion originRotation = transform.rotation;
+
         switch (type)
         {
             case Type.Focus:
@@ -67,7 +67,7 @@ public class Tower : MonoBehaviour
                     Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
                     rotateObj.transform.rotation = targetRotation;
                     // 데모를 위한 block
-                    Wide();
+                    //Wide();
                     yield return new WaitForSeconds(10f);
                     rotateObj.GetComponent<Rotate>().isRotate = true;
                     break;
@@ -79,7 +79,6 @@ public class Tower : MonoBehaviour
                 break;
         }
         isAttack = false;
-        transform.rotation = originRotation;
     }
 
     void Wide()
