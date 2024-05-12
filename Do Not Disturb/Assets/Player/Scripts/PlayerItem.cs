@@ -48,7 +48,7 @@ public class PlayerItem : MonoBehaviour
                 Debug.Log(getItem.item.itemName + " »πµÊ«ﬂΩ¿¥œ¥Ÿ");
                 inven.AcquireItem(getItem.item);
                 Destroy(hitInfo.transform.gameObject);
-                InfoDisappear();
+                
             }
         }
     }
@@ -58,6 +58,7 @@ public class PlayerItem : MonoBehaviour
         {
             hitInfo = other;
             ItemInfoAppear();
+            Invoke("InfoDisappear", 2.0f);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -74,7 +75,7 @@ public class PlayerItem : MonoBehaviour
         pickupActivated = true;
         actionText.gameObject.SetActive(true);
         actionText.text = hitInfo.transform.GetComponent<ItemAcquisition>().item.itemName
-            + " »πµÊ " + "<color=yellow>" + "(E)" + "</color>";
+            + " »πµÊ " + "<color=yellow>" + "</color>";
     }
     private void InfoDisappear()
     {
