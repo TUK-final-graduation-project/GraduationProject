@@ -9,13 +9,16 @@ public class TestSceneManager : MonoBehaviour
     public bool isAstar = false;
     public bool vDown;
     public bool cDown;
+    bool xDown;
 
     public ComSpawnPoint fireLandMark;
+    public GameObject obs;
 
     void Update()
     {
         vDown = Input.GetButton("Debug SpawnUnit");
         cDown = Input.GetButton("Debug Astar");
+        xDown = Input.GetButton("Debug offObs");
         if (vDown && !isSpawnUnit)
         {
             Debug.Log("press v button");
@@ -28,6 +31,15 @@ public class TestSceneManager : MonoBehaviour
         {
             Debug.Log("on c button");
             isAstar = true;
+            
+        }
+        if (xDown)
+        {
+            obs.SetActive(false);
+        }
+        if (cDown)
+        {
+            obs.SetActive(true);
         }
     }
 
