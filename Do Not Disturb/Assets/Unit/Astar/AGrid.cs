@@ -86,7 +86,27 @@ public class AGrid : MonoBehaviour
 
     public List<Node> path;
     //그리드 그리기
-    private void OnDrawGizmos()
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+    //    if (grid != null)
+    //    {
+    //        // Node playerNode = GetNodeFromWorldPoint(player.position);
+    //        foreach (Node n in grid)
+    //        {
+    //            Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
+    //            if ( path != null)
+    //            {
+    //                if (path.Contains(n))
+    //                {
+    //                    Gizmos.color = Color.black;
+    //                }
+    //            }
+    //            Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
+    //        }
+    //    }
+    //}
+    private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
         if (grid != null)
@@ -95,7 +115,7 @@ public class AGrid : MonoBehaviour
             foreach (Node n in grid)
             {
                 Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
-                if ( path != null)
+                if (path != null)
                 {
                     if (path.Contains(n))
                     {
