@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
-using UnityEngine.UI;
-using System;
 using System.IO;
+using System;
+using UnityEngine.UI;
 
 public class Server : MonoBehaviour
 {
@@ -17,12 +16,10 @@ public class Server : MonoBehaviour
     TcpListener server;
     bool serverStarted;
 
-
     public void ServerCreate()
     {
         clients = new List<ServerClient>();
         disconnectList = new List<ServerClient>();
-
         try
         {
             int port = PortInput.text == "" ? 7777 : int.Parse(PortInput.text);
@@ -45,14 +42,12 @@ public class Server : MonoBehaviour
 
         foreach (ServerClient c in clients)
         {
-            // 클라이언트가 여전히 연결되있나?
             if (!IsConnected(c.tcp))
             {
                 c.tcp.Close();
                 disconnectList.Add(c);
                 continue;
             }
-            // 클라이언트로부터 체크 메시지를 받는다
             else
             {
                 NetworkStream s = c.tcp.GetStream();
@@ -65,7 +60,7 @@ public class Server : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < disconnectList.Count - 1; i++)
+        for (int i = 0; i < disconnectList.Count; i++)
         {
             Broadcast($"{disconnectList[i].clientName} 연결이 끊어졌습니다", clients);
 
@@ -73,8 +68,6 @@ public class Server : MonoBehaviour
             disconnectList.RemoveAt(i);
         }
     }
-
-
 
     bool IsConnected(TcpClient c)
     {
@@ -111,13 +104,19 @@ public class Server : MonoBehaviour
         Broadcast("%NAME", new List<ServerClient>() { clients[clients.Count - 1] });
     }
 
-
     void OnIncomingData(ServerClient c, string data)
     {
         if (data.Contains("&NAME"))
         {
             c.clientName = data.Split('|')[1];
             Broadcast($"{c.clientName}이 연결되었습니다", clients);
+            return;
+        }
+
+        // 클라이언트의 위치 데이터를 수신하고 이를 다른 클라이언트들에게 브로드캐스트
+        if (data.StartsWith("&POSITION"))
+        {
+            Broadcast(data, clients);
             return;
         }
 
@@ -141,7 +140,6 @@ public class Server : MonoBehaviour
         }
     }
 }
-
 
 public class ServerClient
 {
