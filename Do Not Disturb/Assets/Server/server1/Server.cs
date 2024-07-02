@@ -113,7 +113,7 @@ public class Server : MonoBehaviour
             return;
         }
 
-        // 클라이언트의 위치 데이터를 수신하고 이를 다른 클라이언트들에게 브로드캐스트
+        // Broadcast the position data with the client's unique identifier
         if (data.StartsWith("&POSITION"))
         {
             Broadcast(data, clients);
