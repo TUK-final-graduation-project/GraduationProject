@@ -51,7 +51,7 @@ public class Client : MonoBehaviour
         }
     }
 
-    private float sendPositionInterval = 1f; // 30프레임마다 한 번 전송
+    private float sendPositionInterval = 1f; // 1초마다 한 번 전송
     private float timeSinceLastSend = 0f;
 
     void Update()
@@ -59,7 +59,8 @@ public class Client : MonoBehaviour
         if (socketReady && stream.DataAvailable)
         {
             string data = reader.ReadLine();
-            if (data != null) {
+            if (data != null)
+            {
                 OnIncomingData(data);
             }
         }
@@ -70,18 +71,23 @@ public class Client : MonoBehaviour
         {
             SendPlayerPosition();
             timeSinceLastSend = 0f; // 누적된 시간 초기화
-            
         }
     }
 
-
     void OnIncomingData(string data)
     {
-        if (data == "%NAME")
+        if (data.StartsWith("%NAME"))
         {
             // 랜덤값을 사용자 이름으로 넣어준다
             clientName = NickInput.text == "" ? "Guest" + UnityEngine.Random.Range(1000, 10000) : NickInput.text;
             Send($"&NAME|{clientName}");
+            return;
+        }
+
+        // 플레이어 위치 데이터 수신
+        if (data.StartsWith("&POSITION"))
+        {
+            HandlePlayerPosition(data);
             return;
         }
 
@@ -100,7 +106,8 @@ public class Client : MonoBehaviour
     {
         if (!socketReady) return;
 
-        writer.WriteLine(position);
+        string positionData = JsonUtility.ToJson(position);
+        writer.WriteLine($"&POSITION|{positionData}");
         writer.Flush();
     }
 
@@ -124,10 +131,22 @@ public class Client : MonoBehaviour
 
         // 플레이어의 위치 정보를 JSON 형식으로 변환합니다.
         Vector3 playerPosition = player.transform.position;
-        //string positionData = JsonUtility.ToJson(playerPosition);
 
         // 서버로 위치 정보를 전송합니다.
         Send(playerPosition);
+    }
+
+    void HandlePlayerPosition(string data)
+    {
+        // 데이터에서 위치 정보 추출
+        string json = data.Split('|')[1];
+        Vector3 position = JsonUtility.FromJson<Vector3>(json);
+
+        // 수신한 위치로 플레이어 위치 업데이트
+        if (anotherPlayer != null)
+        {
+            anotherPlayer.UpdatePosition(position);
+        }
     }
 
     void OnApplicationQuit()
