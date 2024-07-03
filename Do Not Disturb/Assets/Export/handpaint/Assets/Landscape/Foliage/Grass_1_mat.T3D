@@ -1,0 +1,60 @@
+Begin Object Class=/Script/Engine.Material Name="Grass_1_mat" ExportPath="/Script/Engine.Material'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat'"
+   Begin Object Class=/Script/Engine.MaterialEditorOnlyData Name="Grass_1_matEditorOnlyData" ExportPath="/Script/Engine.MaterialEditorOnlyData'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat:Grass_1_matEditorOnlyData'"
+   End Object
+   Begin Object Class=/Script/Engine.MaterialExpressionConstant Name="MaterialExpressionConstant_1" ExportPath="/Script/Engine.MaterialExpressionConstant'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat:MaterialExpressionConstant_1'"
+   End Object
+   Begin Object Class=/Script/Engine.MaterialExpressionConstant Name="MaterialExpressionConstant_2" ExportPath="/Script/Engine.MaterialExpressionConstant'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat:MaterialExpressionConstant_2'"
+   End Object
+   Begin Object Class=/Script/Engine.MaterialExpressionMultiply Name="MaterialExpressionMultiply_0" ExportPath="/Script/Engine.MaterialExpressionMultiply'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat:MaterialExpressionMultiply_0'"
+   End Object
+   Begin Object Class=/Script/Engine.MaterialExpressionTextureSample Name="MaterialExpressionTextureSample_0" ExportPath="/Script/Engine.MaterialExpressionTextureSample'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat:MaterialExpressionTextureSample_0'"
+   End Object
+   Begin Object Class=/Script/UnrealEd.SceneThumbnailInfoWithPrimitive Name="SceneThumbnailInfoWithPrimitive_0" ExportPath="/Script/UnrealEd.SceneThumbnailInfoWithPrimitive'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat:SceneThumbnailInfoWithPrimitive_0'"
+   End Object
+   Begin Object Name="Grass_1_matEditorOnlyData" ExportPath="/Script/Engine.MaterialEditorOnlyData'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat:Grass_1_matEditorOnlyData'"
+      BaseColor=(Constant=(B=0,G=0,R=0,A=0),Expression="/Script/Engine.MaterialExpressionTextureSample'Grass_1_mat:MaterialExpressionTextureSample_0'",Mask=1,MaskR=1,MaskG=1,MaskB=1)
+      Roughness=(Constant=0.000000,Expression="/Script/Engine.MaterialExpressionConstant'Grass_1_mat:MaterialExpressionConstant_1'")
+      EmissiveColor=(Expression="/Script/Engine.MaterialExpressionMultiply'Grass_1_mat:MaterialExpressionMultiply_0'")
+      Opacity=(Constant=0.000000,Expression="/Script/Engine.MaterialExpressionTextureSample'Grass_1_mat:MaterialExpressionTextureSample_0'",OutputIndex=4,Mask=1,MaskA=1)
+      OpacityMask=(Constant=0.000000,Expression="/Script/Engine.MaterialExpressionTextureSample'Grass_1_mat:MaterialExpressionTextureSample_0'",OutputIndex=4,Mask=1,MaskA=1)
+      ExpressionCollection=(Expressions=("/Script/Engine.MaterialExpressionTextureSample'Grass_1_mat:MaterialExpressionTextureSample_0'","/Script/Engine.MaterialExpressionConstant'Grass_1_mat:MaterialExpressionConstant_1'","/Script/Engine.MaterialExpressionMultiply'Grass_1_mat:MaterialExpressionMultiply_0'","/Script/Engine.MaterialExpressionConstant'Grass_1_mat:MaterialExpressionConstant_2'"))
+   End Object
+   Begin Object Name="MaterialExpressionConstant_1" ExportPath="/Script/Engine.MaterialExpressionConstant'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat:MaterialExpressionConstant_1'"
+      R=1.000000
+      MaterialExpressionEditorX=-194
+      MaterialExpressionEditorY=233
+      MaterialExpressionGuid=45767D08440D7989C26130A1B10F7E69
+      Material="/Script/Engine.Material'Grass_1_mat'"
+   End Object
+   Begin Object Name="MaterialExpressionConstant_2" ExportPath="/Script/Engine.MaterialExpressionConstant'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat:MaterialExpressionConstant_2'"
+      R=0.025000
+      MaterialExpressionEditorX=-288
+      MaterialExpressionEditorY=-64
+      MaterialExpressionGuid=45767D08440D7989C26130A1B10F7E69
+      Material="/Script/Engine.Material'Grass_1_mat'"
+   End Object
+   Begin Object Name="MaterialExpressionMultiply_0" ExportPath="/Script/Engine.MaterialExpressionMultiply'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat:MaterialExpressionMultiply_0'"
+      A=(Expression="/Script/Engine.MaterialExpressionTextureSample'Grass_1_mat:MaterialExpressionTextureSample_0'",Mask=1,MaskR=1,MaskG=1,MaskB=1)
+      B=(Expression="/Script/Engine.MaterialExpressionConstant'Grass_1_mat:MaterialExpressionConstant_2'")
+      MaterialExpressionEditorX=-112
+      MaterialExpressionEditorY=-80
+      MaterialExpressionGuid=FAEAFB294EAA16B6113F4E996C52A892
+      Material="/Script/Engine.Material'Grass_1_mat'"
+   End Object
+   Begin Object Name="MaterialExpressionTextureSample_0" ExportPath="/Script/Engine.MaterialExpressionTextureSample'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat:MaterialExpressionTextureSample_0'"
+      Texture="/Script/Engine.Texture2D'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_texture.Grass_1_texture'"
+      MaterialExpressionEditorX=-352
+      MaterialExpressionGuid=0F9E0C664E0D91F3521ADA8DA4C9A9EF
+      Material="/Script/Engine.Material'Grass_1_mat'"
+   End Object
+   Begin Object Name="SceneThumbnailInfoWithPrimitive_0" ExportPath="/Script/UnrealEd.SceneThumbnailInfoWithPrimitive'/Game/HandPaintedEnvironment/Assets/Landscape/Foliage/Grass_1_mat.Grass_1_mat:SceneThumbnailInfoWithPrimitive_0'"
+   End Object
+   BlendMode=BLEND_Masked
+   bUsedWithStaticLighting=True
+   bUsedWithInstancedStaticMeshes=True
+   StateId=EA0C395FA71314BE0EC0A1BC7E77CB5A
+   ReferencedTextureGuids(0)=90475025403CFED3E5C83BB5C8B00AF0
+   EditorOnlyData="/Script/Engine.MaterialEditorOnlyData'Grass_1_matEditorOnlyData'"
+   ThumbnailInfo="/Script/UnrealEd.SceneThumbnailInfoWithPrimitive'SceneThumbnailInfoWithPrimitive_0'"
+   LightingGuid=F857A2B1496AE7F605ECC9875D251F92
+End Object
