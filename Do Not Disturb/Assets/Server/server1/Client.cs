@@ -10,6 +10,7 @@ public class Client : MonoBehaviour
 {
     public InputField IPInput, PortInput, NickInput;
     string clientName;
+    string clientID = Guid.NewGuid().ToString(); // Unique identifier for this client
 
     bool socketReady;
     TcpClient socket;
@@ -107,7 +108,7 @@ public class Client : MonoBehaviour
         if (!socketReady) return;
 
         string positionData = JsonUtility.ToJson(position);
-        writer.WriteLine($"&POSITION|{positionData}");
+        writer.WriteLine($"&POSITION|{clientID}|{positionData}");
         writer.Flush();
     }
 
@@ -138,11 +139,16 @@ public class Client : MonoBehaviour
 
     void HandlePlayerPosition(string data)
     {
-        // 데이터에서 위치 정보 추출
-        string json = data.Split('|')[1];
+        string[] dataParts = data.Split('|');
+        string senderID = dataParts[1];
+        string json = dataParts[2];
+
+        // Ignore the position if it is from the same client
+        if (senderID == clientID) return;
+
         Vector3 position = JsonUtility.FromJson<Vector3>(json);
 
-        // 수신한 위치로 플레이어 위치 업데이트
+        // Update the position for another player
         if (anotherPlayer != null)
         {
             anotherPlayer.UpdatePosition(position);
