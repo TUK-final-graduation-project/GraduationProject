@@ -12,6 +12,7 @@ public class UnitAttack : MonoBehaviour
 
     private void Update()
     {
+        // 자동 삭제
         time += 1f;
 
         if (time > 100f && !isMelee)

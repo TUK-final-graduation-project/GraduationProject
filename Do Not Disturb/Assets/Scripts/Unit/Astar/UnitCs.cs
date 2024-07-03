@@ -31,7 +31,7 @@ public class UnitCs : MonoBehaviour
 
     public Animator anim;
 
-    float speed = 10;
+    public float speed = 10;
     Vector3[] path;
     int targetIndex;
 
@@ -289,7 +289,7 @@ public class UnitCs : MonoBehaviour
         StopCoroutine("FollowPath");
         isDead = true;
         meshObj.SetActive(false);
-        effectObj.SetActive(true);
+        // effectObj.SetActive(true);
 
         Destroy(gameObject, 3);
     }
