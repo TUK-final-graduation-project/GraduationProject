@@ -96,7 +96,7 @@ public class AGrid : MonoBehaviour
     //        foreach (Node n in grid)
     //        {
     //            Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
-    //            if ( path != null)
+    //            if (path != null)
     //            {
     //                if (path.Contains(n))
     //                {
