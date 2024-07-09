@@ -40,15 +40,27 @@ public class PlayerItem : MonoBehaviour
 
     private void CanPickUp()
     {
-        if (pickupActivated && hitInfo.transform != null)
-        {
-            ItemAcquisition getItem = hitInfo.transform.GetComponent<ItemAcquisition>();
-            if (getItem != null && inven != null)
+        if (pickupActivated) {
+            if (hitInfo.transform != null) {
+                {
+                    ItemAcquisition getItem = hitInfo.transform.GetComponent<ItemAcquisition>();
+                    if (getItem != null && inven != null)
+                    {
+                        Debug.Log(getItem.item.itemName + " È¹µæÇß½À´Ï´Ù / ÃÑ " + getItem.item.itemCount +"°³");
+                        inven.AcquireItem(getItem.item);
+                        Destroy(hitInfo.transform.gameObject);
+
+                    }
+                }
+            }
+            else
             {
-                Debug.Log(getItem.item.itemName + " È¹µæÇß½À´Ï´Ù");
-                inven.AcquireItem(getItem.item);
-                Destroy(hitInfo.transform.gameObject);
-                
+                if (hitInfo == null)
+                {
+                    Debug.LogWarning("BoxCollider°¡ ÆÄ±«, CanPickUp ¸Þ¼­µå¸¦ Á¾·á");
+                    return;
+                }
+
             }
         }
     }

@@ -10,7 +10,6 @@ public class InventorySlot : MonoBehaviour
     public int itemCount; // 획득한 아이템의 개수.
     public Image itemImage; // 아이템의 이미지.
 
-
     // 필요한 컴포넌트.
     [SerializeField]
     private Text text_Count;
@@ -67,7 +66,7 @@ public class InventorySlot : MonoBehaviour
             text_Count.text = "0";
             go_CountImage.SetActive(false);
         }
-
+        item.itemCount = itemCount;
         SetColor(1);
     }
 
@@ -77,6 +76,7 @@ public class InventorySlot : MonoBehaviour
     {
         itemCount += count;
         text_Count.text = itemCount.ToString();
+        item.itemCount = itemCount;
         Debug.Log("count : " + itemCount);
         if (itemCount <= 0)
             ClearSlot();
