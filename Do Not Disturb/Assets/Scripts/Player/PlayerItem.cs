@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PlayerItem : MonoBehaviour
 {
-
     [SerializeField]
     private float range; // ½Àµæ °¡´ÉÇÑ ÃÖ´ë °Å¸®.
 
@@ -40,30 +39,20 @@ public class PlayerItem : MonoBehaviour
 
     private void CanPickUp()
     {
-        if (pickupActivated) {
-            if (hitInfo.transform != null) {
-                {
-                    ItemAcquisition getItem = hitInfo.transform.GetComponent<ItemAcquisition>();
-                    if (getItem != null && inven != null)
-                    {
-                        Debug.Log(getItem.item.itemName + " È¹µæÇß½À´Ï´Ù / ÃÑ " + getItem.item.itemCount +"°³");
-                        inven.AcquireItem(getItem.item);
-                        Destroy(hitInfo.transform.gameObject);
-
-                    }
-                }
-            }
-            else
+        if (pickupActivated && hitInfo != null)
+        {
+            ItemAcquisition getItem = hitInfo.transform.GetComponent<ItemAcquisition>();
+            if (getItem != null && inven != null)
             {
-                if (hitInfo == null)
-                {
-                    Debug.LogWarning("BoxCollider°¡ ÆÄ±«, CanPickUp ¸Þ¼­µå¸¦ Á¾·á");
-                    return;
-                }
-
+                Debug.Log(getItem.item.itemName + " È¹µæÇß½À´Ï´Ù / ÃÑ " + getItem.item.itemCount + "°³");
+                inven.AcquireItem(getItem.item);
+                Destroy(hitInfo.transform.gameObject);
+                hitInfo = null; // Set hitInfo to null after destroying the item
+                InfoDisappear(); // Ensure the info is hidden after picking up
             }
         }
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "Item")
@@ -73,6 +62,7 @@ public class PlayerItem : MonoBehaviour
             Invoke("InfoDisappear", 2.0f);
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Item"))
@@ -89,6 +79,7 @@ public class PlayerItem : MonoBehaviour
         actionText.text = hitInfo.transform.GetComponent<ItemAcquisition>().item.itemName
             + " È¹µæ " + "<color=yellow>" + "</color>";
     }
+
     private void InfoDisappear()
     {
         pickupActivated = false;
