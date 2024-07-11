@@ -18,7 +18,7 @@ public class UnitCs : MonoBehaviour
     public bool isAttack;
     public GameObject target;
     bool isDamage;
-    public GameObject ComTarget;
+    public GameObject UserBase;
     public Tower[] towers;
 
     [Header("Melee Unit")]
@@ -52,7 +52,6 @@ public class UnitCs : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
         transform.rotation = targetRotation;
         AstarManager.RequestPath(transform.position, target.transform.position, OnPathFound);
-        //anim.SetBool("isWalk", true);
         isChase = true;
     }
 
@@ -62,6 +61,7 @@ public class UnitCs : MonoBehaviour
         if (pathSuccessful && this != null)
         {
             path = newPath;
+            targetIndex = 0;
             StopCoroutine("FollowPath");
             StartCoroutine("FollowPath");
         }
@@ -74,7 +74,7 @@ public class UnitCs : MonoBehaviour
 
         while (true)
         {
-            // Debug.Log("cur: " + currentWaypoint + ", unit: " + transform.position);
+            //Debug.Log("cur: " + currentWaypoint + ", unit: " + transform.position);
             //Debug.Log("int z: " + (int)transform.position.z);
             //Debug.Log("int cur z: " + (int)currentWaypoint.z);
             if ((int)transform.position.x == (int)currentWaypoint.x && (int)transform.position.z == (int)currentWaypoint.z)
@@ -82,6 +82,7 @@ public class UnitCs : MonoBehaviour
                 targetIndex++;
                 if (targetIndex >= path.Length)
                 {
+                    Debug.Log("?");
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
@@ -121,8 +122,8 @@ public class UnitCs : MonoBehaviour
         if (rayHits.Length > 0 && !isAttack)
         {
             // Debug.Log(rayHits[0].collider.gameObject.name);
-            StartCoroutine(Attack());
             StopCoroutine("FollowPath");
+            StartCoroutine(Attack());
         }
     }
 
@@ -130,7 +131,7 @@ public class UnitCs : MonoBehaviour
     {
         isChase = false;
         isAttack = true;
-       anim.SetBool("isAttack", true);
+        anim.SetBool("isAttack", true);
 
         if (type == Type.Melee)
         {
@@ -159,7 +160,7 @@ public class UnitCs : MonoBehaviour
         isChase = true;
         isAttack = false;
         anim.SetBool("isAttack", false);
-        StartCoroutine("FollowPath");
+        FindNextTarget();
     }
 
     void FreezeVelocity()
@@ -173,27 +174,9 @@ public class UnitCs : MonoBehaviour
 
     void FindNextTarget()
     {
-        target = ComTarget;
-        float minDistance = float.MaxValue;
-        float tmp = 0;
-        towers = FindObjectsOfType(typeof(Tower)) as Tower[];
-        foreach (Tower tower in towers)
-        {
-            tmp = Vector3.Distance(transform.position, tower.transform.position);
-            if (minDistance > tmp)
-            {
-                minDistance = tmp;
-                target = tower.gameObject;
-            }
-        }
-        RequestPathToMgr();
-    }
-
-    void FindNextTargetWithComTarget()
-    {
-        target = ComTarget;
-        float minDistance = Vector3.Distance(transform.position, ComTarget.transform.position);
-        float tmp = 0;
+        target = UserBase;
+        float minDistance = Vector3.Distance(transform.position, UserBase.transform.position);
+        float tmp;
         towers = FindObjectsOfType(typeof(Tower)) as Tower[];
         foreach (Tower tower in towers)
         {
@@ -210,13 +193,9 @@ public class UnitCs : MonoBehaviour
     {
         if (!isDead)
         {
-            //if ( target == null)
-            //{
-            //    FindNextTarget();
-            //}
-            if ( target == null || target == ComTarget)
+            if ( target == null)
             {
-                FindNextTargetWithComTarget();
+                FindNextTarget();
             }
             Targeting();
             FreezeVelocity();

@@ -89,8 +89,6 @@ public class GameManager : MonoBehaviour
     {
         // LateUpdate: Update()가 끝난 후 호출되는 생명주기
 
-        
-
         int hour = (int)(uiTime / 3600);
         int min = (int)((uiTime - hour * 3600) / 60);
         int second = (int)(uiTime % 60);
