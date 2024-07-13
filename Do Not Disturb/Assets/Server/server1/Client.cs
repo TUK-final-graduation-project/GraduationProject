@@ -17,7 +17,7 @@ public class Client : MonoBehaviour
     NetworkStream stream;
     StreamWriter writer;
     StreamReader reader;
-    Player_Movement player;
+    PlayerMovement player;
     AnotherPlayer anotherPlayer;
 
     public Vector3 playerPosition;
@@ -25,7 +25,7 @@ public class Client : MonoBehaviour
     void Start()
     {
         // Player_Movement 스크립트를 가지고 있는 게임 오브젝트를 찾습니다.
-        player = FindObjectOfType<Player_Movement>();
+        player = FindObjectOfType<PlayerMovement>();
         anotherPlayer = FindObjectOfType<AnotherPlayer>();
     }
 
