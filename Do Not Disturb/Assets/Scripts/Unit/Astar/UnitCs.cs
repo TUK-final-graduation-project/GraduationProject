@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.AI;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class UnitCs : MonoBehaviour
 {
@@ -26,6 +29,7 @@ public class UnitCs : MonoBehaviour
 
     [Header("Range Unit")]
     public GameObject bullet;
+    public Transform BulletSpawnPoint;
 
     Rigidbody rigid;
 
@@ -49,7 +53,7 @@ public class UnitCs : MonoBehaviour
 
     public void RequestPathToMgr()
     {
-        Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
+        UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
         transform.rotation = targetRotation;
         AstarManager.RequestPath(transform.position, target.transform.position, OnPathFound);
         isChase = true;
@@ -132,33 +136,39 @@ public class UnitCs : MonoBehaviour
         isChase = false;
         isAttack = true;
         anim.SetBool("isAttack", true);
+            Rigidbody rb = GetComponent<Rigidbody>();
+            rb.isKinematic = true;
 
         if (type == Type.Melee)
         {
-            yield return new WaitForSeconds(0.1f);
-            rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
-            meleeArea.enabled = true;
+            //yield return new WaitForSeconds(0.1f);
+            //rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
+            //meleeArea.enabled = true;
 
-            yield return new WaitForSeconds(0.5f);
-            rigid.velocity = Vector3.zero;
-            meleeArea.enabled = false;
+            //yield return new WaitForSeconds(0.5f);
+            //rigid.velocity = Vector3.zero;
+            //meleeArea.enabled = false;
 
-            yield return new WaitForSeconds(0.5f);
+            //yield return new WaitForSeconds(0.5f);
         }
         else if (type == Type.Range)
         {
             yield return new WaitForSeconds(0.5f);
             //Debug.Log(transform.forward);
             //Debug.Log(transform.rotation);
-            GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
+            GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 1.5f, Quaternion.identity);
             Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
-            rigidBullet.velocity = transform.forward * 50;
+
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
+
 
             yield return new WaitForSeconds(2f);
         }
 
         isChase = true;
         isAttack = false;
+        rb.isKinematic = false;
         anim.SetBool("isAttack", false);
         FindNextTarget();
     }
@@ -193,7 +203,7 @@ public class UnitCs : MonoBehaviour
     {
         if (!isDead)
         {
-            if ( target == null)
+            if ( target == null )
             {
                 FindNextTarget();
             }
@@ -244,7 +254,7 @@ public class UnitCs : MonoBehaviour
         if (HP <= 0)
         {
             gameObject.layer = gameObject.layer + 1;
-          //  anim.SetTrigger("doDie");
+            
             isChase = false;
             // nav.enabled = false;
             isDamage = false;
@@ -265,9 +275,10 @@ public class UnitCs : MonoBehaviour
     }
     public void OnDestroy()
     {
+        anim.SetBool("isDie", true);
         StopCoroutine("FollowPath");
         isDead = true;
-        meshObj.SetActive(false);
+       //  meshObj.SetActive(false);
         // effectObj.SetActive(true);
 
         Destroy(gameObject, 3);
