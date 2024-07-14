@@ -10,6 +10,7 @@ public class UnitCs : MonoBehaviour
 {
     public enum Type { Melee, Range };
     public enum Team { User, Com };
+    public enum UnitState { Chase, Attack, Targeting, Dead, Damaged };
 
     [Header("Unit Type")]
     public Type type;
@@ -17,32 +18,30 @@ public class UnitCs : MonoBehaviour
 
     [Header("Unit State")]
     public int HP;
+    public UnitState State;
     public bool isChase;
     public bool isAttack;
     public GameObject target;
-    bool isDamage;
     public GameObject UserBase;
-    public Tower[] towers;
+    public float speed = 10;
+    Animator anim;
+    bool isDamage;
+    Rigidbody rigid;
+    Tower[] towers;
+    bool isDead = false;
 
     [Header("Melee Unit")]
     public BoxCollider meleeArea;
 
     [Header("Range Unit")]
     public GameObject bullet;
-    public Transform BulletSpawnPoint;
 
-    Rigidbody rigid;
-
-    public Animator anim;
-
-    public float speed = 10;
     Vector3[] path;
     int targetIndex;
 
     public GameObject meshObj;
     public GameObject effectObj;
 
-    bool isDead = false;
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -56,7 +55,7 @@ public class UnitCs : MonoBehaviour
         UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
         transform.rotation = targetRotation;
         AstarManager.RequestPath(transform.position, target.transform.position, OnPathFound);
-        isChase = true;
+        State = UnitState.Chase;
     }
 
     // 길 찾기 시작하기
@@ -78,15 +77,11 @@ public class UnitCs : MonoBehaviour
 
         while (true)
         {
-            //Debug.Log("cur: " + currentWaypoint + ", unit: " + transform.position);
-            //Debug.Log("int z: " + (int)transform.position.z);
-            //Debug.Log("int cur z: " + (int)currentWaypoint.z);
             if ((int)transform.position.x == (int)currentWaypoint.x && (int)transform.position.z == (int)currentWaypoint.z)
             {
                 targetIndex++;
                 if (targetIndex >= path.Length)
                 {
-                    Debug.Log("?");
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
@@ -123,21 +118,20 @@ public class UnitCs : MonoBehaviour
             rayHits =
                 Physics.SphereCastAll(transform.position, targetRadius, transform.forward, targetRange, LayerMask.GetMask("User"));
         }
-        if (rayHits.Length > 0 && !isAttack)
+        if (rayHits.Length > 0 && State != UnitState.Attack)
         {
             // Debug.Log(rayHits[0].collider.gameObject.name);
             StopCoroutine("FollowPath");
+            target = rayHits[0].collider.gameObject;
             StartCoroutine(Attack());
         }
     }
 
     IEnumerator Attack()
     {
-        isChase = false;
-        isAttack = true;
+        State = UnitState.Attack;
         anim.SetBool("isAttack", true);
-            Rigidbody rb = GetComponent<Rigidbody>();
-            rb.isKinematic = true;
+        rigid.isKinematic = true;
 
         if (type == Type.Melee)
         {
@@ -154,28 +148,30 @@ public class UnitCs : MonoBehaviour
         else if (type == Type.Range)
         {
             yield return new WaitForSeconds(0.5f);
-            //Debug.Log(transform.forward);
-            //Debug.Log(transform.rotation);
+
             GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 1.5f, Quaternion.identity);
             Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
 
             Vector3 direction = (target.transform.position - transform.position).normalized;
             rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
 
-
             yield return new WaitForSeconds(2f);
         }
 
-        isChase = true;
-        isAttack = false;
-        rb.isKinematic = false;
+        State = UnitState.Chase;
         anim.SetBool("isAttack", false);
-        FindNextTarget();
+        rigid.isKinematic = false;
+        if (target != null)
+        {
+            State = UnitState.Targeting;
+            // StartCoroutine(Attack());
+            RequestPathToMgr();
+        }
     }
 
     void FreezeVelocity()
     {
-        if (isChase)
+        if (rigid.isKinematic == false)
         {
             rigid.velocity = Vector3.zero;
             rigid.angularVelocity = Vector3.zero;
@@ -201,13 +197,16 @@ public class UnitCs : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (!isDead)
+        if (State != UnitState.Dead)
         {
             if ( target == null )
             {
                 FindNextTarget();
             }
-            Targeting();
+            if ( State != UnitState.Targeting)
+            {
+                Targeting();
+            }
             FreezeVelocity();
 
         }
@@ -217,7 +216,7 @@ public class UnitCs : MonoBehaviour
     {
         if (other.tag == "UserAttack" && team == Team.Com)
         {
-            if (!isDamage) // 무적 상태가 아닐 때
+            if (State != UnitState.Damaged) // 무적 상태가 아닐 때
             {
                 UnitAttack attack = other.GetComponent<UnitAttack>();
                 HP -= attack.damage;
@@ -231,7 +230,7 @@ public class UnitCs : MonoBehaviour
         }
         else if (other.tag == "ComAttack" && team == Team.User)
         {
-            if (!isDamage) // 무적 상태가 아닐 때
+            if (State != UnitState.Damaged) // 무적 상태가 아닐 때
             {
                 UnitAttack attack = other.GetComponent<UnitAttack>();
                 HP -= attack.damage;
@@ -246,18 +245,15 @@ public class UnitCs : MonoBehaviour
     }
     IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
     {
-        isDamage = true;
-        isChase = false;
         StopCoroutine("FollowPath");
         yield return new WaitForSeconds(0.1f);
+
+        UnitState tmp = State;
+        State = UnitState.Damaged;
 
         if (HP <= 0)
         {
             gameObject.layer = gameObject.layer + 1;
-            
-            isChase = false;
-            // nav.enabled = false;
-            isDamage = false;
 
             reactVec = reactVec.normalized;
             reactVec += Vector3.up;
@@ -268,8 +264,7 @@ public class UnitCs : MonoBehaviour
         else
         {
             yield return new WaitForSeconds(1f); // 1초 무적
-            isDamage = false;
-            isChase = true;
+            State = tmp;
             StartCoroutine("FollowPath");
         }
     }
@@ -277,8 +272,7 @@ public class UnitCs : MonoBehaviour
     {
         anim.SetBool("isDie", true);
         StopCoroutine("FollowPath");
-        isDead = true;
-       //  meshObj.SetActive(false);
+        State = UnitState.Dead;
         // effectObj.SetActive(true);
 
         Destroy(gameObject, 3);
