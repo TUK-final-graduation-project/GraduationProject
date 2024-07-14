@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PlayerItem : MonoBehaviour
 {
-
     [SerializeField]
     private float range; // Ω¿µÊ ∞°¥…«— √÷¥Î ∞≈∏Æ.
 
@@ -40,18 +39,20 @@ public class PlayerItem : MonoBehaviour
 
     private void CanPickUp()
     {
-        if (pickupActivated && hitInfo.transform != null)
+        if (pickupActivated && hitInfo != null)
         {
             ItemAcquisition getItem = hitInfo.transform.GetComponent<ItemAcquisition>();
             if (getItem != null && inven != null)
             {
-                Debug.Log(getItem.item.itemName + " »πµÊ«ﬂΩ¿¥œ¥Ÿ");
+                Debug.Log(getItem.item.itemName + " »πµÊ«ﬂΩ¿¥œ¥Ÿ / √— " + getItem.item.itemCount + "∞≥");
                 inven.AcquireItem(getItem.item);
                 Destroy(hitInfo.transform.gameObject);
-                
+                hitInfo = null; // Set hitInfo to null after destroying the item
+                InfoDisappear(); // Ensure the info is hidden after picking up
             }
         }
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "Item")
@@ -61,6 +62,7 @@ public class PlayerItem : MonoBehaviour
             Invoke("InfoDisappear", 2.0f);
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Item"))
@@ -77,6 +79,7 @@ public class PlayerItem : MonoBehaviour
         actionText.text = hitInfo.transform.GetComponent<ItemAcquisition>().item.itemName
             + " »πµÊ " + "<color=yellow>" + "</color>";
     }
+
     private void InfoDisappear()
     {
         pickupActivated = false;
