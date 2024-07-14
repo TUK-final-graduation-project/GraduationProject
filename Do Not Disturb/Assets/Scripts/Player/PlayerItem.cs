@@ -22,37 +22,6 @@ public class PlayerItem : MonoBehaviour
 
     private Collider hitInfo; // Ãæµ¹Ã¼ Á¤º¸ ÀúÀå.
 
-    // Update is called once per frame
-    void Update()
-    {
-        CanPickUp();
-        //TryAction();
-    }
-
-    private void TryAction()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            CanPickUp();
-        }
-    }
-
-    private void CanPickUp()
-    {
-        if (pickupActivated && hitInfo != null)
-        {
-            ItemAcquisition getItem = hitInfo.transform.GetComponent<ItemAcquisition>();
-            if (getItem != null && inven != null)
-            {
-                Debug.Log(getItem.item.itemName + " È¹µæÇß½À´Ï´Ù / ÃÑ " + getItem.item.itemCount + "°³");
-                inven.AcquireItem(getItem.item);
-                Destroy(hitInfo.transform.gameObject);
-                hitInfo = null; // Set hitInfo to null after destroying the item
-                InfoDisappear(); // Ensure the info is hidden after picking up
-            }
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "Item")
@@ -60,6 +29,9 @@ public class PlayerItem : MonoBehaviour
             hitInfo = other;
             ItemInfoAppear();
             Invoke("InfoDisappear", 2.0f);
+
+            // ¾ÆÀÌÅÛ È¹µæ
+            CanPickUp();
         }
     }
 
@@ -72,12 +44,35 @@ public class PlayerItem : MonoBehaviour
         }
     }
 
+    private void CanPickUp()
+    {
+        if (hitInfo != null)
+        {
+            ItemAcquisition getItem = hitInfo.transform.GetComponent<ItemAcquisition>();
+            if (getItem != null && inven != null)
+            {
+                Debug.Log(getItem.item.itemName + " È¹µæÇß½À´Ï´Ù / ÃÑ " + getItem.item.itemCount + "°³");
+                inven.AcquireItem(getItem.item);
+                Destroy(hitInfo.transform.gameObject);
+                hitInfo = null; // ¾ÆÀÌÅÛÀ» ÆÄ±«ÇÑ ÈÄ hitInfo¸¦ null·Î ¼³Á¤
+                InfoDisappear(); // ¾ÆÀÌÅÛ È¹µæ ÈÄ Á¤º¸ ¼û±è
+            }
+            else
+            {
+                Debug.LogWarning("ItemAcquisition ¶Ç´Â Inventory ÄÄÆ÷³ÍÆ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            }
+        }
+    }
+
     private void ItemInfoAppear()
     {
-        pickupActivated = true;
-        actionText.gameObject.SetActive(true);
-        actionText.text = hitInfo.transform.GetComponent<ItemAcquisition>().item.itemName
-            + " È¹µæ " + "<color=yellow>" + "</color>";
+        if (hitInfo != null && hitInfo.transform.GetComponent<ItemAcquisition>() != null)
+        {
+            pickupActivated = true;
+            actionText.gameObject.SetActive(true);
+            actionText.text = hitInfo.transform.GetComponent<ItemAcquisition>().item.itemName
+                + " È¹µæ " + "<color=yellow>" + "</color>";
+        }
     }
 
     private void InfoDisappear()
