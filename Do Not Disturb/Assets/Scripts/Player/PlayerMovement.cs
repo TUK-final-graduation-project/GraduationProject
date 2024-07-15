@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
     void InputMovement()
     {
-        if (controller == null || anim == null) return; 
+        if (controller == null || anim == null) return;
 
         float finalSpeed = isRun ? runSpeed : speed;
         Vector3 forward = transform.TransformDirection(Vector3.forward);
@@ -104,12 +104,9 @@ public class PlayerMovement : MonoBehaviour
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, Time.deltaTime * (1.0f / decelerationTime));
         }
 
-        // Jump
-        if (controller.isGrounded)
-        { 
-            //Debug.Log("Grounded");
-            yVelocity.y = -2f; // 작은 값을 설정하여 지면에 붙게 함
-            if (jDown)
+        if (jDown)
+        {
+            if (!isJump)
             {
                 yVelocity.y = jumpForce;
                 isJump = true;
@@ -117,6 +114,7 @@ public class PlayerMovement : MonoBehaviour
                 anim.SetTrigger("Jump"); // 점프 애니메이션 트리거
             }
         }
+
         else
         {
             yVelocity.y += gravity * Time.deltaTime;
@@ -140,6 +138,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            //anim.SetBool("Idle", true);
+            isJump = false;
+        }
+    }
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (controller.isGrounded)
