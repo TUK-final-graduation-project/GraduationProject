@@ -40,14 +40,14 @@ public class MyAnotherPlayer : MonoBehaviour
         anim.SetBool("Dead", state == State.DEAD);
         anim.SetBool("Attack", state == State.ATTACK);
         anim.SetBool("Hit", state == State.HIT);
-        anim.SetBool("Work", state == State.WALK);
+        anim.SetBool("Walk", state == State.WALK);
         anim.SetBool("Run", state == State.RUN);
         if (state == State.IDLE)
         {
             anim.SetBool("Dead", false);
             anim.SetBool("Attack", false);
             anim.SetBool("Hit", false);
-            anim.SetBool("Work", false);
+            anim.SetBool("Walk", false);
             anim.SetBool("Run", false);
         }
     }
