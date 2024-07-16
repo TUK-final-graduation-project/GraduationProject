@@ -28,7 +28,6 @@ public class UnitCs : MonoBehaviour
     bool isDamage;
     Rigidbody rigid;
     Tower[] towers;
-    bool isDead = false;
 
     [Header("Melee Unit")]
     public BoxCollider meleeArea;
@@ -73,21 +72,26 @@ public class UnitCs : MonoBehaviour
     // 움직이기
     IEnumerator FollowPath()
     {
-        Vector3 currentWaypoint = path[0];
+        Vector3 currentWaypoint;
 
-        while (true)
+        if ( path.Length > 0)
         {
-            if ((int)transform.position.x == (int)currentWaypoint.x && (int)transform.position.z == (int)currentWaypoint.z)
+            currentWaypoint = path[0];
+
+            while (true)
             {
-                targetIndex++;
-                if (targetIndex >= path.Length)
+                if ((int)transform.position.x == (int)currentWaypoint.x && (int)transform.position.z == (int)currentWaypoint.z)
                 {
-                    yield break;
+                    targetIndex++;
+                    if (targetIndex >= path.Length)
+                    {
+                        yield break;
+                    }
+                    currentWaypoint = path[targetIndex];
                 }
-                currentWaypoint = path[targetIndex];
+                transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+                yield return null;
             }
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
-            yield return null;
         }
     }
 
@@ -100,7 +104,7 @@ public class UnitCs : MonoBehaviour
         if (type == Type.Melee)
         {
             targetRadius = 1f;
-            targetRange = 12f;
+            targetRange = 3f;
         }
         else if (type == Type.Range)
         {
@@ -120,6 +124,7 @@ public class UnitCs : MonoBehaviour
         }
         if (rayHits.Length > 0 && State != UnitState.Attack)
         {
+
             // Debug.Log(rayHits[0].collider.gameObject.name);
             StopCoroutine("FollowPath");
             target = rayHits[0].collider.gameObject;
@@ -133,39 +138,43 @@ public class UnitCs : MonoBehaviour
         anim.SetBool("isAttack", true);
         rigid.isKinematic = true;
 
-        if (type == Type.Melee)
+        while (true)
         {
-            //yield return new WaitForSeconds(0.1f);
-            //rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
-            //meleeArea.enabled = true;
+            if (type == Type.Melee)
+            {
+                yield return new WaitForSeconds(0.1f);
+                rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
+                meleeArea.enabled = true;
 
-            //yield return new WaitForSeconds(0.5f);
-            //rigid.velocity = Vector3.zero;
-            //meleeArea.enabled = false;
+                yield return new WaitForSeconds(0.5f);
+                rigid.velocity = Vector3.zero;
+                meleeArea.enabled = false;
 
-            //yield return new WaitForSeconds(0.5f);
-        }
-        else if (type == Type.Range)
-        {
-            yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.5f);
+            }
+            else if (type == Type.Range)
+            {
+                yield return new WaitForSeconds(0.5f);
 
-            GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 1.5f, Quaternion.identity);
-            Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
+                GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 1.5f, Quaternion.identity);
+                Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
 
-            Vector3 direction = (target.transform.position - transform.position).normalized;
-            rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
+                Vector3 direction = (target.transform.position - transform.position).normalized;
+                rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
 
-            yield return new WaitForSeconds(2f);
-        }
+                yield return new WaitForSeconds(2f);
+            }
 
-        State = UnitState.Chase;
-        anim.SetBool("isAttack", false);
-        rigid.isKinematic = false;
-        if (target != null)
-        {
+            anim.SetBool("isAttack", false);
+            rigid.isKinematic = false;
             State = UnitState.Targeting;
-            // StartCoroutine(Attack());
-            RequestPathToMgr();
+
+            if ( target == null || target == UserBase )
+            {
+                State = UnitState.Chase;
+                yield break;
+            }
+
         }
     }
 
@@ -201,10 +210,12 @@ public class UnitCs : MonoBehaviour
         {
             if ( target == null )
             {
+                StopCoroutine("Attack");
                 FindNextTarget();
             }
             if ( State != UnitState.Targeting)
             {
+                StopCoroutine("Attack");
                 Targeting();
             }
             FreezeVelocity();
@@ -236,6 +247,7 @@ public class UnitCs : MonoBehaviour
                 HP -= attack.damage;
                 if (other.GetComponent<Rigidbody>() != null) // 원거리 공격인 경우
                 {
+                    
                     Destroy(other.gameObject);
                 }
                 Vector3 reactVec = transform.position - other.transform.position;
