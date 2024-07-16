@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum State { IDLE, LIVE, DEAD, ATTACK, HIT, MOVE, COUNT };
+public enum State { IDLE, DEAD, ATTACK, HIT, WALK, RUN, COUNT };
 
 [Serializable]
 public class PlayerData
 {
     public string clientID;
     public Vector3 position;
+    public Vector3 direction;
     public State state;
 }
 

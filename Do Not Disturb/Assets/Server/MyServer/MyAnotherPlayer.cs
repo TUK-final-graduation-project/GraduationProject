@@ -2,37 +2,53 @@ using UnityEngine;
 
 public class MyAnotherPlayer : MonoBehaviour
 {
-    Animator animator;
     public string playerName;
-
-    // 이동 속도 (이 값은 필요에 따라 조정할 수 있습니다)
     public float moveSpeed = 5.0f;
-
-    // 목적지 위치
     private Vector3 targetPosition;
+    private Vector3 targetDirection;
+    private Animator anim;
+    private State state = State.IDLE;
 
     void Start()
     {
+        anim = GetComponent<Animator>();
         targetPosition = transform.position;
-        animator = GetComponent<Animator>();    
+        targetDirection = transform.forward;
     }
 
     void Update()
     {
-        // 현재 위치에서 targetPosition으로 선형 보간
         transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-        //animator.SetTrigger("Idle");
+        transform.forward = Vector3.Lerp(transform.forward, targetDirection, moveSpeed * Time.deltaTime);
+        PlayAnimation();
     }
 
-    // 위치 업데이트 메서드
-    public void UpdatePosition(Vector3 newPosition)
+    public void UpdatePosition(Vector3 newPosition, Vector3 newDirection)
     {
         targetPosition = newPosition;
+        targetDirection = newDirection;
     }
 
-    // 상태 업데이트 메서드
     public void UpdateState(State newState)
     {
-        // 상태 업데이트 로직을 여기에 추가할 수 있습니다
+        state = newState;
+        PlayAnimation();
+    }
+
+    void PlayAnimation()
+    {
+        anim.SetBool("Dead", state == State.DEAD);
+        anim.SetBool("Attack", state == State.ATTACK);
+        anim.SetBool("Hit", state == State.HIT);
+        anim.SetBool("Work", state == State.WALK);
+        anim.SetBool("Run", state == State.RUN);
+        if (state == State.IDLE)
+        {
+            anim.SetBool("Dead", false);
+            anim.SetBool("Attack", false);
+            anim.SetBool("Hit", false);
+            anim.SetBool("Work", false);
+            anim.SetBool("Run", false);
+        }
     }
 }

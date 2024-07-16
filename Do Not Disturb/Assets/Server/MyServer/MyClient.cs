@@ -1,16 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using System.Net.Sockets;
 using System.IO;
+using System.Net.Sockets;
 using System;
+using UnityEngine.UI;
+using UnityEngine;
 
 public class MyClient : MonoBehaviour
 {
     public InputField IPInput, PortInput, NickInput;
     string clientName;
-    string clientID = Guid.NewGuid().ToString(); // Unique identifier for this client
+    string clientID = Guid.NewGuid().ToString();
 
     bool socketReady;
     TcpClient socket;
@@ -24,7 +23,6 @@ public class MyClient : MonoBehaviour
 
     void Start()
     {
-        // Player_Movement 스크립트를 가지고 있는 게임 오브젝트를 찾습니다.
         player = FindObjectOfType<PlayerMovement>();
         anotherPlayer = FindObjectOfType<MyAnotherPlayer>();
     }
@@ -32,8 +30,6 @@ public class MyClient : MonoBehaviour
     public void ConnectToServer()
     {
         if (socketReady) return;
-
-        Debug.Log("ConnectToServer() 호출");
 
         string ip = IPInput.text == "" ? "127.0.0.1" : IPInput.text;
         int port = PortInput.text == "" ? 7777 : int.Parse(PortInput.text);
@@ -52,7 +48,7 @@ public class MyClient : MonoBehaviour
         }
     }
 
-    private float sendPositionInterval = 0.1f; // 0.1초마다 한 번 전송
+    private float sendPositionInterval = 0.1f;
     private float timeSinceLastSend = 0f;
 
     void Update()
@@ -67,12 +63,11 @@ public class MyClient : MonoBehaviour
             }
         }
 
-        // 매 프레임마다 경과된 시간을 누적하고, 일정 간격이 되면 플레이어의 위치를 서버로 전송합니다.
         timeSinceLastSend += Time.deltaTime;
         if (timeSinceLastSend >= sendPositionInterval)
         {
             SendPlayerData();
-            timeSinceLastSend = 0f; // 누적된 시간 초기화
+            timeSinceLastSend = 0f;
         }
     }
 
@@ -85,13 +80,11 @@ public class MyClient : MonoBehaviour
                 string dataType = reader.ReadString();
                 if (dataType == "%NAME")
                 {
-                    // 랜덤값을 사용자 이름으로 넣어준다
                     clientName = NickInput.text == "" ? "Guest" + UnityEngine.Random.Range(1000, 10000) : NickInput.text;
                     SendName();
                     return;
                 }
 
-                // 맵 데이터 수신
                 if (dataType == "&MAPDATA")
                 {
                     int playerCount = reader.ReadInt32();
@@ -105,12 +98,16 @@ public class MyClient : MonoBehaviour
                         float posX = reader.ReadSingle();
                         float posY = reader.ReadSingle();
                         float posZ = reader.ReadSingle();
+                        float dirX = reader.ReadSingle();
+                        float dirY = reader.ReadSingle();
+                        float dirZ = reader.ReadSingle();
                         State state = (State)reader.ReadInt32();
 
                         PlayerData playerData = new PlayerData
                         {
                             clientID = clientID,
                             position = new Vector3(posX, posY, posZ),
+                            direction = new Vector3(dirX, dirY, dirZ),
                             state = state
                         };
                         mapData.playerData.Add(playerData);
@@ -148,6 +145,9 @@ public class MyClient : MonoBehaviour
                 writer.Write(player.transform.position.x);
                 writer.Write(player.transform.position.y);
                 writer.Write(player.transform.position.z);
+                writer.Write(player.transform.forward.x);
+                writer.Write(player.transform.forward.y);
+                writer.Write(player.transform.forward.z);
                 writer.Write((int)player.state);
                 SendData(ms.ToArray());
             }
@@ -170,7 +170,7 @@ public class MyClient : MonoBehaviour
         {
             if (playerData.clientID != clientID)
             {
-                anotherPlayer.UpdatePosition(playerData.position);
+                anotherPlayer.UpdatePosition(playerData.position, playerData.direction);
                 anotherPlayer.UpdateState(playerData.state);
             }
         }

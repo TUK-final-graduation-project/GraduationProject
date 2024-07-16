@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -11,8 +9,8 @@ public class PlayerMovement : MonoBehaviour
     public float decelerationTime = 0.5f;
     public float jumpForce = 5.0f;
     public float gravity = -9.8f;
-    public float animationThreshold = 1f; // 애니메이션이 재생될 속도 임계값
-    public int state;//{ LIVE, DEAD, ATTACK, HIT, MOVE, COUNT };
+    public float animationThreshold = 1f;
+    public State state;
 
     private Animator anim;
     private Camera cam;
@@ -26,51 +24,31 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 currentVelocity;
     private Vector3 targetVelocity;
     private float currentSpeed;
-    private Vector3 yVelocity; // y축 속도 관리
+    private Vector3 yVelocity;
 
-    // Start is called before the first frame update
+    private MyAnotherPlayer anotherPlayer;
+
     void Start()
     {
         anim = GetComponent<Animator>();
         cam = Camera.main;
         controller = GetComponent<CharacterController>();
+        anotherPlayer = GetComponent<MyAnotherPlayer>();
 
-        // Ensure all components are attached
-        if (anim == null)
-        {
-            Debug.LogError("Animator component is missing on " + gameObject.name);
-        }
-        if (controller == null)
-        {
-            Debug.LogError("CharacterController component is missing on " + gameObject.name);
-        }
+        if (anim == null) Debug.LogError("Animator component is missing on " + gameObject.name);
+        if (controller == null) Debug.LogError("CharacterController component is missing on " + gameObject.name);
+        if (anotherPlayer == null) Debug.LogError("AnotherPlayer component is missing on " + gameObject.name);
     }
 
     void FixedUpdate()
     {
-        // 키 입력 처리 
         jDown = Input.GetButton("Jump");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftAlt))
-        {
-            toggleCameraRotation = true;
-        }
-        else
-        {
-            toggleCameraRotation = false;
-        }
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            isRun = true;
-        }
-        else
-        {
-            isRun = false;
-        }
+        toggleCameraRotation = Input.GetKey(KeyCode.LeftAlt);
+        isRun = Input.GetKey(KeyCode.LeftShift);
 
         InputMovement();
     }
@@ -95,7 +73,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDirection = forward * Input.GetAxis("Vertical") + right * Input.GetAxis("Horizontal");
         targetVelocity = moveDirection.normalized * finalSpeed;
 
-        // Smooth
         if (targetVelocity.magnitude > 0)
         {
             currentVelocity = Vector3.Lerp(currentVelocity, targetVelocity, Time.deltaTime * (1.0f / accelerationTime));
@@ -111,17 +88,14 @@ public class PlayerMovement : MonoBehaviour
             {
                 yVelocity.y = jumpForce;
                 isJump = true;
-                Debug.Log("Jump");
-                anim.SetTrigger("Jump"); // 점프 애니메이션 트리거
+                anim.SetTrigger("Jump");
             }
         }
-
         else
         {
             yVelocity.y += gravity * Time.deltaTime;
         }
 
-        // 전체 이동 벡터 계산
         Vector3 finalMove = currentVelocity * Time.deltaTime;
         finalMove.y = yVelocity.y * Time.deltaTime;
 
@@ -139,20 +113,25 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Ground")
         {
-            //anim.SetBool("Idle", true);
             isJump = false;
         }
     }
+
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (controller.isGrounded)
         {
-            isJump = false; // 착지 시 점프 상태 초기화
+            isJump = false;
         }
+    }
+
+    public void ApplyServerData(Vector3 position, Vector3 direction, State newState)
+    {
+        anotherPlayer.UpdatePosition(position, direction);
+        anotherPlayer.UpdateState(newState);
     }
 }

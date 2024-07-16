@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using UnityEngine;
 using System.IO;
+using System.Net.Sockets;
+using System.Net;
 using System;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class MyServer : MonoBehaviour
 {
@@ -111,7 +111,6 @@ public class MyServer : MonoBehaviour
         clients.Add(new MyServerClient(listener.EndAcceptTcpClient(ar)));
         StartListening();
 
-        // 연결된 클라이언트에게 메시지 전송
         Broadcast("%NAME", new List<MyServerClient>() { clients[clients.Count - 1] });
     }
 
@@ -129,19 +128,22 @@ public class MyServer : MonoBehaviour
                     return;
                 }
 
-                // 플레이어 데이터 수신
                 if (dataType == "&PLAYERDATA")
                 {
                     string clientID = reader.ReadString();
                     float posX = reader.ReadSingle();
                     float posY = reader.ReadSingle();
                     float posZ = reader.ReadSingle();
+                    float dirX = reader.ReadSingle();
+                    float dirY = reader.ReadSingle();
+                    float dirZ = reader.ReadSingle();
                     State state = (State)reader.ReadInt32();
 
                     PlayerData playerData = new PlayerData
                     {
                         clientID = clientID,
                         position = new Vector3(posX, posY, posZ),
+                        direction = new Vector3(dirX, dirY, dirZ),
                         state = state
                     };
                     UpdatePlayerData(playerData);
@@ -160,6 +162,7 @@ public class MyServer : MonoBehaviour
         if (existingPlayer != null)
         {
             existingPlayer.position = playerData.position;
+            existingPlayer.direction = playerData.direction;
             existingPlayer.state = playerData.state;
         }
         else
@@ -182,6 +185,9 @@ public class MyServer : MonoBehaviour
                     writer.Write(player.position.x);
                     writer.Write(player.position.y);
                     writer.Write(player.position.z);
+                    writer.Write(player.direction.x);
+                    writer.Write(player.direction.y);
+                    writer.Write(player.direction.z);
                     writer.Write((int)player.state);
                 }
                 Broadcast(ms.ToArray(), clients);
