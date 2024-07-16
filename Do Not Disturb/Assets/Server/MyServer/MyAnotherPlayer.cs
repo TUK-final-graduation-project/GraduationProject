@@ -31,24 +31,37 @@ public class MyAnotherPlayer : MonoBehaviour
 
     public void UpdateState(State newState)
     {
-        state = newState;
-        PlayAnimation();
+        if (state != newState)
+        {
+            state = newState;
+            PlayAnimation();
+        }
     }
 
     void PlayAnimation()
     {
-        anim.SetBool("Dead", state == State.DEAD);
+        anim.SetBool("Death", state == State.DEATH);
         anim.SetBool("Attack", state == State.ATTACK);
-        anim.SetBool("Hit", state == State.HIT);
-        anim.SetBool("Walk", state == State.WALK);
-        anim.SetBool("Run", state == State.RUN);
-        if (state == State.IDLE)
+        anim.SetBool("isWalk", state == State.WALK);
+        anim.SetBool("isJump", state == State.JUMP);
+
+        switch (state)
         {
-            anim.SetBool("Dead", false);
-            anim.SetBool("Attack", false);
-            anim.SetBool("Hit", false);
-            anim.SetBool("Walk", false);
-            anim.SetBool("Run", false);
+            case State.DEATH:
+                anim.SetBool("Death", true); break;
+            case State.ATTACK:
+                anim.SetBool("Attack", true); break;
+            case State.WALK:
+                anim.SetBool("isWalk", true); break;
+            case State.JUMP:
+                anim.SetBool("isJump", true); break;
+            case State.IDLE:
+                anim.SetBool("Death", false);
+                anim.SetBool("Attack", false);
+                anim.SetBool("isWalk", false);
+                anim.SetBool("isJump", false);
+                break;
+            default: break;
         }
     }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum State { IDLE, DEAD, ATTACK, HIT, WALK, RUN, COUNT };
+public enum State { IDLE, DEATH, ATTACK, HIT, WALK, RUN, JUMP, COUNT };
 
 [Serializable]
 public class PlayerData
