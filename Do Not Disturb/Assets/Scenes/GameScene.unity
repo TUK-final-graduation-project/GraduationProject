@@ -7140,7 +7140,6 @@ MonoBehaviour:
   IPInput: {fileID: 65056936}
   PortInput: {fileID: 881273884}
   NickInput: {fileID: 1117570895}
-  playerPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &310230672
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7684,6 +7683,7 @@ GameObject:
   - component: {fileID: 335790662}
   - component: {fileID: 335790661}
   - component: {fileID: 335790664}
+  - component: {fileID: 335790665}
   m_Layer: 0
   m_Name: AnotherPlayer
   m_TagString: Untagged
@@ -7770,6 +7770,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: 2nd Player
   moveSpeed: 5
+--- !u!95 &335790665
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335790659}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cd977f85e9d14ff4597bfa708e1e9ee2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &336416864
 GameObject:
   m_ObjectHideFlags: 0

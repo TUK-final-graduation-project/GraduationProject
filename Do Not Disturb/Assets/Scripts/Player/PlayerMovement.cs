@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 5.0f;
     public float gravity = -9.8f;
     public float animationThreshold = 1f; // 애니메이션이 재생될 속도 임계값
+    public int state;//{ LIVE, DEAD, ATTACK, HIT, MOVE, COUNT };
 
     private Animator anim;
     private Camera cam;

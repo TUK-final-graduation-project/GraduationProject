@@ -20,7 +20,7 @@ public class MyClient : MonoBehaviour
     PlayerMovement player;
     MyAnotherPlayer anotherPlayer;
 
-    public Vector3 playerPosition;
+    MapData mapData;
 
     void Start()
     {
@@ -48,21 +48,22 @@ public class MyClient : MonoBehaviour
         }
         catch (Exception e)
         {
-            Chat.instance.ShowMessage($"소켓에러 : {e.Message}");
+            Chat.instance.ShowMessage($"소켓 에러: {e.Message}");
         }
     }
 
-    private float sendPositionInterval = 0.1f; // 1초마다 한 번 전송
+    private float sendPositionInterval = 0.1f; // 0.1초마다 한 번 전송
     private float timeSinceLastSend = 0f;
 
     void Update()
     {
         if (socketReady && stream.DataAvailable)
         {
-            string data = reader.ReadLine();
-            if (data != null)
+            byte[] data = new byte[1024];
+            int bytesRead = stream.Read(data, 0, data.Length);
+            if (bytesRead > 0)
             {
-                OnIncomingData(data);
+                OnIncomingData(data, bytesRead);
             }
         }
 
@@ -70,108 +71,108 @@ public class MyClient : MonoBehaviour
         timeSinceLastSend += Time.deltaTime;
         if (timeSinceLastSend >= sendPositionInterval)
         {
-            SendPlayerPosition();
+            SendPlayerData();
             timeSinceLastSend = 0f; // 누적된 시간 초기화
         }
     }
 
-    void OnIncomingData(string data)
+    void OnIncomingData(byte[] data, int bytesRead)
     {
-        if (data.StartsWith("%NAME"))
+        using (MemoryStream ms = new MemoryStream(data, 0, bytesRead))
         {
-            // 랜덤값을 사용자 이름으로 넣어준다
-            clientName = NickInput.text == "" ? "Guest" + UnityEngine.Random.Range(1000, 10000) : NickInput.text;
-            Send($"&NAME|{clientName}");
-            return;
-        }
+            using (BinaryReader reader = new BinaryReader(ms))
+            {
+                string dataType = reader.ReadString();
+                if (dataType == "%NAME")
+                {
+                    // 랜덤값을 사용자 이름으로 넣어준다
+                    clientName = NickInput.text == "" ? "Guest" + UnityEngine.Random.Range(1000, 10000) : NickInput.text;
+                    SendName();
+                    return;
+                }
 
-        // 플레이어 위치 데이터 수신
-        if (data.StartsWith("&POSITION"))
+                // 맵 데이터 수신
+                if (dataType == "&MAPDATA")
+                {
+                    int playerCount = reader.ReadInt32();
+                    mapData = new MapData
+                    {
+                        playerData = new List<PlayerData>()
+                    };
+                    for (int i = 0; i < playerCount; i++)
+                    {
+                        string clientID = reader.ReadString();
+                        float posX = reader.ReadSingle();
+                        float posY = reader.ReadSingle();
+                        float posZ = reader.ReadSingle();
+                        State state = (State)reader.ReadInt32();
+
+                        PlayerData playerData = new PlayerData
+                        {
+                            clientID = clientID,
+                            position = new Vector3(posX, posY, posZ),
+                            state = state
+                        };
+                        mapData.playerData.Add(playerData);
+                    }
+                    UpdateAnotherPlayer();
+                    return;
+                }
+            }
+        }
+    }
+
+    void SendName()
+    {
+        using (MemoryStream ms = new MemoryStream())
         {
-            HandlePlayerPosition(data);
-            return;
+            using (BinaryWriter writer = new BinaryWriter(ms))
+            {
+                writer.Write("&NAME");
+                writer.Write(clientName);
+                SendData(ms.ToArray());
+            }
         }
-
-        Chat.instance.ShowMessage(data);
     }
 
-    void Send(string data)
-    {
-        if (!socketReady) return;
-
-        writer.WriteLine(data);
-        writer.Flush();
-    }
-
-    void Send(Vector3 position)
-    {
-        if (!socketReady) return;
-
-        string positionData = JsonUtility.ToJson(position);
-        writer.WriteLine($"&POSITION|{clientID}|{positionData}");
-        writer.Flush();
-    }
-
-    public void OnSendButton(InputField SendInput)
-    {
-#if (UNITY_EDITOR || UNITY_STANDALONE)
-        if (!Input.GetButtonDown("Submit")) return;
-        SendInput.ActivateInputField();
-#endif
-        if (SendInput.text.Trim() == "") return;
-
-        string message = SendInput.text;
-        SendInput.text = "";
-        Send(message);
-    }
-
-    // 플레이어의 위치를 서버로 전송합니다.
-    void SendPlayerPosition()
+    void SendPlayerData()
     {
         if (player == null) return;
 
-        // 플레이어의 위치 정보를 JSON 형식으로 변환합니다.
-        Vector3 playerPosition = player.transform.position;
-
-        // 서버로 위치 정보를 전송합니다.
-        Send(playerPosition);
-    }
-
-    void HandlePlayerPosition(string data)
-    {
-        string[] dataParts = data.Split('|');
-        string senderID = dataParts[1];
-        string json = dataParts[2];
-
-        // Ignore the position if it is from the same client
-        if (senderID == clientID) return;
-
-        Vector3 position = JsonUtility.FromJson<Vector3>(json);
-
-        // Update the position for another player
-        if (anotherPlayer != null)
+        using (MemoryStream ms = new MemoryStream())
         {
-            anotherPlayer.UpdatePosition(position);
+            using (BinaryWriter writer = new BinaryWriter(ms))
+            {
+                writer.Write("&PLAYERDATA");
+                writer.Write(clientID);
+                writer.Write(player.transform.position.x);
+                writer.Write(player.transform.position.y);
+                writer.Write(player.transform.position.z);
+                writer.Write((int)player.state);
+                SendData(ms.ToArray());
+            }
         }
     }
 
-    void OnApplicationQuit()
-    {
-        CloseSocket();
-    }
-
-    void CloseSocket()
+    void SendData(byte[] data)
     {
         if (!socketReady) return;
 
-        writer.Close();
-        reader.Close();
-        socket.Close();
-        socketReady = false;
+        stream.Write(data, 0, data.Length);
+        stream.Flush();
     }
 
-    public Vector3 getPlayerPosition()
+    void UpdateAnotherPlayer()
     {
-        return playerPosition;
+        if (anotherPlayer == null || mapData == null) return;
+
+        foreach (var playerData in mapData.playerData)
+        {
+            if (playerData.clientID != clientID)
+            {
+                anotherPlayer.UpdatePosition(playerData.position);
+                anotherPlayer.UpdateState(playerData.state);
+            }
+        }
     }
 }

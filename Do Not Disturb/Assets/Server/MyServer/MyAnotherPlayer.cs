@@ -26,4 +26,10 @@ public class MyAnotherPlayer : MonoBehaviour
     {
         targetPosition = newPosition;
     }
+
+    // 상태 업데이트 메서드
+    public void UpdateState(State newState)
+    {
+        // 상태 업데이트 로직을 여기에 추가할 수 있습니다
+    }
 }
