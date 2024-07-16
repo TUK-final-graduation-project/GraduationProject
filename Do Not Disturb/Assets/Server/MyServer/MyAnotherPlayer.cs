@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class MyAnotherPlayer : MonoBehaviour
 {
+    Animator animator;
     public string playerName;
 
     // 이동 속도 (이 값은 필요에 따라 조정할 수 있습니다)
@@ -13,12 +14,14 @@ public class MyAnotherPlayer : MonoBehaviour
     void Start()
     {
         targetPosition = transform.position;
+        animator = GetComponent<Animator>();    
     }
 
     void Update()
     {
         // 현재 위치에서 targetPosition으로 선형 보간
         transform.position = Vector3.Lerp(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        //animator.SetTrigger("Idle");
     }
 
     // 위치 업데이트 메서드
