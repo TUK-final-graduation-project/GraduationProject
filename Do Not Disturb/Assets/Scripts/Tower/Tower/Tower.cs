@@ -33,7 +33,6 @@ public class Tower : MonoBehaviour
 
         if (rayHits.Length > 0 && !isAttack)
         {
-            Debug.Log("Hit");
             target = rayHits[0].collider.gameObject;
             StartCoroutine(Attack());
         }
