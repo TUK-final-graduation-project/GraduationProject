@@ -66,6 +66,7 @@ public class BossUnit : MonoBehaviour
                     targetIndex++;
                     if (targetIndex >= path.Length)
                     {
+                        anim.SetTrigger("atBossPoint");
                         yield break;
                     }
                     currentWaypoint = path[targetIndex];
