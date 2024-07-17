@@ -16,7 +16,7 @@ public class BossUnit : MonoBehaviour
     Animator anim;
     Rigidbody rigid;
 
-    public BoxCollider meleeArea;
+    public GameObject bullet;
 
     Vector3[] path;
     int targetIndex;
@@ -67,6 +67,7 @@ public class BossUnit : MonoBehaviour
                     if (targetIndex >= path.Length)
                     {
                         anim.SetTrigger("atBossPoint");
+                        StartCoroutine("Attack");
                         yield break;
                     }
                     currentWaypoint = path[targetIndex];
@@ -74,6 +75,44 @@ public class BossUnit : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
                 yield return null;
             }
+        }
+    }
+
+    IEnumerator Attack()
+    {
+        State = UnitState.Attack;
+        anim.SetBool("isAttack1", true);
+        rigid.isKinematic = true;
+
+        while (true)
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 30f + Vector3.forward * 2f, Quaternion.identity);
+            Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
+
+            //Vector3 direction = (target.transform.position - transform.position).normalized;
+            //rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
+
+            yield return new WaitForSeconds(2f);
+
+            anim.SetBool("isAttack1", false);
+            rigid.isKinematic = false;
+
+            yield return new WaitForSeconds(0.5f);
+
+            anim.SetBool("isAttack2", true);
+            rigid.isKinematic = true;
+
+            yield return new WaitForSeconds(2f);
+
+            anim.SetBool("isAttack2", false);
+            rigid.isKinematic = false;
+
+            yield return new WaitForSeconds(0.5f);
+
+            anim.SetBool("isAttack1", true);
+            rigid.isKinematic = true;
         }
     }
 
@@ -92,5 +131,56 @@ public class BossUnit : MonoBehaviour
         {
             FreezeVelocity();
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "ComAttack")
+        {
+            if (State != UnitState.Damaged) // 무적 상태가 아닐 때
+            {
+                UnitAttack attack = other.GetComponent<UnitAttack>();
+                HP -= attack.damage;
+                if (other.GetComponent<Rigidbody>() != null) // 원거리 공격인 경우
+                {
+                    Destroy(other.gameObject);
+                }
+                Vector3 reactVec = transform.position - other.transform.position;
+                StartCoroutine(OnDamage(reactVec, false));
+            }
+        }
+    }
+
+    IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        UnitState tmp = State;
+        State = UnitState.Damaged;
+
+        if (HP <= 0)
+        {
+            gameObject.layer = gameObject.layer + 1;
+
+            reactVec = reactVec.normalized;
+            reactVec += Vector3.up;
+            rigid.AddForce(reactVec * 5, ForceMode.Impulse);
+
+            OnDestroy();
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f); // 1초 무적
+            State = tmp;
+        }
+    }
+
+    public void OnDestroy()
+    {
+        anim.SetBool("isDie", true);
+        State = UnitState.Dead;
+        // effectObj.SetActive(true);
+
+        Destroy(gameObject, 3);
     }
 }
