@@ -13,14 +13,15 @@ public class ComSpawnPoint : MonoBehaviour
     public int HP;
     public bool isConquer = false;
 
-    public GameObject UserBase;
+    public GameObject comTarget;
     public GameObject target;
 
     [Header("spawn unit type")]
-    public GameObject Golem;
+    public GameObject m_EarthUnit;
     public GameObject m_TreeUnit;
-    public GameObject Cannon;
-    public GameObject Snowman;
+
+    public GameObject r_FireUnit;
+    public GameObject r_IceUnit;
 
     public Tower[] towers;
     
@@ -31,20 +32,20 @@ public class ComSpawnPoint : MonoBehaviour
         switch (element)
         {
             case Element.fire:
-                unit = Cannon;
+                unit = r_FireUnit;
                 break;
             case Element.earth:
-                unit = Golem;
+                unit = m_EarthUnit;
                 break;
             case Element.ice:
-                unit = Snowman;
+                unit = r_IceUnit;
                 break;
             case Element.tree:
                 unit = m_TreeUnit;
                 break;
         }
 
-        // Debug.Log(unit.gameObject.name);
+        Debug.Log(unit.gameObject.name);
         // StartSpawn(1);
     }
 
@@ -55,7 +56,7 @@ public class ComSpawnPoint : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
             GameObject _iUnit = Instantiate(unit, transform.position, targetRotation);
             _iUnit.GetComponent<UnitCs>().target = target;
-            _iUnit.GetComponent<UnitCs>().UserBase = UserBase;
+            _iUnit.GetComponent<UnitCs>().UserBase = comTarget;
 
             yield return new WaitForSeconds(2f);
         }
@@ -66,7 +67,7 @@ public class ComSpawnPoint : MonoBehaviour
     {
         float minDistance = float.MaxValue;
         float tmp = 0;
-        target = UserBase;
+        target = comTarget;
         towers = FindObjectsOfType(typeof(Tower)) as Tower[];
         foreach (Tower tower in towers)
         {
