@@ -5,12 +5,11 @@ using UnityEngine;
 
 public class UserSpawnPoint : MonoBehaviour
 {
-    public enum Element { fire, earth, ice, tree };
     public enum Type { Melee, Range };
 
     [Header("spawn point type")]
-    public Element element;
     public Type type;
+    public GameObject Base;
 
     public GameObject target;
 
@@ -18,32 +17,27 @@ public class UserSpawnPoint : MonoBehaviour
     public ComSpawnPoint[] spawnPoints;
 
     [Header("spawn unit type")]
-    public GameObject m_EarthUnit;
-    public GameObject m_TreeUnit;
-
-    public GameObject r_FireUnit;
-    public GameObject r_IceUnit;
+    public GameObject shooter;
+    public GameObject swordsman;
 
     GameObject unit;
     ComSpawnPoint targetPoints;
 
     public int HP;
     public bool isConquer = false;
+
+    int num = 10;
+
+
     private void Start()
     {
-        switch (element)
+        switch (type)
         {
-            case Element.fire:
-                unit = r_FireUnit;
+            case Type.Melee:
+                unit = swordsman;
                 break;
-            case Element.earth:
-                unit = m_EarthUnit;
-                break;
-            case Element.ice:
-                unit = r_IceUnit;
-                break;
-            case Element.tree:
-                unit = m_TreeUnit;
+            case Type.Range:
+                unit = shooter;
                 break;
 
         }
@@ -80,10 +74,24 @@ public class UserSpawnPoint : MonoBehaviour
 
             // _iUnit.GetComponent<UnitCs>().RequestPathToMgr();
 
-            yield return new WaitForSeconds(2f);
+            num -= 1;
+
+            if ( num <= 0)
+            {
+                yield break;
+            }
+            yield return new WaitForSeconds(4f);
         }
     }
 
+    private void Update()
+    {
+        if ( num <= 0)
+        {
+            StopCoroutine("Spawn");
+            Destroy(Base);
+        }
+    }
     public void OnDamage()
     {
         HP -= 50;

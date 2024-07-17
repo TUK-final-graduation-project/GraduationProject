@@ -77,12 +77,11 @@ MonoBehaviour:
   team: 0
   HP: 100
   State: 0
-  isChase: 0
-  isAttack: 0
   target: {fileID: 0}
   UserBase: {fileID: 0}
   speed: 3
   meleeArea: {fileID: 0}
+  isDear: 0
   bullet: {fileID: 4373434199967324875, guid: 9ec175b82b832bf41acb86c0518e6c2a, type: 3}
   meshObj: {fileID: 8487823723991365905}
   effectObj: {fileID: 0}
@@ -96,15 +95,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ecc5a6eeb58ddc24aab13fef97570098, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ecc5a6eeb58ddc24aab13fef97570098, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ecc5a6eeb58ddc24aab13fef97570098, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ecc5a6eeb58ddc24aab13fef97570098, type: 3}
       propertyPath: m_LocalPosition.x

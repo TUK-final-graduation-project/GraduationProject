@@ -19,18 +19,16 @@ public class UnitCs : MonoBehaviour
     [Header("Unit State")]
     public int HP;
     public UnitState State;
-    public bool isChase;
-    public bool isAttack;
     public GameObject target;
     public GameObject UserBase;
     public float speed = 10;
     Animator anim;
-    bool isDamage;
     Rigidbody rigid;
     Tower[] towers;
 
     [Header("Melee Unit")]
     public BoxCollider meleeArea;
+    public bool isDear;
 
     [Header("Range Unit")]
     public GameObject bullet;
@@ -169,9 +167,15 @@ public class UnitCs : MonoBehaviour
             rigid.isKinematic = false;
             State = UnitState.Targeting;
 
-            if ( target == null || target == UserBase )
+            if ( target == null || target == UserBase)
             {
                 State = UnitState.Chase;
+                //if ( isDear )
+                //{
+                //    HP = -10;
+                //    Vector3 reactVec = transform.position - target.transform.position;
+                //    StartCoroutine(OnDamage(reactVec, false));
+                //}
                 yield break;
             }
 

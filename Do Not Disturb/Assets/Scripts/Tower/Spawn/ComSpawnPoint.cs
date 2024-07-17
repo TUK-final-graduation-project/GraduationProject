@@ -54,7 +54,7 @@ public class ComSpawnPoint : MonoBehaviour
             _iUnit.GetComponent<UnitCs>().target = target;
             _iUnit.GetComponent<UnitCs>().UserBase = UserBase;
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(4f);
         }
         yield return new WaitForSeconds(0.1f);
     }
