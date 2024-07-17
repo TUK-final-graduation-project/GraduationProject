@@ -79,7 +79,7 @@ public class AGrid : MonoBehaviour
     }
 
     public List<Node> path;
-    ////그리드 그리기
+    //그리드 그리기
     //private void OnDrawGizmos()
     //{
     //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
