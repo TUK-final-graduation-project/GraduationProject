@@ -56,7 +56,7 @@ public class ComSpawnPoint : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
             GameObject _iUnit = Instantiate(unit, transform.position, targetRotation);
             _iUnit.GetComponent<UnitCs>().target = target;
-            _iUnit.GetComponent<UnitCs>().ComTarget = comTarget;
+            _iUnit.GetComponent<UnitCs>().UserBase = comTarget;
 
             yield return new WaitForSeconds(2f);
         }

@@ -14,8 +14,6 @@ public class AGrid : MonoBehaviour
     int gridSizeX;
     int gridSizeY;
 
-    public UnitCs unit;
-
     void Start()
     {
         nodeDiameter = nodeRadius * 2;
@@ -24,11 +22,6 @@ public class AGrid : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
         CreateGrid();
     }
-    private void Update()
-    {
-        unit = FindObjectOfType(typeof(UnitCs)) as UnitCs;
-    }
-
     // 그리드 만들기
     void CreateGrid()
     {
@@ -86,17 +79,16 @@ public class AGrid : MonoBehaviour
     }
 
     public List<Node> path;
-    //그리드 그리기
+    ////그리드 그리기
     //private void OnDrawGizmos()
     //{
     //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
     //    if (grid != null)
     //    {
-    //        // Node playerNode = GetNodeFromWorldPoint(player.position);
     //        foreach (Node n in grid)
     //        {
     //            Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
-    //            if ( path != null)
+    //            if (path != null)
     //            {
     //                if (path.Contains(n))
     //                {
@@ -133,7 +125,6 @@ public class AGrid : MonoBehaviour
 
     public void drawLineDebug()
     {
-       
         SetupLine(points);
     }
 
