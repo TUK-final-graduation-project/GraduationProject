@@ -1,71 +1,61 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
     public float speed = 5.0f;
     public float runSpeed = 8.0f;
-    public float finalSpeed;
     public float smoothness = 10.0f;
+    public float accelerationTime = 0.5f;
+    public float decelerationTime = 0.5f;
+    public float jumpForce = 5.0f;
+    public float gravity = -9.8f;
+    public float animationThreshold = 1f;
+    public State state;
 
-    Animator anim;
-    Camera cam;
-    CharacterController controll;
-    Rigidbody rigid;
+    private Animator anim;
+    private Camera cam;
+    private CharacterController controller;
 
     public bool toggleCameraRotation;
     public bool isRun;
     public bool isJump;
 
-    bool jDown;         // space bar 입력
+    private bool jDown;
+    private Vector3 currentVelocity;
+    private Vector3 targetVelocity;
+    private float currentSpeed;
+    private Vector3 yVelocity;
 
+    private MyAnotherPlayer anotherPlayer;
 
-    // Start is called before the first frame update
     void Start()
     {
-        anim = this.GetComponent<Animator>();
+        anim = GetComponent<Animator>();
         cam = Camera.main;
-        controll = this.GetComponent<CharacterController>();
-        rigid = this.GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
+        anotherPlayer = GetComponent<MyAnotherPlayer>();
+
+        if (anim == null) Debug.LogError("Animator component is missing on " + gameObject.name);
+        if (controller == null) Debug.LogError("CharacterController component is missing on " + gameObject.name);
+        if (anotherPlayer == null) Debug.LogError("AnotherPlayer component is missing on " + gameObject.name);
     }
 
     void FixedUpdate()
     {
-        // 키 입력 처리 
         jDown = Input.GetButton("Jump");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.LeftAlt))
-        {
-            toggleCameraRotation = true;
-        }
-        else
-        {
-            toggleCameraRotation = false;
-        }
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            isRun = true;
-        }
-        else
-        {
-            isRun = false;
-        }
+        toggleCameraRotation = Input.GetKey(KeyCode.LeftAlt);
+        isRun = Input.GetKey(KeyCode.LeftShift);
 
-
-        // 점프
-        //Jump();
         InputMovement();
     }
 
     void LateUpdate()
     {
-        if (toggleCameraRotation != true)
+        if (!toggleCameraRotation)
         {
             Vector3 playerRotate = Vector3.Scale(cam.transform.forward, new Vector3(1, 0, 1));
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(playerRotate), Time.deltaTime * smoothness);
@@ -74,26 +64,52 @@ public class PlayerMovement : MonoBehaviour
 
     void InputMovement()
     {
+        if (controller == null || anim == null) return;
 
-        finalSpeed = (isRun) ? runSpeed : speed;
+        float finalSpeed = isRun ? runSpeed : speed;
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
         Vector3 moveDirection = forward * Input.GetAxis("Vertical") + right * Input.GetAxis("Horizontal");
+        targetVelocity = moveDirection.normalized * finalSpeed;
 
-        controll.Move(moveDirection.normalized * finalSpeed * Time.deltaTime);
-        float percent = ((isRun) ? 1 : 0.5f) * moveDirection.magnitude;
-        anim.SetFloat("Blend", percent, 0.5f, Time.deltaTime);
-    }
-
-    void Jump()
-    {
-        if (jDown && !isJump)
+        if (targetVelocity.magnitude > 0)
         {
-            rigid.AddForce(Vector3.up * 5, ForceMode.Impulse);
-            anim.SetBool("isJump", true);
-            anim.SetTrigger("Jump");
-            isJump = true;
+            currentVelocity = Vector3.Lerp(currentVelocity, targetVelocity, Time.deltaTime * (1.0f / accelerationTime));
+        }
+        else
+        {
+            currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, Time.deltaTime * (1.0f / decelerationTime));
+        }
+
+        if (jDown)
+        {
+            if (!isJump)
+            {
+                yVelocity.y = jumpForce;
+                isJump = true;
+                anim.SetTrigger("Jump");
+            }
+        }
+        else
+        {
+            yVelocity.y += gravity * Time.deltaTime;
+        }
+
+        Vector3 finalMove = currentVelocity * Time.deltaTime;
+        finalMove.y = yVelocity.y * Time.deltaTime;
+
+        controller.Move(finalMove);
+
+        currentSpeed = currentVelocity.magnitude;
+        if (currentSpeed > animationThreshold)
+        {
+            float percent = ((isRun) ? 1 : 0.5f) * (currentSpeed / finalSpeed);
+            anim.SetFloat("Blend", percent, 0.5f, Time.deltaTime);
+        }
+        else
+        {
+            anim.SetFloat("Blend", 0, 0.5f, Time.deltaTime);
         }
     }
 
@@ -101,9 +117,21 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ground")
         {
-            //anim.SetBool("Idle", true);
             isJump = false;
         }
     }
 
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (controller.isGrounded)
+        {
+            isJump = false;
+        }
+    }
+
+    public void ApplyServerData(Vector3 position, Vector3 direction, State newState)
+    {
+        anotherPlayer.UpdatePosition(position, direction);
+        anotherPlayer.UpdateState(newState);
+    }
 }
