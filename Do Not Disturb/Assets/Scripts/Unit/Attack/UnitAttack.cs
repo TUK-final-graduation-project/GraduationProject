@@ -15,7 +15,7 @@ public class UnitAttack : MonoBehaviour
         // 자동 삭제
         time += 1f;
 
-        if (time > 100f && !isMelee)
+        if (time > 1000f && !isMelee)
         {
             Destroy(gameObject);
         }

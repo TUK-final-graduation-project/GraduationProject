@@ -26,18 +26,18 @@ public class PlayerMovement : MonoBehaviour
     private float currentSpeed;
     private Vector3 yVelocity;
 
-    private MyAnotherPlayer anotherPlayer;
+    //private MyAnotherPlayer anotherPlayer;
 
     void Start()
     {
         anim = GetComponent<Animator>();
         cam = Camera.main;
         controller = GetComponent<CharacterController>();
-        anotherPlayer = GetComponent<MyAnotherPlayer>();
+        //anotherPlayer = GetComponent<MyAnotherPlayer>();
 
         if (anim == null) Debug.LogError("Animator component is missing on " + gameObject.name);
         if (controller == null) Debug.LogError("CharacterController component is missing on " + gameObject.name);
-        if (anotherPlayer == null) Debug.LogError("AnotherPlayer component is missing on " + gameObject.name);
+        //if (anotherPlayer == null) Debug.LogError("AnotherPlayer component is missing on " + gameObject.name);
     }
 
     void FixedUpdate()
@@ -131,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void ApplyServerData(Vector3 position, Vector3 direction, State newState)
     {
-        anotherPlayer.UpdatePosition(position, direction);
-        anotherPlayer.UpdateState(newState);
+        //anotherPlayer.UpdatePosition(position, direction);
+        //anotherPlayer.UpdateState(newState);
     }
 }
