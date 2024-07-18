@@ -89,9 +89,10 @@ public class BossUnit : MonoBehaviour
         {
             yield return new WaitForSeconds(0.5f);
 
-            Vector3 pos = transform.position + new Vector3(Random.Range(-30f, 30f), 0, Random.Range(-30f, 30f));
+            Vector3 pos = transform.position + new Vector3(Random.Range(-30f, 30f), 0.5f, Random.Range(-30f, 30f));
             GameObject instantBullet = Instantiate(bullet, pos + Vector3.up * 30f, Quaternion.identity);
             Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
+            indicator.transform.localScale = new Vector3(10f, 10f, 10f);
             indicator.SetActive(true);
             indicator.transform.position = pos;
 
@@ -135,6 +136,15 @@ public class BossUnit : MonoBehaviour
         {
             FreezeVelocity();
         }
+        if (indicator.active == true)
+        {
+            indicator.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
+            if ( indicator.transform.localScale.x >= 40f)
+            {
+                indicator.SetActive(false); 
+            }
+        }
+        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
     private void OnTriggerEnter(Collider other)
