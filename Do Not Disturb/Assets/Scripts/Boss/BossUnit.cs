@@ -17,6 +17,7 @@ public class BossUnit : MonoBehaviour
     Rigidbody rigid;
 
     public GameObject bullet;
+    public GameObject indicator;
 
     Vector3[] path;
     int targetIndex;
@@ -88,8 +89,11 @@ public class BossUnit : MonoBehaviour
         {
             yield return new WaitForSeconds(0.5f);
 
-            GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 30f + Vector3.forward * 2f, Quaternion.identity);
+            Vector3 pos = transform.position + new Vector3(Random.Range(-30f, 30f), 0, Random.Range(-30f, 30f));
+            GameObject instantBullet = Instantiate(bullet, pos + Vector3.up * 30f, Quaternion.identity);
             Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
+            indicator.SetActive(true);
+            indicator.transform.position = pos;
 
             //Vector3 direction = (target.transform.position - transform.position).normalized;
             //rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
