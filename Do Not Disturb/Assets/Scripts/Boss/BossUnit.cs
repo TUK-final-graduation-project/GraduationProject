@@ -25,6 +25,8 @@ public class BossUnit : MonoBehaviour
     public GameObject meshObj;
     public GameObject effectObj;
 
+    public GameObject BossAttack;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -90,11 +92,13 @@ public class BossUnit : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
 
             Vector3 pos = transform.position + new Vector3(Random.Range(-30f, 30f), 0.5f, Random.Range(-30f, 30f));
-            GameObject instantBullet = Instantiate(bullet, pos + Vector3.up * 30f, Quaternion.identity);
-            Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
+            BossAttack = Instantiate(bullet, pos + Vector3.up * 30f, Quaternion.identity);
+            Rigidbody rigidBullet = BossAttack.GetComponent<Rigidbody>();
             indicator.transform.localScale = new Vector3(10f, 10f, 10f);
             indicator.SetActive(true);
             indicator.transform.position = pos;
+
+
 
             //Vector3 direction = (target.transform.position - transform.position).normalized;
             //rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
@@ -138,10 +142,12 @@ public class BossUnit : MonoBehaviour
         }
         if (indicator.active == true)
         {
-            indicator.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
-            if ( indicator.transform.localScale.x >= 40f)
+            if ( indicator.transform.localScale.x <= 40f)
             {
-                indicator.SetActive(false); 
+                indicator.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
+            }
+            if (BossAttack != null && BossAttack.GetComponent<BossAttack>().isExplosion == true) { 
+                indicator.SetActive(false);
             }
         }
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
