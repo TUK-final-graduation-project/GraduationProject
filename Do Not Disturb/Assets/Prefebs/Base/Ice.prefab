@@ -46,15 +46,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   element: 2
-  type: 1
   HP: 10000
   isConquer: 0
-  comTarget: {fileID: 0}
+  UserBase: {fileID: 0}
   target: {fileID: 0}
-  m_EarthUnit: {fileID: 3504143605172790318, guid: 7944a825dee571944878f7a24fd75fca, type: 3}
-  m_TreeUnit: {fileID: 7003067052162912525, guid: f30a02766bb3ecb4a926b747b89bc6cf, type: 3}
-  r_FireUnit: {fileID: 1701670873322857392, guid: 012f3e95e2f9fbd488e6182152cf51bd, type: 3}
-  r_IceUnit: {fileID: 5037461499260240729, guid: 91f20305af69ee14e9b094d0a4b031ec, type: 3}
+  Golem: {fileID: 0}
+  Dear: {fileID: 0}
+  Cannon: {fileID: 0}
+  Snowman: {fileID: 0}
   towers: []
 --- !u!1 &3612247494576002398
 GameObject:
@@ -236,10 +235,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3477821731311062464, guid: ff784a82522375940b3da9f01821129b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 01fd6a111affe1a4882e82cf5a3b0d92, type: 2}
     - target: {fileID: 919132149155446097, guid: ff784a82522375940b3da9f01821129b, type: 3}
       propertyPath: m_Name
       value: texture_base_ice
       objectReference: {fileID: 0}
+    - target: {fileID: 4407187375235809858, guid: ff784a82522375940b3da9f01821129b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 01fd6a111affe1a4882e82cf5a3b0d92, type: 2}
+    - target: {fileID: 8424073627695423409, guid: ff784a82522375940b3da9f01821129b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 01fd6a111affe1a4882e82cf5a3b0d92, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
