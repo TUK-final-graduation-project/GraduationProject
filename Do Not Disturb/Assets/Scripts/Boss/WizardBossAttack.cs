@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class BossAttack : MonoBehaviour
+public class WizardBossAttack : MonoBehaviour
 {
     public GameObject meshObj;
     public GameObject effectObj;
@@ -22,14 +21,13 @@ public class BossAttack : MonoBehaviour
         isArrive = false;
         dir = TargetPosition - transform.position;
         dir = dir.normalized;
-        //StartCoroutine(Explosion());
     }
 
     private void Update()
     {
         if (!isArrive)
         {
-            if ( transform.position.y >= 0)
+            if (transform.position.y >= 0)
             {
                 transform.position += dir;
             }

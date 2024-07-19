@@ -114,7 +114,7 @@ public class BossUnit : MonoBehaviour
                         indicator.transform.position = pos + Vector3.up * 3f;
 
                         BossAttack = Instantiate(bullet, transform.position + Vector3.up * 15f, Quaternion.identity);
-                        BossAttack.GetComponent<BossAttack>().TargetPosition = pos;
+                        BossAttack.GetComponent<RockBossAttack>().TargetPosition = pos;
 
                         rigid.isKinematic = false;
 
@@ -123,6 +123,25 @@ public class BossUnit : MonoBehaviour
                     }
                 case BossType.Wizard:
                     {
+                        anim.SetTrigger("isAttack");
+
+                        yield return new WaitForSeconds(1f);
+
+                        rigid.isKinematic = true;
+
+                        Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
+
+                        UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
+                        transform.rotation = targetRotation;
+
+                        indicator.transform.localScale = new Vector3(10f, 10f, 10f);
+                        indicator.SetActive(true);
+                        indicator.transform.position = pos + Vector3.up * 3f;
+
+                        rigid.isKinematic = false;
+
+                        yield return new WaitForSeconds(6f);
+
                         break;
                     }
                 case BossType.Oak:
@@ -151,15 +170,38 @@ public class BossUnit : MonoBehaviour
         {
             FreezeVelocity();
         }
-        if (indicator.active == true)
+
+        switch (type)
         {
-            if ( indicator.transform.localScale.x <= 40f)
-            {
-                indicator.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
-            }
-            if (BossAttack != null && BossAttack.GetComponent<BossAttack>().isExplosion == true) { 
-                indicator.SetActive(false);
-            }
+            case BossType.Rock:
+                {
+                    if (indicator.active == true)
+                    {
+                        if ( indicator.transform.localScale.x <= 40f)
+                        {
+                            indicator.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
+                        }
+                        if (BossAttack != null && BossAttack.GetComponent<RockBossAttack>().isExplosion == true) { 
+                            indicator.SetActive(false);
+                        }
+                    }
+                    break;
+                }
+            case BossType.Wizard:
+                {
+                    if ( indicator.active == true)
+                    {
+                        if (BossAttack != null && BossAttack.GetComponent<WizardBossAttack>().isExplosion == true)
+                        {
+                            indicator.SetActive(false);
+                        }
+                    }
+                    break;
+                }
+            case BossType.Oak:
+                {
+                    break;
+                }
         }
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
