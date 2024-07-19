@@ -45,7 +45,7 @@ public class Laboratory : MonoBehaviour
         itemCount[3] = inventorySlot_ice.itemCount;
     }
 
-    public void UpgradeSpeed()
+    public void UpgradePlayerSpeed()
     {
         // 필요 코인 개수 20
         if (player.coinCount >= 20)
@@ -56,24 +56,53 @@ public class Laboratory : MonoBehaviour
         }
     }
 
-    public void UpgradeHP()
+    public void UpgradePlayerHP()
     {
-        if (player.coinCount >= 20) 
+        if (player.coinCount >= 20)
         {
             player.coinCount -= 20;
             player.SetHP(player.maxHP);
             Debug.Log("coinCount : " + player.coinCount + "| HP : " + player.HP);
         }
     }
-      public void UpgradeDamage()
+
+    public void UpgradePlayerDamage()
     {
-        if (player.coinCount >= 20) 
+        if (player.coinCount >= 20)
         {
             player.coinCount -= 20;
             player.SetDamage(player.attackDamage + 20);
             Debug.Log("coinCount : " + player.coinCount + "| attackDamage : " + player.attackDamage);
         }
     }
+
+    public void UpgradeUserBase()
+    {
+        
+    }
+
+
+
+    public void UpgradeTowerHP(Tower tower, int newHP)
+    {
+        tower.SetHP(newHP);
+    }
+
+    public void UpgradeTowerAttackSpeed(Tower tower, float speed)
+    {
+        tower.SetAttackSpeed(speed);
+    }
+     public void UpgradeTowerDef(Tower tower, int def)
+    {
+        tower.SetDef(def);
+    }
+
+    public void UpgradeTowerBuildSpeed(Tower tower, float buildSpeed)
+    {
+        
+    }
+
+
 
     private void OnTriggerEnter(Collider other)
     {

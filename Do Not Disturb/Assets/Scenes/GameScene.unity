@@ -16655,7 +16655,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 610977619}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 940910608}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UpgradeTowerHP
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 50
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &610977619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19739,7 +19751,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 752717353}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 940910608}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UpgradeTowerAttackSpeed
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 50
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &752717353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24400,6 +24424,7 @@ MonoBehaviour:
   - {fileID: 268070402}
   - {fileID: 1232560099}
   laboratory: {fileID: 8594060696110946828}
+  tower: {fileID: 0}
 --- !u!114 &940910609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30052,7 +30077,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uAC15\uD654"
+  m_Text: "\uC544\uC774\uD15C \uAC15\uD654"
 --- !u!222 &1138261961
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32227,7 +32252,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uAC15\uD654"
+  m_Text: "\uD50C\uB808\uC774\uC5B4 \uAC15\uD654"
 --- !u!222 &1229037825
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32584,7 +32609,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1235010143}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 940910608}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UpgradeTowerDef
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 50
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1235010143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34803,14 +34840,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1341621461}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 940910608}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UpgradeTowerBuildSpeed
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 10
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -35967,7 +36004,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uAC15\uD654"
+  m_Text: "\uC720\uB2DB \uAC15\uD654"
 --- !u!222 &1324690570
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -49391,7 +49428,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uAC15\uD654"
+  m_Text: "\uD0C0\uC6CC \uAC15\uD654"
 --- !u!222 &1844779130
 CanvasRenderer:
   m_ObjectHideFlags: 0

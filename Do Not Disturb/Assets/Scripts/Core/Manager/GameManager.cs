@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static Unity.PlasticSCM.Editor.WebApi.CredentialsResponse;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
     public ComSpawnPoint[] spawns;
 
     public Laboratory laboratory;
+    public Tower tower;
 
     float uiTime;
     private void Awake()
@@ -110,26 +112,47 @@ public class GameManager : MonoBehaviour
     // 업그레이드 관련
     public void UpgradePlayerSpeed()
     {
-        laboratory.UpgradeSpeed();
+        laboratory.UpgradePlayerSpeed();
     }
 
     public void UpgradePlayerHP()
     {
-        laboratory.UpgradeHP();
+        laboratory.UpgradePlayerHP();
     }
 
     public void UpgradePlayerDamage()
     {
-        laboratory.UpgradeDamage();
+        laboratory.UpgradePlayerDamage();
     }
 
     public void UpgradeBase()
     {
-        laboratory.UpgradeBase();
+        laboratory.UpgradeUserBase();
     }
 
-    public void UpgradePlayerDamage()
+    public void UpgradeTowerBuildSpeed(int speed)
     {
-        laboratory.UpgradeTower();
+        laboratory.UpgradeTowerBuildSpeed(tower, speed);
     }
+
+    public void UpgradeTowerHP(int hp)
+    {
+        laboratory.UpgradeTowerHP(tower,hp);
+    }
+
+
+    public void UpgradeTowerDef(int def)
+    {
+        laboratory.UpgradeTowerDef(tower, def);
+    }
+    
+    public void UpgradeTowerAttackSpeed(int attSpeed)
+    {
+        laboratory.UpgradeTowerAttackSpeed(tower, attSpeed);
+    }
+
+
+    //
+
+
 }
