@@ -83,45 +83,36 @@ public class BossUnit : MonoBehaviour
 
     IEnumerator Attack()
     {
+        yield return new WaitForSeconds(10f);
+        
         State = UnitState.Attack;
-        anim.SetBool("isAttack1", true);
-        rigid.isKinematic = true;
 
         while (true)
         {
-            yield return new WaitForSeconds(0.5f);
 
-            Vector3 pos = transform.position + new Vector3(Random.Range(-30f, 30f), 0.5f, Random.Range(-30f, 30f));
-            BossAttack = Instantiate(bullet, pos + Vector3.up * 30f, Quaternion.identity);
-            Rigidbody rigidBullet = BossAttack.GetComponent<Rigidbody>();
+            anim.SetTrigger("isAttack");
+
+            yield return new WaitForSeconds(1f);
+
+            rigid.isKinematic = true;
+
+            Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
+
+            UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
+            transform.rotation = targetRotation;
+
             indicator.transform.localScale = new Vector3(10f, 10f, 10f);
             indicator.SetActive(true);
-            indicator.transform.position = pos;
+            indicator.transform.position = pos + Vector3.up * 3f;
 
+            BossAttack = Instantiate(bullet, transform.position + Vector3.up * 15f, Quaternion.identity);
+            BossAttack.GetComponent<BossAttack>().TargetPosition = pos;
 
-
-            //Vector3 direction = (target.transform.position - transform.position).normalized;
-            //rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
-
-            yield return new WaitForSeconds(2f);
-
-            anim.SetBool("isAttack1", false);
             rigid.isKinematic = false;
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(6f);
 
-            anim.SetBool("isAttack2", true);
-            rigid.isKinematic = true;
 
-            yield return new WaitForSeconds(2f);
-
-            anim.SetBool("isAttack2", false);
-            rigid.isKinematic = false;
-
-            yield return new WaitForSeconds(0.5f);
-
-            anim.SetBool("isAttack1", true);
-            rigid.isKinematic = true;
         }
     }
 

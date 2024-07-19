@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
-using UnityEngine.AI;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
@@ -122,8 +121,6 @@ public class UnitCs : MonoBehaviour
         }
         if (rayHits.Length > 0 && State != UnitState.Attack)
         {
-
-            // Debug.Log(rayHits[0].collider.gameObject.name);
             StopCoroutine("FollowPath");
             target = rayHits[0].collider.gameObject;
             StartCoroutine(Attack());
