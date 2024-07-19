@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +29,8 @@ public class GameManager : MonoBehaviour
     public RectTransform bossHealthBar;
 
     public ComSpawnPoint[] spawns;
+
+    public Laboratory laboratory;
 
     float uiTime;
     private void Awake()
@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
             {
                 spawn.StartSpawn(stage + 1);
             }
-            if ( stage == (maxStage + 1))
+            if (stage == (maxStage + 1))
             {
                 stage = maxStage;
                 state = States.gameEnd;
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
         int min = (int)((uiTime - hour * 3600) / 60);
         int second = (int)(uiTime % 60);
 
-        if ( state == States.ready)
+        if (state == States.ready)
         {
             stageTxt.text = "READY TO " + stage;
         }
@@ -101,10 +101,35 @@ public class GameManager : MonoBehaviour
         {
             stageTxt.text = "STAGE " + stage;
         }
-        playTimeTxt.text = string.Format("{0:00}", hour) +":"+ string.Format("{0:00}", min) + ":" + string.Format("{0:00}", second);
+        playTimeTxt.text = string.Format("{0:00}", hour) + ":" + string.Format("{0:00}", min) + ":" + string.Format("{0:00}", second);
 
         enemyCntTxt.text = "X " + enemyCnt.ToString();
+    }
 
 
+    // 업그레이드 관련
+    public void UpgradePlayerSpeed()
+    {
+        laboratory.UpgradeSpeed();
+    }
+
+    public void UpgradePlayerHP()
+    {
+        laboratory.UpgradeHP();
+    }
+
+    public void UpgradePlayerDamage()
+    {
+        laboratory.UpgradeDamage();
+    }
+
+    public void UpgradeBase()
+    {
+        laboratory.UpgradeBase();
+    }
+
+    public void UpgradePlayerDamage()
+    {
+        laboratory.UpgradeTower();
     }
 }

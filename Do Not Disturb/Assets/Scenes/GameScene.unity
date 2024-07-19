@@ -4964,7 +4964,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 174469985}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 940910606}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &174469985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5784,7 +5796,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &215366570
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9191,7 +9203,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 321689636}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 940910608}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UpgradePlayerSpeed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &321689636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24375,6 +24399,7 @@ MonoBehaviour:
   - {fileID: 1531840591}
   - {fileID: 268070402}
   - {fileID: 1232560099}
+  laboratory: {fileID: 8594060696110946828}
 --- !u!114 &940910609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48463,7 +48488,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1826235371}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 940910608}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UpgradePlayerDamage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1826235371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54629,10 +54666,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1831476548}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 940910608}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UpgradePlayerHP
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -56878,6 +56915,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7181190475775268217, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
   m_PrefabInstance: {fileID: 4251636347373925437}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &871426364432453803 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4277754584223755287, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
+  m_PrefabInstance: {fileID: 4251636347373925437}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c84c0c9b5b251394f919568f209c4ef1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &880742895734994719
 Transform:
   m_ObjectHideFlags: 0
@@ -57704,6 +57752,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4277754584223755287, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
+      propertyPath: coinCount
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4277754584223755287, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: jumpForce
       value: 7
@@ -59044,6 +59096,7 @@ MonoBehaviour:
   inventorySlot_wood: {fileID: 9217414135790357733}
   inventorySlot_ice: {fileID: 9217414136440702304}
   uiPanel: {fileID: 215366569}
+  player: {fileID: 871426364432453803}
 --- !u!1 &8606097676044279614
 GameObject:
   m_ObjectHideFlags: 0
