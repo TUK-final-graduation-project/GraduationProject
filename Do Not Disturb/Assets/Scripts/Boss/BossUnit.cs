@@ -111,7 +111,7 @@ public class BossUnit : MonoBehaviour
 
                         indicator.transform.localScale = new Vector3(10f, 10f, 10f);
                         indicator.SetActive(true);
-                        indicator.transform.position = pos + Vector3.up * 3f;
+                        indicator.transform.position = pos + Vector3.up;
 
                         BossAttack = Instantiate(bullet, transform.position + Vector3.up * 15f, Quaternion.identity);
                         BossAttack.GetComponent<RockBossAttack>().TargetPosition = pos;
@@ -134,9 +134,8 @@ public class BossUnit : MonoBehaviour
                         UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
                         transform.rotation = targetRotation;
 
-                        indicator.transform.localScale = new Vector3(10f, 10f, 10f);
                         indicator.SetActive(true);
-                        indicator.transform.position = pos + Vector3.up * 3f;
+                        indicator.transform.position = pos + Vector3.up;
 
                         rigid.isKinematic = false;
 
