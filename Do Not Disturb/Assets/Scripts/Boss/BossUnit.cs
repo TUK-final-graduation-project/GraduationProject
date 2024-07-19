@@ -5,25 +5,30 @@ using UnityEngine;
 public class BossUnit : MonoBehaviour
 {
     public enum UnitState { Chase, Attack, Targeting, Dead, Damaged };
+    public enum BossType {  Rock, Wizard, Oak };
+
 
     [Header("Unit State")]
+    public BossType type;
     public int HP;
     public UnitState State;
     public GameObject target;
     public GameObject BossPoint;
     public float speed = 10;
 
+    public GameObject meshObj;
+    public GameObject effectObj;
+
     Animator anim;
     Rigidbody rigid;
+
+    [Header("Boss Attack")]
 
     public GameObject bullet;
     public GameObject indicator;
 
     Vector3[] path;
     int targetIndex;
-
-    public GameObject meshObj;
-    public GameObject effectObj;
 
     public GameObject BossAttack;
 
@@ -89,28 +94,43 @@ public class BossUnit : MonoBehaviour
 
         while (true)
         {
+            switch (type)
+            {
+                case BossType.Rock:
+                    {
+                        anim.SetTrigger("isAttack");
 
-            anim.SetTrigger("isAttack");
+                        yield return new WaitForSeconds(1f);
 
-            yield return new WaitForSeconds(1f);
+                        rigid.isKinematic = true;
 
-            rigid.isKinematic = true;
+                        Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
 
-            Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
+                        UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
+                        transform.rotation = targetRotation;
 
-            UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
-            transform.rotation = targetRotation;
+                        indicator.transform.localScale = new Vector3(10f, 10f, 10f);
+                        indicator.SetActive(true);
+                        indicator.transform.position = pos + Vector3.up * 3f;
 
-            indicator.transform.localScale = new Vector3(10f, 10f, 10f);
-            indicator.SetActive(true);
-            indicator.transform.position = pos + Vector3.up * 3f;
+                        BossAttack = Instantiate(bullet, transform.position + Vector3.up * 15f, Quaternion.identity);
+                        BossAttack.GetComponent<BossAttack>().TargetPosition = pos;
 
-            BossAttack = Instantiate(bullet, transform.position + Vector3.up * 15f, Quaternion.identity);
-            BossAttack.GetComponent<BossAttack>().TargetPosition = pos;
+                        rigid.isKinematic = false;
 
-            rigid.isKinematic = false;
+                        yield return new WaitForSeconds(6f);
+                        break;
+                    }
+                case BossType.Wizard:
+                    {
+                        break;
+                    }
+                case BossType.Oak:
+                    {
+                        break;
+                    }
+            }
 
-            yield return new WaitForSeconds(6f);
 
 
         }
@@ -146,7 +166,7 @@ public class BossUnit : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "ComAttack")
+        if (other.tag == "UserAttack")
         {
             if (State != UnitState.Damaged) // 무적 상태가 아닐 때
             {
