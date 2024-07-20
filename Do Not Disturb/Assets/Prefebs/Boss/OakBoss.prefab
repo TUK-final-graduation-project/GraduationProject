@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 5622217300373985512}
   - component: {fileID: 3743044194293385980}
   - component: {fileID: 2035860489933995568}
+  - component: {fileID: 3524961721290370012}
   m_Layer: 18
   m_Name: OakBoss
   m_TagString: Boss
@@ -168,6 +169,27 @@ MonoBehaviour:
   bullet: {fileID: 0}
   indicator: {fileID: 7185807384267620051}
   BossAttack: {fileID: 0}
+--- !u!95 &3524961721290370012
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7824352900121025242}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 406486edf02d8d74da3b2ca225e21254, type: 3}
+  m_Controller: {fileID: 9100000, guid: dd4844bf55db122448f04fbd2bf0d2c6, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &8427376431808717568
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -340,7 +362,8 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: dd4844bf55db122448f04fbd2bf0d2c6, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9500000, guid: aad05534a7ba0dd49b8c54ce188308ec, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1997902523889920628}
   - component: {fileID: 5761084568969677652}
   - component: {fileID: 8641591103310987111}
+  - component: {fileID: 4027474770780299083}
   m_Layer: 18
   m_Name: RockBoss
   m_TagString: Boss
@@ -74,16 +75,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd9ce25a366b1124bbbfe393e6e3c3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
   HP: 100
   State: 0
   target: {fileID: 0}
   BossPoint: {fileID: 0}
   speed: 30
-  bullet: {fileID: 3383397831979674463, guid: ddaddf2c432348b42b8cca9a723a2b8f, type: 3}
-  indicator: {fileID: 7697193669086684440}
   meshObj: {fileID: 3399341466924565559}
   effectObj: {fileID: 0}
+  bullet: {fileID: 3383397831979674463, guid: ddaddf2c432348b42b8cca9a723a2b8f, type: 3}
+  indicator: {fileID: 7697193669086684440}
   BossAttack: {fileID: 0}
+--- !u!95 &4027474770780299083
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3520907659200381198}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 8b2d11d64877f0b4cad5d45ec7d53473, type: 3}
+  m_Controller: {fileID: 9100000, guid: 05197b09491bd534d8d026938dd0208a, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7697193669086684440
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,7 +350,8 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 05197b09491bd534d8d026938dd0208a, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 95380085654935804, guid: 6bbfea6690ef7724ba495c866081f855, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

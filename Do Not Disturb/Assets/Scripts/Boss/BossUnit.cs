@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class BossUnit : MonoBehaviour
 {
@@ -94,87 +95,83 @@ public class BossUnit : MonoBehaviour
 
         while (true)
         {
-            switch (type)
-            {
-                case BossType.Rock:
-                    {
-                        anim.SetTrigger("isAttack");
+            anim.SetTrigger("isAttack");
+            rigid.isKinematic = true;
 
-                        yield return new WaitForSeconds(1f);
-
-                        rigid.isKinematic = true;
-
-                        Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
-
-                        UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
-                        transform.rotation = targetRotation;
-
-                        indicator.transform.localScale = new Vector3(10f, 10f, 10f);
-                        indicator.SetActive(true);
-                        indicator.transform.position = pos + Vector3.up;
-
-                        BossAttack = Instantiate(bullet, transform.position + Vector3.up * 15f, Quaternion.identity);
-                        BossAttack.GetComponent<RockBossAttack>().TargetPosition = pos;
-
-                        rigid.isKinematic = false;
-
-                        yield return new WaitForSeconds(6f);
-                        break;
-                    }
-                case BossType.Wizard:
-                    {
-                        anim.SetTrigger("isAttack");
-                        rigid.isKinematic = true;
-
-                        //yield return new WaitForSeconds(1f);
-
-
-                        //Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
-
-                        //UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
-                        //transform.rotation = targetRotation;
-
-                        //indicator.SetActive(true);
-                        //indicator.transform.position = pos + Vector3.up;
-
-
-                        //yield return new WaitForSeconds(1f);
-                        //BossAttack = Instantiate(bullet, indicator.transform.GetChild(0).transform.position, Quaternion.identity);
-                        //BossAttack.GetComponent<WizardBossAttack>().FinalPosition = indicator.transform.GetChild(1).transform.position;
-
-
-                        yield return new WaitForSeconds(6f);
-                        rigid.isKinematic = false;
-
-                        break;
-                    }
-                case BossType.Oak:
-                    {
-                        break;
-                    }
-            }
-
-
-
+            yield return new WaitForSeconds(6f);
+            rigid.isKinematic = false;
         }
     }
 
 
     private void MakeIndicator()
     {
-        Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
 
-        UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
-        transform.rotation = targetRotation;
+        switch (type)
+        {
+            case BossType.Wizard:
+                {
+                    Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
 
-        indicator.SetActive(true);
-        indicator.transform.position = pos + Vector3.up;
+                    UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
+                    transform.rotation = targetRotation;
+
+                    indicator.SetActive(true);
+                    indicator.transform.position = pos + Vector3.up;
+                    break;
+                }
+            case BossType.Oak:
+                {
+                    Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
+
+                    UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
+                    transform.rotation = targetRotation;
+
+                    indicator.transform.localScale = new Vector3(40f, 40f, 40f);
+                    indicator.SetActive(true);
+                    indicator.transform.position = pos + Vector3.up;
+                    break;
+                }
+            case BossType.Rock:
+                {
+                    Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
+
+                    UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
+                    transform.rotation = targetRotation;
+
+                    indicator.transform.localScale = new Vector3(10f, 10f, 10f);
+                    indicator.SetActive(true);
+                    indicator.transform.position = pos + Vector3.up;
+                    break;
+                }
+        }
+
     }
 
     private void MakeAttack()
     {
-        BossAttack = Instantiate(bullet, indicator.transform.GetChild(0).transform.position, Quaternion.identity);
-        BossAttack.GetComponent<WizardBossAttack>().FinalPosition = indicator.transform.GetChild(1).transform.position;
+
+        switch (type)
+        {
+            case BossType.Wizard:
+                {
+                    BossAttack = Instantiate(bullet, indicator.transform.GetChild(0).transform.position, Quaternion.identity);
+                    BossAttack.GetComponent<WizardBossAttack>().FinalPosition = indicator.transform.GetChild(1).transform.position;
+                    break;
+                }
+            case BossType.Oak:
+                {
+                    BossAttack = Instantiate(bullet, indicator.transform.position, Quaternion.identity);
+                    //BossAttack.GetComponent<OakBossAttack>().FinalPosition = indicator.transform.GetChild(1).transform.position;
+                    break;
+                }
+            case BossType.Rock:
+                {
+                    BossAttack = Instantiate(bullet, transform.position + Vector3.up * 15f, Quaternion.identity);
+                    BossAttack.GetComponent<RockBossAttack>().TargetPosition = indicator.transform.position - Vector3.up;
+                    break;
+                }
+        }
 
     }
 
@@ -204,9 +201,6 @@ public class BossUnit : MonoBehaviour
                         {
                             indicator.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
                         }
-                        if (BossAttack != null && BossAttack.GetComponent<RockBossAttack>().isExplosion == true) { 
-                            indicator.SetActive(false);
-                        }
                     }
                     break;
                 }
@@ -223,6 +217,13 @@ public class BossUnit : MonoBehaviour
                 }
             case BossType.Oak:
                 {
+                    if (indicator.active == true)
+                    {
+                        if (indicator.transform.localScale.x >= 30f)
+                        {
+                            indicator.transform.localScale -= new Vector3(0.2f, 0.2f, 0.2f);
+                        }
+                    }
                     break;
                 }
         }

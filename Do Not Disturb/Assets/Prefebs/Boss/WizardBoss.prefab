@@ -158,6 +158,7 @@ GameObject:
   - component: {fileID: 103428291030605644}
   - component: {fileID: 9174362661211697588}
   - component: {fileID: 5993217615290454186}
+  - component: {fileID: 5019255226730728739}
   m_Layer: 18
   m_Name: WizardBoss
   m_TagString: Boss
@@ -232,6 +233,27 @@ MonoBehaviour:
   bullet: {fileID: 7464171600389235703, guid: f9c2597055ffb3a459e9e18cafa7ea3e, type: 3}
   indicator: {fileID: 2216651620778295547}
   BossAttack: {fileID: 0}
+--- !u!95 &5019255226730728739
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9139307742299922951}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 3dc717adf98c7b043a3e77ed0130d470, type: 3}
+  m_Controller: {fileID: 9100000, guid: 48fee450f3c7bda4489429ca960e99b3, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &118061188827116958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -400,7 +422,8 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 48fee450f3c7bda4489429ca960e99b3, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 95206231959375140, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
