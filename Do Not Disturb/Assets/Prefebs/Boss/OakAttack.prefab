@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 19.305, y: 19.305, z: 19.305}
+  m_LocalScale: {x: 28.519278, y: 28.519278, z: 28.519278}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5592306990109480194}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 5592306990109480194}
   - component: {fileID: 4267067631410103988}
   - component: {fileID: 4696053300300350028}
-  - component: {fileID: 8843102615999889558}
+  - component: {fileID: 2881707430164777523}
   m_Layer: 0
   m_Name: OakAttack
   m_TagString: Untagged
@@ -164,9 +164,9 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 8.15
+  m_Radius: 14.83
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8843102615999889558
+--- !u!114 &2881707430164777523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,9 +175,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7464171600389235703}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b4358e78e1d426498a4a3716c604fb8, type: 3}
+  m_Script: {fileID: 11500000, guid: b5fe9197d577fe44fbf4ca312ff8a3d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigid: {fileID: 4267067631410103988}
-  isExplosion: 0
-  FinalPosition: {x: 0, y: 0, z: 0}
