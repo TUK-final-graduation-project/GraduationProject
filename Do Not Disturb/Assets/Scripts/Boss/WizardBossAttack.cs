@@ -51,7 +51,7 @@ public class WizardBossAttack : MonoBehaviour
     {
         if ( other.tag == "Unit" )
         {
-            other.GetComponent<UnitCs>().HitByBoss();
+            other.GetComponent<UnitCs>().HitByWizardBoss();
         }
     }
 }

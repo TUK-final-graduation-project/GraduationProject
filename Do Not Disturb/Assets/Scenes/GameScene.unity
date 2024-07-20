@@ -1164,6 +1164,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4641666428511186, guid: d7fd44a9ba1363345ba0969019d4c1c9, type: 3}
   m_PrefabInstance: {fileID: 36833263}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &37407093
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 37407094}
+  m_Layer: 0
+  m_Name: OakBossPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &37407094
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37407093}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -174.3, y: 0, z: 75.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 602110364}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &41606585
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14392,6 +14423,76 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 
+--- !u!1001 &526642463
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1371580077}
+    m_Modifications:
+    - target: {fileID: 2035860489933995568, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 37407093}
+    - target: {fileID: 2035860489933995568, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: BossPoint
+      value: 
+      objectReference: {fileID: 37407093}
+    - target: {fileID: 5622217300373985512, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -175
+      objectReference: {fileID: 0}
+    - target: {fileID: 5622217300373985512, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5622217300373985512, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5622217300373985512, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5622217300373985512, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5622217300373985512, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5622217300373985512, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5622217300373985512, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5622217300373985512, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5622217300373985512, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7824352900121025242, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: m_Name
+      value: OakBoss
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+--- !u!4 &526642464 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5622217300373985512, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+  m_PrefabInstance: {fileID: 526642463}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &527411767
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15674,6 +15775,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1361220769}
+  - {fileID: 37407094}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &603641585
@@ -36571,6 +36673,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 748885591}
+  - {fileID: 526642464}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1378346059

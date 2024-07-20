@@ -297,13 +297,52 @@ public class UnitCs : MonoBehaviour
         StartCoroutine(OnDamage(reactVec, true));
     }
 
-    public void HitByBoss()
+    public void HitByWizardBoss()
     {
         HP -= 10;
         if (HP <= 0)
         {
             gameObject.layer = gameObject.layer + 1;
             OnDestroy();
+        }
+    }
+
+    public void HitByOakBoss()
+    {
+        StopCoroutine("FollowPath");
+        StopCoroutine("Attack");
+
+        StartCoroutine("DamagedByBoss");
+        // 코루틴
+        // 처음엔 위로 올라가다가
+        // 밑으로 한번에 떨어지고
+        // 죽음
+    }
+    IEnumerator DamagedByBoss()
+    {
+        while (true)
+        {
+            transform.position += Vector3.up;
+
+            if (transform.position.y >= 30f)
+            {
+                break;
+            }
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        while(true)
+        {
+            transform.position -= Vector3.up * 3;
+
+            if ( transform.position.y <= 0f)
+            {
+                OnDestroy();
+                yield break;
+            }
+            yield return null;
         }
     }
 }
