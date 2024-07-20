@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Unity.PlasticSCM.Editor.WebApi.CredentialsResponse;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,6 +30,9 @@ public class GameManager : MonoBehaviour
     public RectTransform bossHealthBar;
 
     public ComSpawnPoint[] spawns;
+
+    public Laboratory laboratory;
+    public Tower tower;
 
     float uiTime;
     private void Awake()
@@ -78,7 +80,7 @@ public class GameManager : MonoBehaviour
             {
                 spawn.StartSpawn(stage + 1);
             }
-            if ( stage == (maxStage + 1))
+            if (stage == (maxStage + 1))
             {
                 stage = maxStage;
                 state = States.gameEnd;
@@ -93,7 +95,7 @@ public class GameManager : MonoBehaviour
         int min = (int)((uiTime - hour * 3600) / 60);
         int second = (int)(uiTime % 60);
 
-        if ( state == States.ready)
+        if (state == States.ready)
         {
             stageTxt.text = "READY TO " + stage;
         }
@@ -101,10 +103,59 @@ public class GameManager : MonoBehaviour
         {
             stageTxt.text = "STAGE " + stage;
         }
-        playTimeTxt.text = string.Format("{0:00}", hour) +":"+ string.Format("{0:00}", min) + ":" + string.Format("{0:00}", second);
+        playTimeTxt.text = string.Format("{0:00}", hour) + ":" + string.Format("{0:00}", min) + ":" + string.Format("{0:00}", second);
 
         enemyCntTxt.text = "X " + enemyCnt.ToString();
+    }
 
+
+    // 업그레이드 관련
+    public void UpgradePlayerSpeed(int coinNum)
+    {
+        laboratory.UpgradePlayerSpeed(coinNum);
+    }
+
+    public void UpgradePlayerHP(int coinNum)
+    {
+        laboratory.UpgradePlayerHP(coinNum);
+    }
+
+    public void UpgradePlayerDamage(int coinNum)
+    {
+        laboratory.UpgradePlayerDamage(coinNum);
+    }
+
+    public void UpgradeBase()
+    {
+        laboratory.UpgradeUserBase();
+    }
+
+    public void UpgradeTowerBuildSpeed(int speed)
+    {
+        laboratory.UpgradeTowerBuildSpeed(tower, speed);
+    }
+
+    public void UpgradeTowerHP(int hp)
+    {
+        laboratory.UpgradeTowerHP(tower, hp);
+    }
+
+
+    public void UpgradeTowerDef(int def)
+    {
+        laboratory.UpgradeTowerDef(tower, def);
+    }
+
+    public void UpgradeTowerAttackSpeed(int attSpeed)
+    {
+        laboratory.UpgradeTowerAttackSpeed(tower, attSpeed);
+    }
+
+
+    // Resource
+    public void UpgradeResourceRespawnSpeed(int coinNum)
+    {
+        laboratory.UpgradeResourceRespawnSpeed(coinNum);
 
     }
 }

@@ -8,7 +8,9 @@ public class Tower : MonoBehaviour
     public enum Type { Wide, Focus, Blade }
 
     public Type type;
-    public int HP;
+    public int HP;          // 생명력
+    public int Def;         // 방어력
+    public float attackSpeed;    // 공격 속도
     public bool isConquer = false;
     public GameObject releasePoint;
 
@@ -126,4 +128,20 @@ public class Tower : MonoBehaviour
             Destroy(transform.parent.gameObject, 5);
         }
     }
+
+
+    public void SetHP(int hp)
+    {
+        HP = hp;
+    }
+      public void SetAttackSpeed(float speed)
+    {
+        attackSpeed = speed;
+    }
+      public void SetDef(int def)
+    {
+        Def = def;
+    }
+
+
 }

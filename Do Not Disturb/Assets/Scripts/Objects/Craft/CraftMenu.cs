@@ -1,60 +1,57 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// °¢ Ç×¸ñ¿¡ ´ëÇÑ ¼³¸íÀ» À§ÇÑ Craft Å¬·¡½º
+// ê° í•­ëª©ì— ëŒ€í•œ ì„¤ëª…ì„ ìœ„í•œ Craft í´ë˜ìŠ¤
 [System.Serializable]
 public class Craft
 {
-    public string craftName; // ÀÌ¸§
-    public GameObject go_prefab; // ½ÇÁ¦ ¼³Ä¡ µÉ ÇÁ¸®ÆÕ
-    public GameObject go_PreviewPrefab; // ¹Ì¸® º¸±â ÇÁ¸®ÆÕ
+    public string craftName; // ì´ë¦„
+    public GameObject go_prefab; // ì‹¤ì œ ì„¤ì¹˜ ë  í”„ë¦¬íŒ¹
+    public GameObject go_PreviewPrefab; // ë¯¸ë¦¬ ë³´ê¸° í”„ë¦¬íŒ¹
 }
 
 public class CraftMenu : MonoBehaviour
 {
-    // CraftMenuÀÇ È°¼º »óÅÂ¸¦ ³ªÅ¸³»´Â º¯¼ö
+    // CraftMenuì˜ í™œì„± ìƒíƒœë¥¼ ë‚˜íƒ€ë‚´ëŠ” ë³€ìˆ˜
     private bool isActivated = false;
 
-    // ¹Ì¸® º¸±â°¡ È°¼ºÈ­µÈ »óÅÂÀÎÁö¸¦ ³ªÅ¸³»´Â º¯¼ö
+    // ë¯¸ë¦¬ ë³´ê¸°ê°€ í™œì„±í™”ëœ ìƒíƒœì¸ì§€ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ë³€ìˆ˜
     private bool isPreviewActivated = false;
 
-    // ±âº» º£ÀÌ½º UI GameObject
+    // ê¸°ë³¸ ë² ì´ìŠ¤ UI GameObject
     [SerializeField]
     private GameObject go_BaseUI;
 
-    // ¼±ÅÃ ÅÇ °áÁ¤
+    // ì„ íƒ íƒ­ ê²°ì •
     private int selectTab = -1;
 
-    // °¢ ÅÇ¿¡ ´ëÇÑ Å©·¡ÇÁÆ® ¹è¿­
+    // ê° íƒ­ì— ëŒ€í•œ í¬ë˜í”„íŠ¸ ë°°ì—´
     [SerializeField]
-    private Craft[] craftTower;     // 4Á¾·ù
+    private Craft[] craftTower; // 4ì¢…ë¥˜
 
-    // ¹Ì¸® º¸±â ÇÁ¸®ÆÕÀ» ´ãÀ» º¯¼ö
+    // ë¯¸ë¦¬ ë³´ê¸° í”„ë¦¬íŒ¹ì„ ë‹´ì„ ë³€ìˆ˜
     private GameObject go_Preview;
 
-    // ½ÇÁ¦ »ı¼ºµÉ ÇÁ¸®ÆÕÀ» ´ãÀ» º¯¼ö
+    // ì‹¤ì œ ìƒì„±ë  í”„ë¦¬íŒ¹ì„ ë‹´ì„ ë³€ìˆ˜
     private GameObject go_Prefab;
 
-    // ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡¸¦ ³ªÅ¸³»´Â Transform
+    // í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ë¥¼ ë‚˜íƒ€ë‚´ëŠ” Transform
     [SerializeField]
     private Transform tf_Player;
 
-    // ·¹ÀÌÄ³½ºÆ®¸¦ ÅëÇØ Ãæµ¹ Á¤º¸¸¦ ÀúÀåÇÒ º¯¼ö
+    // ë ˆì´ìºìŠ¤íŠ¸ë¥¼ í†µí•´ ì¶©ëŒ ì •ë³´ë¥¼ ì €ì¥í•  ë³€ìˆ˜
     private RaycastHit hitInfo;
 
-    // ·¹ÀÌÄ³½ºÆ®¿¡¼­ °ËÃâÇÒ ·¹ÀÌ¾î ¸¶½ºÅ©
+    // ë ˆì´ìºìŠ¤íŠ¸ì—ì„œ ê²€ì¶œí•  ë ˆì´ì–´ ë§ˆìŠ¤í¬
     [SerializeField]
     private LayerMask layerMask;
 
-    // ·¹ÀÌÄ³½ºÆ®ÀÇ ÃÖ´ë °Å¸®
+    // ë ˆì´ìºìŠ¤íŠ¸ì˜ ìµœëŒ€ ê±°ë¦¬
     [SerializeField]
-    private float range;
+    private float range = 100f;
 
-    // »ı¼º À§Ä¡¿ÍÀÇ °Å¸®
-    [SerializeField]
-    float distance = 2f;
-
+    // ìƒì„± ìœ„ì¹˜ì™€ì˜ ê±°ë¦¬
     [SerializeField]
     private Camera cam;
 
@@ -62,111 +59,94 @@ public class CraftMenu : MonoBehaviour
 
     void Start()
     {
-        // mainCamera º¯¼ö¿¡ ÇöÀç È°¼ºÈ­µÈ ¸ŞÀÎ Ä«¸Ş¶ó¸¦ ÇÒ´ç
+        // mainCamera ë³€ìˆ˜ì— í˜„ì¬ í™œì„±í™”ëœ ë©”ì¸ ì¹´ë©”ë¼ë¥¼ í• ë‹¹
         cam = Camera.main;
     }
+
     public void TabClick(int _tabNumber)
     {
         selectTab = _tabNumber;
-        Debug.Log("ÅÇ click: " + _tabNumber);
+        Debug.Log("íƒ­ click: " + _tabNumber);
     }
-    // ½½·ÔÀ» Å¬¸¯ÇßÀ» ¶§ È£ÃâµÇ´Â ÇÔ¼ö
+
+    // ìŠ¬ë¡¯ì„ í´ë¦­í–ˆì„ ë•Œ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
     public void SlotClick(int _slotNumber)
     {
-        Debug.Log("click slot : " + _slotNumber);
-        // ¹Ì¸® º¸±â »ı¼º
-        go_Preview = Instantiate(craftTower[_slotNumber].go_PreviewPrefab, tf_Player.position + tf_Player.forward* distance, Quaternion.identity);
+        // ë¯¸ë¦¬ ë³´ê¸° ìƒì„±
+        go_Preview = Instantiate(craftTower[_slotNumber].go_PreviewPrefab, tf_Player.position + tf_Player.forward, Quaternion.identity);
 
-        // ½ÇÁ¦ »ı¼ºµÉ ÇÁ¸®ÆÕ ¼³Á¤
+        // ì‹¤ì œ ìƒì„±ë  í”„ë¦¬íŒ¹ ì„¤ì •
         go_Prefab = craftTower[_slotNumber].go_prefab;
 
-        // ¹Ì¸® º¸±â È°¼ºÈ­
+        // ë¯¸ë¦¬ ë³´ê¸° í™œì„±í™”
         isPreviewActivated = true;
 
-        // ±âº» º£ÀÌ½º UI ºñÈ°¼ºÈ­
+        // ê¸°ë³¸ ë² ì´ìŠ¤ UI ë¹„í™œì„±í™”
         go_BaseUI.SetActive(false);
     }
 
     void Update()
     {
-        // ÅÇ Å°¸¦ ´­·¶À» ¶§ Å©·¡ÇÁÆ® ¸Ş´º ¿­±â
+        // íƒ­ í‚¤ë¥¼ ëˆŒë €ì„ ë•Œ í¬ë˜í”„íŠ¸ ë©”ë‰´ ì—´ê¸°
         if (Input.GetKeyDown(KeyCode.Tab) && !isPreviewActivated)
             Window();
 
-        // ¹Ì¸® º¸±â°¡ È°¼ºÈ­µÈ °æ¿ì ¹Ì¸® º¸±â À§Ä¡ ¾÷µ¥ÀÌÆ®
-        //if (isPreviewActivated)
-        PreviewPositionUpdate();
+        // ë¯¸ë¦¬ ë³´ê¸°ê°€ í™œì„±í™”ëœ ê²½ìš° ë¯¸ë¦¬ ë³´ê¸° ìœ„ì¹˜ ì—…ë°ì´íŠ¸
+        if (isPreviewActivated)
+            PreviewPositionUpdate();
 
-        // ¸¶¿ì½º ¿À¸¥ÂÊ ¹öÆ°À» ´­·¶À» ¶§ °Ç¼³
+        // ë§ˆìš°ìŠ¤ ì˜¤ë¥¸ìª½ ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ ê±´ì„¤
         if (Input.GetButtonDown("Fire2"))
             Build();
 
-        // ESC Å°¸¦ ´­·¶À» ¶§ Ãë¼Ò
+        // ESC í‚¤ë¥¼ ëˆŒë €ì„ ë•Œ ì·¨ì†Œ
         if (Input.GetKeyDown(KeyCode.Escape))
             Cancel();
 
-        isCrafting = isActivated;
+        // isCrafting = isActivated;
     }
 
-    // ¹Ì¸® º¸±â À§Ä¡ ¾÷µ¥ÀÌÆ® ÇÔ¼ö
+    // ë¯¸ë¦¬ ë³´ê¸° ìœ„ì¹˜ ì—…ë°ì´íŠ¸ í•¨ìˆ˜
     private void PreviewPositionUpdate()
     {
-        // Ä«¸Ş¶óÀÇ À§Ä¡¿Í ¹æÇâÀ» »ç¿ëÇÏ¿© ·¹ÀÌÄ³½ºÆ®¸¦ ¼öÇà
-        //if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, range, layerMask))
+        // ì¹´ë©”ë¼ì˜ ìœ„ì¹˜ì™€ ë°©í–¥ì„ ì‚¬ìš©í•˜ì—¬ ë ˆì´ìºìŠ¤íŠ¸ë¥¼ ìˆ˜í–‰
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out hitInfo, range, layerMask))
         {
-            Vector3 playerPosition = tf_Player.transform.position; // tf_PlayerÀÇ À§Ä¡
-            Vector3 playerForward = tf_Player.transform.forward; // tf_PlayerÀÇ Àü¹æ º¤ÅÍ
-
-
-            // tf_PlayerÀÇ À§Ä¡¿¡¼­ Àü¹æ ¹æÇâÀ¸·Î distance ¶³¾îÁø À§Ä¡ °è»ê
-            Vector3 targetPosition = playerPosition + playerForward * distance;
-
-            //if (hitInfo.transform != null)
-            {
-                // Ãæµ¹ ÁöÁ¡À¸·Î ¹Ì¸® º¸±â ÀÌµ¿
-                //go_Preview.transform.position = targetPosition;
-            }
+            // ì¶©ëŒ ì§€ì ìœ¼ë¡œ ë¯¸ë¦¬ ë³´ê¸° ì´ë™
+            go_Preview.transform.position = hitInfo.point;
         }
     }
 
-    // °Ç¼³ ÇÔ¼ö
+    // ê±´ì„¤ í•¨ìˆ˜
     private void Build()
     {
-        // ¹Ì¸® º¸±â°¡ È°¼ºÈ­µÇ°í °Ç¼³ °¡´ÉÇÑ °æ¿ì¿¡¸¸ ½ÇÇà
-        if (isPreviewActivated /*&& go_Preview.GetComponent<PreviewObject>().isBuildable()*/)
+        // ë¯¸ë¦¬ ë³´ê¸°ê°€ í™œì„±í™”ë˜ê³  ê±´ì„¤ ê°€ëŠ¥í•œ ê²½ìš°ì—ë§Œ ì‹¤í–‰
+        if (isPreviewActivated && go_Preview.GetComponent<PreviewObject>().isBuildable())
         {
-            // go_PrefabÀÌ nullÀÌ ¾Æ´ÑÁö È®ÀÎ
+            // go_Prefabì´ nullì´ ì•„ë‹Œì§€ í™•ì¸
             if (go_Prefab != null)
             {
-                Debug.Log("diq : " + tf_Player.transform.position);
-
-                Vector3 playerPosition = tf_Player.transform.position; // tf_PlayerÀÇ À§Ä¡
-                Vector3 playerForward = tf_Player.transform.forward; // tf_PlayerÀÇ Àü¹æ º¤ÅÍ
-                
-                // tf_PlayerÀÇ À§Ä¡¿¡¼­ Àü¹æ ¹æÇâÀ¸·Î °Å¸® 5¸¸Å­ ¶³¾îÁø À§Ä¡ °è»ê
-                Vector3 targetPosition = playerPosition + playerForward * distance;
-                // ½ÇÁ¦ ÇÁ¸®ÆÕ »ı¼º
-                Instantiate(go_Prefab, targetPosition, Quaternion.identity);
-
-                // ¹Ì¸® º¸±â »èÁ¦ ¹× »óÅÂ ÃÊ±âÈ­
+                Debug.Log("Build : " + tf_Player.transform.position);
+                Instantiate(go_Prefab, hitInfo.point, Quaternion.identity);
                 Destroy(go_Preview);
                 isActivated = false;
-                isCrafting = false;
                 isPreviewActivated = false;
                 go_Preview = null;
                 go_Prefab = null;
-                //// ¸¶¿ì½º Ä¿¼­ »èÁ¦
+                // ë§ˆìš°ìŠ¤ ì»¤ì„œ ì‚­ì œ
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
             }
             else
             {
-                Debug.LogError("go_PrefabÀÌ nullÀÔ´Ï´Ù.");
+                Debug.LogError("go_Prefabì´ nullì…ë‹ˆë‹¤.");
             }
         }
     }
 
-    // Å©·¡ÇÁÆ® ¸Ş´º ¿­±â/´İ±â ÇÔ¼ö
+    // í¬ë˜í”„íŠ¸ ë©”ë‰´ ì—´ê¸°/ë‹«ê¸° í•¨ìˆ˜
     private void Window()
     {
         if (!isActivated)
@@ -177,30 +157,30 @@ public class CraftMenu : MonoBehaviour
 
     private void OpenWindow()
     {
-        // Craft Manual UI¸¦ È°¼ºÈ­
+        // Craft Manual UIë¥¼ í™œì„±í™”
         isActivated = true;
         isCrafting = true;
         go_BaseUI.SetActive(true);
         Cursor.visible = true;
-        // ¸¶¿ì½º Ä¿¼­ °íÁ¤ ÇØÁ¦
+        // ë§ˆìš°ìŠ¤ ì»¤ì„œ ê³ ì • í•´ì œ
         Cursor.lockState = CursorLockMode.None;
     }
 
     private void CloseWindow()
     {
-        // Craft Manual UI¸¦ ºñÈ°¼ºÈ­
+        // Craft Manual UIë¥¼ ë¹„í™œì„±í™”
         isActivated = false;
         go_BaseUI.SetActive(false);
 
-        //// ¸¶¿ì½º Ä¿¼­ »èÁ¦
+        // ë§ˆìš°ìŠ¤ ì»¤ì„œ ì‚­ì œ
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    // Ãë¼Ò ÇÔ¼ö
+    // ì·¨ì†Œ í•¨ìˆ˜
     private void Cancel()
     {
-        // ¹Ì¸® º¸±â°¡ È°¼ºÈ­µÈ °æ¿ì »èÁ¦ ¹× »óÅÂ ÃÊ±âÈ­
+        // ë¯¸ë¦¬ ë³´ê¸°ê°€ í™œì„±í™”ëœ ê²½ìš° ì‚­ì œ ë° ìƒíƒœ ì´ˆê¸°í™”
         if (isPreviewActivated)
             Destroy(go_Preview);
 
@@ -211,7 +191,7 @@ public class CraftMenu : MonoBehaviour
         go_Prefab = null;
         go_BaseUI.SetActive(false);
 
-        //// ¸¶¿ì½º Ä¿¼­ »èÁ¦
+        // ë§ˆìš°ìŠ¤ ì»¤ì„œ ì‚­ì œ
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
