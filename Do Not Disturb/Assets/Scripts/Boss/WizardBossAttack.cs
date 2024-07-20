@@ -14,16 +14,27 @@ public class WizardBossAttack : MonoBehaviour
 
     Vector3 dir = new Vector3(-1f, 0, 0);
 
+    bool isRight = false;
+
     private void Start()
     {
         isExplosion = false;
         dir = FinalPosition - transform.position;
         dir = dir.normalized;
+
+        if ( FinalPosition.x >= transform.position.x)
+        {
+            isRight = true;
+        }
     }
 
     private void Update()
     {
-        if (transform.position.x <= FinalPosition.x)
+        if (isRight && transform.position.x <= FinalPosition.x)
+        {
+            transform.position += dir * 0.7f;
+        }
+        else if ( !isRight && transform.position.x >= FinalPosition.x)
         {
             transform.position += dir * 0.7f;
         }
@@ -36,9 +47,9 @@ public class WizardBossAttack : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if ( other.tag == "User")
+        if ( other.tag == "Unit" )
         {
             other.GetComponent<UnitCs>().HitByBoss();
         }

@@ -124,27 +124,27 @@ public class BossUnit : MonoBehaviour
                 case BossType.Wizard:
                     {
                         anim.SetTrigger("isAttack");
-
-                        yield return new WaitForSeconds(1f);
-
                         rigid.isKinematic = true;
 
-                        Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
-
-                        UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
-                        transform.rotation = targetRotation;
-
-                        indicator.SetActive(true);
-                        indicator.transform.position = pos + Vector3.up;
+                        //yield return new WaitForSeconds(1f);
 
 
-                        yield return new WaitForSeconds(1f);
-                        BossAttack = Instantiate(bullet, indicator.transform.GetChild(0).transform.position, Quaternion.identity);
-                        BossAttack.GetComponent<WizardBossAttack>().FinalPosition = indicator.transform.GetChild(1).transform.position;
+                        //Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
+
+                        //UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
+                        //transform.rotation = targetRotation;
+
+                        //indicator.SetActive(true);
+                        //indicator.transform.position = pos + Vector3.up;
 
 
+                        //yield return new WaitForSeconds(1f);
+                        //BossAttack = Instantiate(bullet, indicator.transform.GetChild(0).transform.position, Quaternion.identity);
+                        //BossAttack.GetComponent<WizardBossAttack>().FinalPosition = indicator.transform.GetChild(1).transform.position;
+
+
+                        yield return new WaitForSeconds(6f);
                         rigid.isKinematic = false;
-                        yield return new WaitForSeconds(5f);
 
                         break;
                     }
@@ -157,6 +157,25 @@ public class BossUnit : MonoBehaviour
 
 
         }
+    }
+
+
+    private void MakeIndicator()
+    {
+        Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
+
+        UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
+        transform.rotation = targetRotation;
+
+        indicator.SetActive(true);
+        indicator.transform.position = pos + Vector3.up;
+    }
+
+    private void MakeAttack()
+    {
+        BossAttack = Instantiate(bullet, indicator.transform.GetChild(0).transform.position, Quaternion.identity);
+        BossAttack.GetComponent<WizardBossAttack>().FinalPosition = indicator.transform.GetChild(1).transform.position;
+
     }
 
     void FreezeVelocity()
