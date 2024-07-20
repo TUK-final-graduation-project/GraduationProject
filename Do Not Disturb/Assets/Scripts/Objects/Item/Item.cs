@@ -16,10 +16,10 @@ public class Item : ScriptableObject
 
     public enum ItemType
     {
-        Ice,
-        Steel,
-        Wood,
-        Stone,
+        JEM,
+        CANDY,
+        WOOD,
+        STONE,
         ETC
     }
 

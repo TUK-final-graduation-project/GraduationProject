@@ -51,11 +51,10 @@ public class PlayerItem : MonoBehaviour
             ItemAcquisition getItem = hitInfo.transform.GetComponent<ItemAcquisition>();
             if (getItem != null && inven != null)
             {
-                Debug.Log(getItem.item.itemName + " »πµÊ«ﬂΩ¿¥œ¥Ÿ / √— " + getItem.item.itemCount + "∞≥");
                 inven.AcquireItem(getItem.item);
+                Debug.Log(getItem.item.itemName + " »πµÊ«ﬂΩ¿¥œ¥Ÿ / √— " + getItem.item.itemCount + "∞≥");
                 Destroy(hitInfo.transform.gameObject);
                 hitInfo = null; // æ∆¿Ã≈€¿ª ∆ƒ±´«— »ƒ hitInfo∏¶ null∑Œ º≥¡§
-                InfoDisappear(); // æ∆¿Ã≈€ »πµÊ »ƒ ¡§∫∏ º˚±Ë
             }
             else
             {
