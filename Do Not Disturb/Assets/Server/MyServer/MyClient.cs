@@ -148,7 +148,7 @@ public class MyClient : MonoBehaviour
                 writer.Write(player.transform.forward.x);
                 writer.Write(player.transform.forward.y);
                 writer.Write(player.transform.forward.z);
-                writer.Write((int)player.state);
+                //writer.Write((int)player.state);
                 SendData(ms.ToArray());
             }
         }

@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public float HP = 100;
+    public float maxHP = 100;
+    public float attackDamage = 100;
     public float speed = 5.0f;
     public float runSpeed = 8.0f;
     public float smoothness = 10.0f;
@@ -10,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 5.0f;
     public float gravity = -9.8f;
     public float animationThreshold = 1f;
+    public int coinCount = 0;
     public State state;
 
     private Animator anim;
@@ -21,9 +25,9 @@ public class PlayerMovement : MonoBehaviour
     public bool isJump;
 
     private bool jDown;
+    private float currentSpeed;
     private Vector3 currentVelocity;
     private Vector3 targetVelocity;
-    private float currentSpeed;
     private Vector3 yVelocity;
 
     //private MyAnotherPlayer anotherPlayer;
@@ -37,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (anim == null) Debug.LogError("Animator component is missing on " + gameObject.name);
         if (controller == null) Debug.LogError("CharacterController component is missing on " + gameObject.name);
+        HP = 100; 
         //if (anotherPlayer == null) Debug.LogError("AnotherPlayer component is missing on " + gameObject.name);
     }
 
@@ -127,6 +132,23 @@ public class PlayerMovement : MonoBehaviour
         {
             isJump = false;
         }
+    }
+
+    public void SetHP(float hp)
+    {
+        HP = hp;
+    }
+    public void SetDamage(float damage)
+    {
+        attackDamage = damage;
+    }
+     public void SetSpeed(float speed_)
+    {
+        speed = speed_;
+    }
+     public void SetRunSpeed(float run_speed)
+    {
+        runSpeed = run_speed;
     }
 
     public void ApplyServerData(Vector3 position, Vector3 direction, State newState)
