@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5832398550959947862}
   - component: {fileID: 4509607524410291823}
   - component: {fileID: 6497620281863811648}
+  - component: {fileID: 2319520557444036486}
   m_Layer: 12
   m_Name: Snowman
   m_TagString: Unit
@@ -77,15 +78,35 @@ MonoBehaviour:
   team: 1
   HP: 30
   State: 0
-  isChase: 0
-  isAttack: 0
   target: {fileID: 0}
   UserBase: {fileID: 0}
   speed: 3
   meleeArea: {fileID: 0}
+  isDear: 0
   bullet: {fileID: 4373434199967324875, guid: 2f5c1e55c38f1954686ee501a7410cf5, type: 3}
   meshObj: {fileID: 6536369147235064217}
   effectObj: {fileID: 0}
+--- !u!65 &2319520557444036486
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2383117156456374144}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.29, y: 2.25, z: 1.74}
+  m_Center: {x: 0, y: 1.12, z: 0.13}
 --- !u!1001 &6229798567562306760
 PrefabInstance:
   m_ObjectHideFlags: 0

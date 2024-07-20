@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8085861479639496456}
   - component: {fileID: 2531917991480254085}
   - component: {fileID: 4095494072318327951}
+  - component: {fileID: 3571259993916103153}
   m_Layer: 12
   m_Name: Cannon
   m_TagString: Unit
@@ -85,6 +86,27 @@ MonoBehaviour:
   bullet: {fileID: 7410593534733093535, guid: 1b90233520024594888d1b5c894e6e3f, type: 3}
   meshObj: {fileID: 6834408614609121639}
   effectObj: {fileID: 0}
+--- !u!65 &3571259993916103153
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690158630459058033}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.87, y: 3.21, z: 3.18}
+  m_Center: {x: 0, y: 1.48, z: 0}
 --- !u!1001 &5916001191928024118
 PrefabInstance:
   m_ObjectHideFlags: 0
