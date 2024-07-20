@@ -59,6 +59,8 @@ public class CraftMenu : MonoBehaviour
 
     public bool isCrafting;
 
+    private float discountRate = 0f; // 할인가 비율
+
     void Start()
     {
         // mainCamera 변수에 현재 활성화된 메인 카메라를 할당
@@ -177,6 +179,24 @@ public class CraftMenu : MonoBehaviour
         {
             inventory.UseItem(requiredItem.item, requiredItem.count);
         }
+    }
+
+    // 코인 할인
+    public void ApplyDiscount(int coinNum)
+    {
+        // 예: 코인 숫자에 따라 할인을 10% 증가시키는 로직
+        discountRate += 0.1f * coinNum;
+        if (discountRate > 0.5f) // 최대 할인율 제한 (예: 50%)
+        {
+            discountRate = 0.5f;
+        }
+        Debug.Log("할인율이 적용되었습니다: " + (discountRate * 100) + "%");
+    }
+
+    // 아이템 가격을 가져올 때 할인을 적용하는 메서드
+    public float GetDiscountedPrice(float originalPrice)
+    {
+        return originalPrice * (1 - discountRate);
     }
 
 

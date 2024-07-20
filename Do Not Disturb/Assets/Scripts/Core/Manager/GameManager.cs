@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public Laboratory laboratory;
     public Tower tower;
 
+    private CraftMenu craftMenu; // CraftMenu 클래스 인스턴스 변수 추가
     float uiTime;
     private void Awake()
     {
@@ -41,6 +42,13 @@ public class GameManager : MonoBehaviour
         uiTime = readyTime;
         readyTime = coolTimeOfReady;
         battleTime = coolTimeOfBattle;
+
+        // CraftMenu 인스턴스 초기화
+        craftMenu = GetComponent<CraftMenu>();
+        if (craftMenu == null)
+        {
+            Debug.LogError("CraftMenu 컴포넌트를 찾을 수 없습니다.");
+        }
     }
     private void Update()
     {
@@ -85,6 +93,18 @@ public class GameManager : MonoBehaviour
                 stage = maxStage;
                 state = States.gameEnd;
             }
+        }
+    }
+
+    public void UpgradeDiscountItem(int coinNum)
+    {
+        if (craftMenu != null)
+        {
+            craftMenu.ApplyDiscount(coinNum); // ApplyDiscount는 CraftMenu 클래스에 구현할 메서드
+        }
+        else
+        {
+            Debug.LogError("CraftMenu 인스턴스가 없습니다.");
         }
     }
     private void LateUpdate()
@@ -158,4 +178,5 @@ public class GameManager : MonoBehaviour
         laboratory.UpgradeResourceRespawnSpeed(coinNum);
 
     }
+
 }
