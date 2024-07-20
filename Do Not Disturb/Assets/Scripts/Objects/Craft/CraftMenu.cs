@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class RequiredItem
+{
+    public Item item;
+    public int count;
+}
+
 // 각 항목에 대한 설명을 위한 Craft 클래스
 [System.Serializable]
 public class Craft
@@ -9,51 +16,46 @@ public class Craft
     public string craftName; // 이름
     public GameObject go_prefab; // 실제 설치 될 프리팹
     public GameObject go_PreviewPrefab; // 미리 보기 프리팹
+    public List<RequiredItem> requiredItems; // 필요한 아이템 목록과 개수
+
 }
 
 public class CraftMenu : MonoBehaviour
 {
-    // CraftMenu의 활성 상태를 나타내는 변수
-    private bool isActivated = false;
+    private bool isActivated = false;           // CraftMenu의 활성 상태를 나타내는 변수
+    private bool isPreviewActivated = false;    // 미리 보기가 활성화된 상태인지를 나타내는 변수
 
-    // 미리 보기가 활성화된 상태인지를 나타내는 변수
-    private bool isPreviewActivated = false;
-
-    // 기본 베이스 UI GameObject
+   
     [SerializeField]
-    private GameObject go_BaseUI;
+    private GameObject go_BaseUI;               // 기본 베이스 UI GameObject
 
     // 선택 탭 결정
     private int selectTab = -1;
 
-    // 각 탭에 대한 크래프트 배열
+    [SerializeField]                            // 각 탭에 대한 크래프트 배열
+    private Craft[] craftTower;                 // 4종류
+
+    private GameObject go_Preview;              // 미리 보기 프리팹을 담을 변수
+    private GameObject go_Prefab;               // 실제 생성될 프리팹을 담을 변수
+    private Craft currentCraft;
+
     [SerializeField]
-    private Craft[] craftTower; // 4종류
+    private Transform tf_Player;                // 플레이어의 위치를 나타내는 Transform
 
-    // 미리 보기 프리팹을 담을 변수
-    private GameObject go_Preview;
+    
+    private RaycastHit hitInfo;                 // 레이캐스트를 통해 충돌 정보를 저장할 변수
 
-    // 실제 생성될 프리팹을 담을 변수
-    private GameObject go_Prefab;
-
-    // 플레이어의 위치를 나타내는 Transform
+    
     [SerializeField]
-    private Transform tf_Player;
+    private LayerMask layerMask;                // 레이캐스트에서 검출할 레이어 마스크
 
-    // 레이캐스트를 통해 충돌 정보를 저장할 변수
-    private RaycastHit hitInfo;
-
-    // 레이캐스트에서 검출할 레이어 마스크
+    
     [SerializeField]
-    private LayerMask layerMask;
+    private float range = 100f;                 // 레이캐스트의 최대 거리
 
-    // 레이캐스트의 최대 거리
+    
     [SerializeField]
-    private float range = 100f;
-
-    // 생성 위치와의 거리
-    [SerializeField]
-    private Camera cam;
+    private Camera cam;                         // 카메라
 
     public bool isCrafting;
 
@@ -72,6 +74,7 @@ public class CraftMenu : MonoBehaviour
     // 슬롯을 클릭했을 때 호출되는 함수
     public void SlotClick(int _slotNumber)
     {
+        currentCraft = craftTower[_slotNumber];
         // 미리 보기 생성
         go_Preview = Instantiate(craftTower[_slotNumber].go_PreviewPrefab, tf_Player.position + tf_Player.forward, Quaternion.identity);
 
@@ -125,26 +128,57 @@ public class CraftMenu : MonoBehaviour
         // 미리 보기가 활성화되고 건설 가능한 경우에만 실행
         if (isPreviewActivated && go_Preview.GetComponent<PreviewObject>().isBuildable())
         {
-            // go_Prefab이 null이 아닌지 확인
-            if (go_Prefab != null)
+            if (currentCraft != null && go_Prefab != null)
             {
-                Debug.Log("Build : " + tf_Player.transform.position);
-                Instantiate(go_Prefab, hitInfo.point, Quaternion.identity);
-                Destroy(go_Preview);
-                isActivated = false;
-                isPreviewActivated = false;
-                go_Preview = null;
-                go_Prefab = null;
-                // 마우스 커서 삭제
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                if (CheckRequiredItems(currentCraft))
+                {
+                    Instantiate(go_Prefab, hitInfo.point, Quaternion.identity);
+                    Debug.Log("Build : " + tf_Player.transform.position);
+                    Destroy(go_Preview);
+                    isActivated = false;
+                    isPreviewActivated = false;
+                    go_Preview = null;
+                    go_Prefab = null;
+                    UseRequiredItems(currentCraft);
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+                else
+                {
+                    Debug.LogWarning("아이템이 부족합니다. : " + currentCraft.craftName);
+                }
             }
             else
             {
-                Debug.LogError("go_Prefab이 null입니다.");
+                Debug.LogError("currentCraft or go_Prefab is null.");
             }
         }
     }
+
+    private bool CheckRequiredItems(Craft craft)
+    {
+        Inventory inventory = FindObjectOfType<Inventory>();
+
+        foreach (var requiredItem in craft.requiredItems)
+        {
+            if (!inventory.HasItem(requiredItem.item, requiredItem.count))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void UseRequiredItems(Craft craft)
+    {
+        Inventory inventory = FindObjectOfType<Inventory>();
+
+        foreach (var requiredItem in craft.requiredItems)
+        {
+            inventory.UseItem(requiredItem.item, requiredItem.count);
+        }
+    }
+
 
     // 크래프트 메뉴 열기/닫기 함수
     private void Window()
