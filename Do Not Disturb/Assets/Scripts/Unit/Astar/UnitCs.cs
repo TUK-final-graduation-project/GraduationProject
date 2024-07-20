@@ -296,4 +296,14 @@ public class UnitCs : MonoBehaviour
         Vector3 reactVec = transform.position - explosionPos;
         StartCoroutine(OnDamage(reactVec, true));
     }
+
+    public void HitByBoss()
+    {
+        HP -= 10;
+        if (HP <= 0)
+        {
+            gameObject.layer = gameObject.layer + 1;
+            OnDestroy();
+        }
+    }
 }

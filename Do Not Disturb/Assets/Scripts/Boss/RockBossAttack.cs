@@ -34,9 +34,6 @@ public class RockBossAttack : MonoBehaviour
             }
             else
             {
-                rigid.velocity = Vector3.zero;
-                rigid.angularVelocity = Vector3.zero;
-
                 isArrive = true;
 
                 StartCoroutine("Explosion");

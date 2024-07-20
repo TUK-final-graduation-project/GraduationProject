@@ -137,9 +137,14 @@ public class BossUnit : MonoBehaviour
                         indicator.SetActive(true);
                         indicator.transform.position = pos + Vector3.up;
 
-                        rigid.isKinematic = false;
 
-                        yield return new WaitForSeconds(6f);
+                        yield return new WaitForSeconds(1f);
+                        BossAttack = Instantiate(bullet, indicator.transform.GetChild(0).transform.position, Quaternion.identity);
+                        BossAttack.GetComponent<WizardBossAttack>().FinalPosition = indicator.transform.GetChild(1).transform.position;
+
+
+                        rigid.isKinematic = false;
+                        yield return new WaitForSeconds(5f);
 
                         break;
                     }

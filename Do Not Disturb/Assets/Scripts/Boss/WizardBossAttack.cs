@@ -1,62 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WizardBossAttack : MonoBehaviour
 {
-    public GameObject meshObj;
-    public GameObject effectObj;
     public Rigidbody rigid;
 
     public bool isExplosion;
-    bool isArrive;
 
-    public Vector3 TargetPosition;
+    public Vector3 FinalPosition;
 
-    Vector3 dir;
+    Vector3 dir = new Vector3(-1f, 0, 0);
 
     private void Start()
     {
         isExplosion = false;
-        isArrive = false;
-        dir = TargetPosition - transform.position;
+        dir = FinalPosition - transform.position;
         dir = dir.normalized;
     }
 
     private void Update()
     {
-        if (!isArrive)
+        if (transform.position.x <= FinalPosition.x)
         {
-            if (transform.position.y >= 0)
-            {
-                transform.position += dir;
-            }
-            else
-            {
-                rigid.velocity = Vector3.zero;
-                rigid.angularVelocity = Vector3.zero;
+            transform.position += dir * 0.7f;
+        }
+        else
+        {
 
-                isArrive = true;
+            isExplosion = true;
 
-                StartCoroutine("Explosion");
-            }
+            Destroy(gameObject, 1);
         }
     }
 
-    IEnumerator Explosion()
+    private void OnTriggerStay(Collider other)
     {
-        yield return new WaitForSeconds(3f);
-
-        isExplosion = true;
-        meshObj.SetActive(false);
-
-        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, 15, Vector3.up, 0f, LayerMask.GetMask("User"));
-
-        foreach (RaycastHit hitObj in rayHits)
+        if ( other.tag == "User")
         {
-            hitObj.transform.GetComponent<UnitCs>().HitByBomb(transform.position);
+            other.GetComponent<UnitCs>().HitByBoss();
         }
-
-        Destroy(gameObject, 4);
     }
 }
