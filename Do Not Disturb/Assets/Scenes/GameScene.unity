@@ -6316,7 +6316,7 @@ GameObject:
   - component: {fileID: 238630888}
   - component: {fileID: 238630887}
   - component: {fileID: 238630886}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Plane
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -7864,6 +7864,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 238630885}
+  - {fileID: 415225995}
   - {fileID: 628164428}
   - {fileID: 1343087346}
   - {fileID: 857713785}
@@ -11359,6 +11360,98 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4451556057161454, guid: c22e62201f2b11245b2b8f3188b66655, type: 3}
   m_PrefabInstance: {fileID: 408756200}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &415225992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 415225995}
+  - component: {fileID: 415225994}
+  - component: {fileID: 415225993}
+  m_Layer: 9
+  m_Name: Terrain
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!154 &415225993
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415225992}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_TerrainData: {fileID: 15600000, guid: e496c93db201cc849b961b57d55ad35a, type: 2}
+  m_EnableTreeColliders: 1
+--- !u!218 &415225994
+Terrain:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415225992}
+  m_Enabled: 1
+  serializedVersion: 6
+  m_TerrainData: {fileID: 15600000, guid: e496c93db201cc849b961b57d55ad35a, type: 2}
+  m_TreeDistance: 5000
+  m_TreeBillboardDistance: 50
+  m_TreeCrossFadeLength: 5
+  m_TreeMaximumFullLODCount: 50
+  m_DetailObjectDistance: 80
+  m_DetailObjectDensity: 1
+  m_HeightmapPixelError: 5
+  m_SplatMapDistance: 1000
+  m_HeightmapMaximumLOD: 0
+  m_ShadowCastingMode: 2
+  m_DrawHeightmap: 1
+  m_DrawInstanced: 0
+  m_DrawTreesAndFoliage: 1
+  m_StaticShadowCaster: 0
+  m_IgnoreQualitySettings: 0
+  m_ReflectionProbeUsage: 1
+  m_MaterialTemplate: {fileID: 2100000, guid: 594ea882c5a793440b60ff72d896021e, type: 2}
+  m_BakeLightProbesForTrees: 1
+  m_PreserveTreePrototypeLayers: 0
+  m_DeringLightProbesForTrees: 1
+  m_ReceiveGI: 1
+  m_ScaleInLightmap: 0.0256
+  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+  m_GroupingID: 0
+  m_RenderingLayerMask: 1
+  m_AllowAutoConnect: 1
+  m_EnableHeightmapRayTracing: 1
+  m_EnableTreesAndDetailsRayTracing: 0
+  m_TreeMotionVectorModeOverride: 3
+--- !u!4 &415225995
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415225992}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -100, y: -0.5, z: -75}
+  m_LocalScale: {x: 0.125, y: 0.125, z: 0.125}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 282845258}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &424023433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12335,7 +12428,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &448150277
 Transform:
   m_ObjectHideFlags: 0
@@ -24441,13 +24534,13 @@ MonoBehaviour:
   craftTower:
   - craftName: Focus
     go_prefab: {fileID: 8371502022845930716, guid: 8983c05258ec90b4fa7c6d229e14c4f6, type: 3}
-    go_PreviewPrefab: {fileID: 8371502022845930716, guid: 46ad25fdd9708354ba16d966a2968450, type: 3}
+    go_PreviewPrefab: {fileID: 8371502022845930716, guid: 6e18cbeafff796f4a9bd80fd73dc672a, type: 3}
   - craftName: Wide
     go_prefab: {fileID: 5627780704580011384, guid: d6b8444bd0b324649935558f5329574b, type: 3}
-    go_PreviewPrefab: {fileID: 5627780704580011384, guid: 5711a6c6cd8a92b40bbecf6138ec31ce, type: 3}
+    go_PreviewPrefab: {fileID: 5627780704580011384, guid: f33c3bf6f37a688499febd4b023fb797, type: 3}
   - craftName: Blade
     go_prefab: {fileID: 2682639570873943216, guid: 1c529d65671796f4697d117402445f9d, type: 3}
-    go_PreviewPrefab: {fileID: 2682639570873943216, guid: 52a9613741f566540a9e9c50a18e10dd, type: 3}
+    go_PreviewPrefab: {fileID: 2682639570873943216, guid: e8de5b0758133be45a83e198365b9936, type: 3}
   - craftName: Ice Spwan
     go_prefab: {fileID: 2939064241339935142, guid: 314ccf99f0f751744bab6d4d1a1243e4, type: 3}
     go_PreviewPrefab: {fileID: 8657696667560459919, guid: 7509a5b10ac864a4f950986814ee5822, type: 3}
@@ -24464,8 +24557,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 512
-  range: 20
-  distance: 10
+  range: 30
   cam: {fileID: 3960818460657108533}
   isCrafting: 0
 --- !u!1 &941993505
