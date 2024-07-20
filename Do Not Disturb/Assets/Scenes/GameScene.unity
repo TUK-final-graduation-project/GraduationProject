@@ -9154,7 +9154,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &325716373
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14007,10 +14007,10 @@ RectTransform:
   - {fileID: 1956532762}
   m_Father: {fileID: 1151990131}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 40, y: -40}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &500857419
 MonoBehaviour:
@@ -22687,10 +22687,10 @@ RectTransform:
   - {fileID: 314707208}
   m_Father: {fileID: 1151990131}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 260, y: -40}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &908194668
 MonoBehaviour:
@@ -23889,9 +23889,9 @@ MonoBehaviour:
       count: 2
     - item: {fileID: 11400000, guid: 7fd5fc2ae9034674a8af1e672588a070, type: 2}
       count: 2
-  - craftName: Fire Spwan
+  - craftName: Shooter Spwan
     go_prefab: {fileID: 8097785447740253013, guid: 3ab816479c59a27429d6ce7f30db71b5, type: 3}
-    go_PreviewPrefab: {fileID: 4679605957140127032, guid: 6cd77893833bffd4daaf0af49a54bcb0, type: 3}
+    go_PreviewPrefab: {fileID: 8097785447740253013, guid: d0c2241e15500fe46b24548c60384cb3, type: 3}
     requiredItems:
     - item: {fileID: 11400000, guid: d2675b64b8a286b449a405111fdff061, type: 2}
       count: 5
@@ -23901,9 +23901,9 @@ MonoBehaviour:
       count: 2
     - item: {fileID: 11400000, guid: 7fd5fc2ae9034674a8af1e672588a070, type: 2}
       count: 2
-  - craftName: Earth Spwan
+  - craftName: Swordsman Spwan
     go_prefab: {fileID: 1162276824176643232, guid: 0ee8f11e7d7861a4a93ec0476b506e5c, type: 3}
-    go_PreviewPrefab: {fileID: 4084670481522165574, guid: bbc04511189fcd049b2eac0661d2caf1, type: 3}
+    go_PreviewPrefab: {fileID: 1162276824176643232, guid: a5fcfb25d59898b4f8e6b63a0e30c2c5, type: 3}
     requiredItems:
     - item: {fileID: 11400000, guid: d2675b64b8a286b449a405111fdff061, type: 2}
       count: 5
@@ -23929,7 +23929,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 512
-  range: 30
+  range: 50
   cam: {fileID: 3960818460657108533}
   isCrafting: 0
 --- !u!1 &941993505
@@ -31021,10 +31021,10 @@ RectTransform:
   - {fileID: 930008740}
   m_Father: {fileID: 1151990131}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -40}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1197152404
 MonoBehaviour:
@@ -47940,10 +47940,10 @@ RectTransform:
   - {fileID: 570181569}
   m_Father: {fileID: 1524634924}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 40, y: -40}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1823568011
 MonoBehaviour:
@@ -50246,10 +50246,10 @@ RectTransform:
   - {fileID: 245491322}
   m_Father: {fileID: 1524634924}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 180, y: -40}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1904773894
 MonoBehaviour:
