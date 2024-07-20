@@ -110,19 +110,19 @@ public class GameManager : MonoBehaviour
 
 
     // 업그레이드 관련
-    public void UpgradePlayerSpeed()
+    public void UpgradePlayerSpeed(int coinNum)
     {
-        laboratory.UpgradePlayerSpeed();
+        laboratory.UpgradePlayerSpeed(coinNum);
     }
 
-    public void UpgradePlayerHP()
+    public void UpgradePlayerHP(int coinNum)
     {
-        laboratory.UpgradePlayerHP();
+        laboratory.UpgradePlayerHP(coinNum);
     }
 
-    public void UpgradePlayerDamage()
+    public void UpgradePlayerDamage(int coinNum)
     {
-        laboratory.UpgradePlayerDamage();
+        laboratory.UpgradePlayerDamage(coinNum);
     }
 
     public void UpgradeBase()
@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour
 
     public void UpgradeTowerHP(int hp)
     {
-        laboratory.UpgradeTowerHP(tower,hp);
+        laboratory.UpgradeTowerHP(tower, hp);
     }
 
 
@@ -145,14 +145,17 @@ public class GameManager : MonoBehaviour
     {
         laboratory.UpgradeTowerDef(tower, def);
     }
-    
+
     public void UpgradeTowerAttackSpeed(int attSpeed)
     {
         laboratory.UpgradeTowerAttackSpeed(tower, attSpeed);
     }
 
 
-    //
+    // Resource
+    public void UpgradeResourceRespawnSpeed(int coinNum)
+    {
+        laboratory.UpgradeResourceRespawnSpeed(coinNum);
 
-
+    }
 }

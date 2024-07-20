@@ -22,6 +22,7 @@ public class Laboratory : MonoBehaviour
     GameObject uiPanel; // 연구소 UI 패널
 
     public PlayerMovement player;
+    public ResourceManager manager;
 
     void Start()
     {
@@ -45,32 +46,32 @@ public class Laboratory : MonoBehaviour
         itemCount[3] = inventorySlot_ice.itemCount;
     }
 
-    public void UpgradePlayerSpeed()
+    public void UpgradePlayerSpeed(int coinNum)
     {
-        // 필요 코인 개수 20
-        if (player.coinCount >= 20)
+        // 필요 코인 개수 coinNum
+        if (player.coinCount >= coinNum)
         {
-            player.coinCount -= 20;
-            player.SetSpeed(player.speed + 1);
+            player.coinCount -= coinNum;
+            player.SetSpeed(player.speed + 20);
             Debug.Log("coinCount : " + player.coinCount + "| speed : " + player.speed);
         }
     }
 
-    public void UpgradePlayerHP()
+    public void UpgradePlayerHP(int coinNum)
     {
-        if (player.coinCount >= 20)
+        if (player.coinCount >= coinNum)
         {
-            player.coinCount -= 20;
+            player.coinCount -= coinNum;
             player.SetHP(player.maxHP);
             Debug.Log("coinCount : " + player.coinCount + "| HP : " + player.HP);
         }
     }
 
-    public void UpgradePlayerDamage()
+    public void UpgradePlayerDamage(int coinNum)
     {
-        if (player.coinCount >= 20)
+        if (player.coinCount >= coinNum)
         {
-            player.coinCount -= 20;
+            player.coinCount -= coinNum;
             player.SetDamage(player.attackDamage + 20);
             Debug.Log("coinCount : " + player.coinCount + "| attackDamage : " + player.attackDamage);
         }
@@ -102,6 +103,16 @@ public class Laboratory : MonoBehaviour
         
     }
 
+    public void UpgradeResourceRespawnSpeed(int coinNum)
+    {
+        // 필요 코인 개수 coinNum
+        if (player.coinCount >= coinNum)
+        {
+            player.coinCount -= coinNum;
+            manager.MinusRespawnTime(10);
+            Debug.Log("coinCount : " + player.coinCount + "| respawnTime : " + manager.respawnTime);
+        }
+    }
 
 
     private void OnTriggerEnter(Collider other)

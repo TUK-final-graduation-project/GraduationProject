@@ -20,7 +20,7 @@ public class ResourceManager : MonoBehaviour
     [SerializeField]
     private float mapHeight = 1000f;         // 맵의 높이
     [SerializeField]
-    private float respawnTime = 30f;        // 리스폰 주기 (초 단위)
+    public float respawnTime = 30f;        // 리스폰 주기 (초 단위)
     [SerializeField]
     private float minSpawnDistance = 5f;   // 최소 생성 거리 (중복 생성 방지용)
 
@@ -78,7 +78,7 @@ public class ResourceManager : MonoBehaviour
         {
             foreach (var obj in list)
             {
-                // 최소 생성 거리 이내에 다른 프리팹이 있으면 위치가 점유되었다고 판단
+                // 최소 생성 거리 이내에 다른 프리팹이 있으면 리턴
                 if (Vector3.Distance(obj.transform.position, position) < minSpawnDistance)
                 {
                     return true;
@@ -132,7 +132,6 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    // 프리팹이 제거되었을 때 호출
     public void RemovePrefab(GameObject prefab, GameObject prefabInstance)
     {
         if (activePrefabs.ContainsKey(prefab))
@@ -140,7 +139,65 @@ public class ResourceManager : MonoBehaviour
             activePrefabs[prefab].Remove(prefabInstance);  // 활성화된 프리팹 리스트에서 제거
         }
     }
+
+    // Set, Minus, Plus
+    // 프리팹 최대 생성 개수 설정
+    public void SetMaxCount(GameObject prefab, int count)
+    {
+        foreach (var prefabInfo in prefabInfos)
+        {
+            if (prefabInfo.prefab == prefab)
+            {
+                prefabInfo.maxCount = count;
+                break;
+            }
+        }
+    }
+
+    // 프리팹 최대 생성 개수 증가
+    public void PlusMaxCount(GameObject prefab, int count)
+    {
+        foreach (var prefabInfo in prefabInfos)
+        {
+            if (prefabInfo.prefab == prefab)
+            {
+                prefabInfo.maxCount += count;
+                break;
+            }
+        }
+    }
+
+    // 프리팹 최대 생성 개수 감소
+    public void MinusMaxCount(GameObject prefab, int count)
+    {
+        foreach (var prefabInfo in prefabInfos)
+        {
+            if (prefabInfo.prefab == prefab)
+            {
+                prefabInfo.maxCount = Mathf.Max(0, prefabInfo.maxCount - count);  // 최소 0으로 제한
+                break;
+            }
+        }
+    }
+
+    // 리스폰 주기 설정
+    public void SetRespawnTime(float time)
+    {
+        respawnTime = time;
+    }
+    // 리스폰 주기 증가
+    public void PlusRespawnTime(float time)
+    {
+        respawnTime += time;
+    }
+    // 리스폰 주기 감소
+    public void MinusRespawnTime(float time)
+    {
+        respawnTime -= time;
+    }
 }
+
+
 
 public class PrefabTracker : MonoBehaviour
 {
@@ -156,3 +213,5 @@ public class PrefabTracker : MonoBehaviour
         }
     }
 }
+
+

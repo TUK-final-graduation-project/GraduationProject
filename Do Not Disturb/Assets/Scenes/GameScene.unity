@@ -9012,11 +9012,11 @@ MonoBehaviour:
       - m_Target: {fileID: 940910608}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: UpgradePlayerSpeed
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 20
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -13163,7 +13163,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &469713220
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15316,15 +15316,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 940910606}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 940910608}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: UpgradeResourceRespawnSpeed
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 50
+          m_FloatArgument: 10
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -17919,7 +17919,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC790\uC6D0 \uC0DD\uC131 \uC18D\uB3C4 \uC99D\uAC00"
+  m_Text: "\uC790\uC6D0 \uC7AC\uC0DD\uC131 \uC2DC\uAC04 \uAC10\uC18C (-10\uCD08)"
 --- !u!222 &681843009
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -48050,11 +48050,11 @@ MonoBehaviour:
       - m_Target: {fileID: 940910608}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: UpgradePlayerDamage
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 30
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -54079,11 +54079,11 @@ MonoBehaviour:
       - m_Target: {fileID: 940910608}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: UpgradePlayerHP
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 20
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -56116,7 +56116,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 13
+    m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -56127,7 +56127,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC790\uC6D0 \uB4DC\uB78D \uC544\uC774\uD15C \uAC1C\uC218 \uC99D\uAC00"
+  m_Text: "\uB4DC\uB78D \uC544\uC774\uD15C \uAC1C\uC218 \uC99D\uAC00"
 --- !u!222 &2145888631
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -58515,6 +58515,7 @@ MonoBehaviour:
   inventorySlot_ice: {fileID: 9217414136440702304}
   uiPanel: {fileID: 215366569}
   player: {fileID: 871426364432453803}
+  manager: {fileID: 339142457}
 --- !u!1 &8606097676044279614
 GameObject:
   m_ObjectHideFlags: 0
