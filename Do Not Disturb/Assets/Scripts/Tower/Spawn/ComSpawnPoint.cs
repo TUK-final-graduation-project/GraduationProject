@@ -77,6 +77,7 @@ public class ComSpawnPoint : MonoBehaviour
         StopCoroutine(Spawn(num));
         StartCoroutine(Spawn(num));
     }
+
     public void OnDamage()
     {
         HP -= 50;

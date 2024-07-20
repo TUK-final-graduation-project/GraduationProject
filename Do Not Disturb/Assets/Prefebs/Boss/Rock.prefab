@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6441740801482186344}
   - component: {fileID: 8941650466538514659}
-  - component: {fileID: 4583799735825837822}
   - component: {fileID: 2383633157108775705}
+  - component: {fileID: 8232345707803651505}
   m_Layer: 15
   m_Name: Rock
   m_TagString: ComAttack
@@ -62,20 +62,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4583799735825837822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3383397831979674463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ee38bcbcc7c65c419fb1850ba06deac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 0
-  isMelee: 0
 --- !u!65 &2383633157108775705
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -97,6 +83,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.15, y: 1.87, z: 1.52}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8232345707803651505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3383397831979674463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cff879b75a66d9d4e8b85e5cd8296c12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshObj: {fileID: 140240010899209241}
+  effectObj: {fileID: 0}
+  rigid: {fileID: 8941650466538514659}
 --- !u!1001 &141538696534909617
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -175,6 +176,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71497ec4178769a4c8cdb38563f01fc0, type: 3}
+--- !u!1 &140240010899209241 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1375754531036840, guid: 71497ec4178769a4c8cdb38563f01fc0, type: 3}
+  m_PrefabInstance: {fileID: 141538696534909617}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &142048984157109751 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4064334960189254, guid: 71497ec4178769a4c8cdb38563f01fc0, type: 3}

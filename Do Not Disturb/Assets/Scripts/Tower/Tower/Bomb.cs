@@ -21,7 +21,7 @@ public class Bomb : MonoBehaviour
         meshObj.SetActive(false);
         effectObj.SetActive(true);
 
-        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, 15, Vector3.up, 0f, LayerMask.GetMask("Com"));
+        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, 45f, Vector3.up, 0f, LayerMask.GetMask("Com"));
 
         foreach (RaycastHit hitObj in rayHits)
         {
