@@ -123,7 +123,7 @@ public class CraftMenu : MonoBehaviour
     private void Build()
     {
         // 미리 보기가 활성화되고 건설 가능한 경우에만 실행
-        if (isPreviewActivated /*&& go_Preview.GetComponent<PreviewObject>().isBuildable()*/)
+        if (isPreviewActivated && go_Preview.GetComponent<PreviewObject>().isBuildable())
         {
             // go_Prefab이 null이 아닌지 확인
             if (go_Prefab != null)
