@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class RequiredItem
@@ -63,6 +64,9 @@ public class CraftMenu : MonoBehaviour
 
     [SerializeField] 
     public CraftTooltip tooltip;  // 툴팁 스크립트 참조
+
+    [SerializeField]
+    private Text errorMessageText; // 부족 아이템 메시지 텍스트
 
     void Start()
     {
@@ -164,7 +168,7 @@ public class CraftMenu : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("아이템이 부족합니다. : " + currentCraft.craftName);
+                    ShowErrorMessage("아이템이 부족합니다.");
                 }
             }
             else
@@ -172,6 +176,24 @@ public class CraftMenu : MonoBehaviour
                 Debug.LogError("currentCraft or go_Prefab is null.");
             }
         }
+    }
+
+    // 부족 아이템 메시지 표시
+    private void ShowErrorMessage(string message)
+    {
+        errorMessageText.text = message;
+        errorMessageText.gameObject.SetActive(true);
+        errorMessageText.color = Color.red;
+
+        // 2초 후에 메시지를 비활성화
+        StartCoroutine(HideErrorMessageAfterDelay(2f));
+    }
+
+    // 메세지 딜레이 후 제거
+    private IEnumerator HideErrorMessageAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        errorMessageText.gameObject.SetActive(false);
     }
 
     private bool CheckRequiredItems(Craft craft)
