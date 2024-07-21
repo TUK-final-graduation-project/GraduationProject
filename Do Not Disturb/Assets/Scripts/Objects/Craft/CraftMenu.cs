@@ -1,6 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+[System.Serializable]
+public class RequiredItem
+{
+    public Item item;
+    public int count;
+}
 
 // 각 항목에 대한 설명을 위한 Craft 클래스
 [System.Serializable]
@@ -9,58 +17,65 @@ public class Craft
     public string craftName; // 이름
     public GameObject go_prefab; // 실제 설치 될 프리팹
     public GameObject go_PreviewPrefab; // 미리 보기 프리팹
+    public List<RequiredItem> requiredItems; // 필요한 아이템 목록과 개수
+
 }
 
 public class CraftMenu : MonoBehaviour
 {
-    // CraftMenu의 활성 상태를 나타내는 변수
-    private bool isActivated = false;
+    private bool isActivated = false;           // CraftMenu의 활성 상태를 나타내는 변수
+    private bool isPreviewActivated = false;    // 미리 보기가 활성화된 상태인지를 나타내는 변수
 
-    // 미리 보기가 활성화된 상태인지를 나타내는 변수
-    private bool isPreviewActivated = false;
-
-    // 기본 베이스 UI GameObject
+   
     [SerializeField]
-    private GameObject go_BaseUI;
+    private GameObject go_BaseUI;               // 기본 베이스 UI GameObject
 
     // 선택 탭 결정
     private int selectTab = -1;
 
-    // 각 탭에 대한 크래프트 배열
+    [SerializeField]                            // 각 탭에 대한 크래프트 배열
+    private Craft[] craftTower;                 // 4종류
+
+    private GameObject go_Preview;              // 미리 보기 프리팹을 담을 변수
+    private GameObject go_Prefab;               // 실제 생성될 프리팹을 담을 변수
+    private Craft currentCraft;
+
     [SerializeField]
-    private Craft[] craftTower; // 4종류
+    private Transform tf_Player;                // 플레이어의 위치를 나타내는 Transform
 
-    // 미리 보기 프리팹을 담을 변수
-    private GameObject go_Preview;
+    
+    private RaycastHit hitInfo;                 // 레이캐스트를 통해 충돌 정보를 저장할 변수
 
-    // 실제 생성될 프리팹을 담을 변수
-    private GameObject go_Prefab;
-
-    // 플레이어의 위치를 나타내는 Transform
+    
     [SerializeField]
-    private Transform tf_Player;
+    private LayerMask layerMask;                // 레이캐스트에서 검출할 레이어 마스크
 
-    // 레이캐스트를 통해 충돌 정보를 저장할 변수
-    private RaycastHit hitInfo;
-
-    // 레이캐스트에서 검출할 레이어 마스크
+    
     [SerializeField]
-    private LayerMask layerMask;
+    private float range = 100f;                 // 레이캐스트의 최대 거리
 
-    // 레이캐스트의 최대 거리
+    
     [SerializeField]
-    private float range = 100f;
-
-    // 생성 위치와의 거리
-    [SerializeField]
-    private Camera cam;
+    private Camera cam;                         // 카메라
 
     public bool isCrafting;
+
+    private float discountRate = 0f; // 할인가 비율
+
+    [SerializeField] 
+    public CraftTooltip tooltip;  // 툴팁 스크립트 참조
+
+    [SerializeField]
+    private Text errorMessageText; // 부족 아이템 메시지 텍스트
 
     void Start()
     {
         // mainCamera 변수에 현재 활성화된 메인 카메라를 할당
         cam = Camera.main;
+        if (tooltip == null)
+        {
+            Debug.LogError("Tooltip is not assigned in the inspector.");
+        }
     }
 
     public void TabClick(int _tabNumber)
@@ -72,7 +87,7 @@ public class CraftMenu : MonoBehaviour
     // 슬롯을 클릭했을 때 호출되는 함수
     public void SlotClick(int _slotNumber)
     {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Ui);
+        currentCraft = craftTower[_slotNumber];
         // 미리 보기 생성
         go_Preview = Instantiate(craftTower[_slotNumber].go_PreviewPrefab, tf_Player.position + tf_Player.forward, Quaternion.identity);
 
@@ -84,6 +99,16 @@ public class CraftMenu : MonoBehaviour
 
         // 기본 베이스 UI 비활성화
         go_BaseUI.SetActive(false);
+        tooltip.HideTooltip();
+    }
+
+    public Craft GetCraft(int index)
+    {
+        if (index >= 0 && index < craftTower.Length)
+        {
+            return craftTower[index];
+        }
+        return null;
     }
 
     void Update()
@@ -126,25 +151,101 @@ public class CraftMenu : MonoBehaviour
         // 미리 보기가 활성화되고 건설 가능한 경우에만 실행
         if (isPreviewActivated && go_Preview.GetComponent<PreviewObject>().isBuildable())
         {
-            // go_Prefab이 null이 아닌지 확인
-            if (go_Prefab != null)
+            if (currentCraft != null && go_Prefab != null)
             {
-                Debug.Log("Build : " + tf_Player.transform.position);
-                Instantiate(go_Prefab, hitInfo.point, Quaternion.identity);
-                Destroy(go_Preview);
-                isActivated = false;
-                isPreviewActivated = false;
-                go_Preview = null;
-                go_Prefab = null;
-                // 마우스 커서 삭제
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                if (CheckRequiredItems(currentCraft))
+                {
+                    Instantiate(go_Prefab, hitInfo.point, Quaternion.identity);
+                    Debug.Log("Build : " + tf_Player.transform.position);
+                    Destroy(go_Preview);
+                    isActivated = false;
+                    isPreviewActivated = false;
+                    go_Preview = null;
+                    go_Prefab = null;
+                    UseRequiredItems(currentCraft);
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+                else
+                {
+                    ShowErrorMessage("아이템이 부족합니다.");
+                }
             }
             else
             {
-                Debug.LogError("go_Prefab이 null입니다.");
+                Debug.LogError("currentCraft or go_Prefab is null.");
             }
         }
+    }
+
+    // 부족 아이템 메시지 표시
+    private void ShowErrorMessage(string message)
+    {
+        errorMessageText.text = message;
+        errorMessageText.gameObject.SetActive(true);
+        errorMessageText.color = Color.red;
+
+        // 2초 후에 메시지를 비활성화
+        StartCoroutine(HideErrorMessageAfterDelay(2f));
+    }
+
+    // 메세지 딜레이 후 제거
+    private IEnumerator HideErrorMessageAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        errorMessageText.gameObject.SetActive(false);
+    }
+
+    private bool CheckRequiredItems(Craft craft)
+    {
+        Inventory inventory = FindObjectOfType<Inventory>();
+
+        foreach (var requiredItem in craft.requiredItems)
+        {
+            if (!inventory.HasItem(requiredItem.item, requiredItem.count))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void UseRequiredItems(Craft craft)
+    {
+        Inventory inventory = FindObjectOfType<Inventory>();
+
+        foreach (var requiredItem in craft.requiredItems)
+        {
+            // 필요한 아이템 개수에서 할인을 적용한 개수를 계산
+            int discountedCount = Mathf.CeilToInt(requiredItem.count * (1 - discountRate));
+
+            // 할인가 적용한 아이템 개수 사용
+            inventory.UseItem(requiredItem.item, discountedCount);
+        }
+    }
+
+    // 코인 할인
+    public void ApplyDiscount(int coinNum)
+    {
+        // 예: 코인 숫자에 따라 할인을 5% 증가시키는 로직
+        discountRate += 0.05f * coinNum;
+        if (discountRate > 0.5f) // 최대 할인율 제한 (예: 50%)
+        {
+            discountRate = 0.5f;
+        }
+        Debug.Log("할인율이 적용되었습니다: " + (discountRate * 100) + "%");
+    }
+
+    // 아이템 가격을 가져올 때 할인을 적용하는 메서드
+    public float GetDiscountedPrice(float originalPrice)
+    {
+        return originalPrice * (1 - discountRate);
+    }
+
+    // 할인율 반환해주는 메서드
+    public float GetDiscountRate()
+    {
+        return discountRate;
     }
 
     // 크래프트 메뉴 열기/닫기 함수

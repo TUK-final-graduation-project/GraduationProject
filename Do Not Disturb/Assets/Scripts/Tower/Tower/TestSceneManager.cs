@@ -21,7 +21,7 @@ public class TestSceneManager : MonoBehaviour
 
     int lobbyScene = 2;
     int gameScene = 0;
-    int miniScene = 1;
+    int OptionScene = 1;
     void Update()
     {
         vDown = Input.GetButton("Debug SpawnUnit");
@@ -60,7 +60,7 @@ public class TestSceneManager : MonoBehaviour
         }
         if (nDown)
         {
-            SceneManager.LoadScene(miniScene);
+            SceneManager.LoadScene(OptionScene);
         }
         if (mDown)
         {
@@ -72,6 +72,27 @@ public class TestSceneManager : MonoBehaviour
             Application.Quit();
         }
     }
+
+    public void OnApplicationQuit()
+    {
+        Application.Quit();
+    }
+    public void OnGameSceneStart()
+    {
+        SceneManager.LoadScene(gameScene);
+    }
+    public void OnOptionSceneStart()
+    {
+        SceneManager.LoadScene(OptionScene);
+    }
+    public void OnLobbySceneStart()
+    {
+        // 마우스 커서 On
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = true;
+        SceneManager.LoadScene(lobbyScene);
+    }
+    
 
     void SpawnCoolTime()
     {

@@ -205,13 +205,13 @@ public class UnitCs : MonoBehaviour
         }
         RequestPathToMgr();
     }
+
     private void FixedUpdate()
     {
         if (State != UnitState.Dead)
         {
             if ( target == null )
             {
-                StopCoroutine("Attack");
                 FindNextTarget();
             }
             if ( State != UnitState.Targeting)
@@ -313,10 +313,6 @@ public class UnitCs : MonoBehaviour
         StopCoroutine("Attack");
 
         StartCoroutine("DamagedByBoss");
-        // 코루틴
-        // 처음엔 위로 올라가다가
-        // 밑으로 한번에 떨어지고
-        // 죽음
     }
     IEnumerator DamagedByBoss()
     {
