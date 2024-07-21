@@ -61,10 +61,17 @@ public class CraftMenu : MonoBehaviour
 
     private float discountRate = 0f; // 할인가 비율
 
+    [SerializeField] 
+    public CraftTooltip tooltip;  // 툴팁 스크립트 참조
+
     void Start()
     {
         // mainCamera 변수에 현재 활성화된 메인 카메라를 할당
         cam = Camera.main;
+        if (tooltip == null)
+        {
+            Debug.LogError("Tooltip is not assigned in the inspector.");
+        }
     }
 
     public void TabClick(int _tabNumber)
@@ -88,6 +95,16 @@ public class CraftMenu : MonoBehaviour
 
         // 기본 베이스 UI 비활성화
         go_BaseUI.SetActive(false);
+        tooltip.HideTooltip();
+    }
+
+    public Craft GetCraft(int index)
+    {
+        if (index >= 0 && index < craftTower.Length)
+        {
+            return craftTower[index];
+        }
+        return null;
     }
 
     void Update()
