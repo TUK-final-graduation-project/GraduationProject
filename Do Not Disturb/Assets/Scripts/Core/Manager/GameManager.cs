@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
         }
         else if (state == States.battle)
         {
+            
             Battle();
         }
         playTime += Time.deltaTime;

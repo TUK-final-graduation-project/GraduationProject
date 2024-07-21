@@ -94,6 +94,7 @@ public class PlayerMovement : MonoBehaviour
                 yVelocity.y = jumpForce;
                 isJump = true;
                 anim.SetTrigger("Jump");
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Jump);
             }
         }
         else
