@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-
     public Item item; // 획득한 아이템.
     public int itemCount; // 획득한 아이템의 개수.
     public Image itemImage; // 아이템의 이미지.
@@ -15,6 +15,40 @@ public class InventorySlot : MonoBehaviour
     private Text text_Count;
     [SerializeField]
     private GameObject go_CountImage;
+
+    // Tooltip reference
+    private Tooltip tooltip;
+
+    private void Awake()
+    {
+        tooltip = FindObjectOfType<Tooltip>();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (item != null && tooltip != null)
+        {
+            Debug.Log($"Showing tooltip for item: {item.itemName}");
+            tooltip.ShowTooltip(item);
+        }
+        else
+        {
+            Debug.Log("Item or tooltip is null.");
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (tooltip != null)
+        {
+            Debug.Log("Hiding tooltip.");
+            tooltip.HideTooltip();
+        }
+        else
+        {
+            Debug.Log("Tooltip is null.");
+        }
+    }
 
 
     // 이미지의 투명도 조절.
