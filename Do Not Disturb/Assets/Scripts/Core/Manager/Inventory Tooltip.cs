@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Tooltip : MonoBehaviour
+public class InventoryTooltip : MonoBehaviour
 {
     [SerializeField]
     private GameObject tooltipObject;

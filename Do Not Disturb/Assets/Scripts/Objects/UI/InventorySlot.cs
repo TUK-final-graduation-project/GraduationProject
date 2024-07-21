@@ -16,12 +16,12 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField]
     private GameObject go_CountImage;
 
-    // Tooltip reference
-    private Tooltip tooltip;
+    // InventoryTooltip reference
+    private InventoryTooltip tooltip;
 
     private void Awake()
     {
-        tooltip = FindObjectOfType<Tooltip>();
+        tooltip = FindObjectOfType<InventoryTooltip>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
