@@ -194,15 +194,19 @@ public class CraftMenu : MonoBehaviour
 
         foreach (var requiredItem in craft.requiredItems)
         {
-            inventory.UseItem(requiredItem.item, requiredItem.count);
+            // 필요한 아이템 개수에서 할인을 적용한 개수를 계산
+            int discountedCount = Mathf.CeilToInt(requiredItem.count * (1 - discountRate));
+
+            // 할인가 적용한 아이템 개수 사용
+            inventory.UseItem(requiredItem.item, discountedCount);
         }
     }
 
     // 코인 할인
     public void ApplyDiscount(int coinNum)
     {
-        // 예: 코인 숫자에 따라 할인을 10% 증가시키는 로직
-        discountRate += 0.1f * coinNum;
+        // 예: 코인 숫자에 따라 할인을 5% 증가시키는 로직
+        discountRate += 0.05f * coinNum;
         if (discountRate > 0.5f) // 최대 할인율 제한 (예: 50%)
         {
             discountRate = 0.5f;
@@ -216,6 +220,11 @@ public class CraftMenu : MonoBehaviour
         return originalPrice * (1 - discountRate);
     }
 
+    // 할인율 반환해주는 메서드
+    public float GetDiscountRate()
+    {
+        return discountRate;
+    }
 
     // 크래프트 메뉴 열기/닫기 함수
     private void Window()

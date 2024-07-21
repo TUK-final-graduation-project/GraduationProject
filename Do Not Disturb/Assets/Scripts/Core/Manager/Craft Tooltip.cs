@@ -5,29 +5,37 @@ using UnityEngine.UI;
 
 public class CraftTooltip : MonoBehaviour
 {
-    [SerializeField] private GameObject tooltipObject;  // 툴팁 UI 패널
-    [SerializeField] private Text tooltipText;          // 툴팁 텍스트 컴포넌트
+    [SerializeField] private GameObject tooltip;
+    [SerializeField] private Text craftNameText;
+    [SerializeField] private Text requiredItemsText;
 
     private void Start()
     {
         HideTooltip();  // 초기에는 툴팁을 숨깁니다.
     }
-
-    // 툴팁을 표시하는 함수
-    public void ShowTooltip(string craftName, List<RequiredItem> requiredItems)
+    public void ShowTooltip(Craft craft, float discountRate)
     {
-        string tooltipContent = craftName + "\n\n\n 필요한 아이템 \n\n";
-        foreach (var requiredItem in requiredItems)
+        craftNameText.text = craft.craftName;
+
+        requiredItemsText.text = "";
+        foreach (var requiredItem in craft.requiredItems)
         {
-            tooltipContent += $"{requiredItem.item.itemName}: {requiredItem.count}\n";
+            int discountedCount = Mathf.CeilToInt(requiredItem.count * (1 - discountRate));
+            string itemText = $"{requiredItem.item.itemName} x {requiredItem.count}";
+
+            if (discountRate > 0)
+            {
+                itemText += $" (할인가: <color=yellow>{discountedCount}</color>)";
+            }
+
+            requiredItemsText.text += itemText + "\n";
         }
-        tooltipText.text = tooltipContent;
-        tooltipObject.SetActive(true);
+
+        tooltip.SetActive(true);
     }
 
-    // 툴팁을 숨기는 함수
     public void HideTooltip()
     {
-        tooltipObject.SetActive(false);
+        tooltip.SetActive(false);
     }
 }
