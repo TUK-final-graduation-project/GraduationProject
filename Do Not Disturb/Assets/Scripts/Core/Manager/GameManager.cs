@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static Unity.PlasticSCM.Editor.WebApi.CredentialsResponse;
 
 public class GameManager : MonoBehaviour
 {
