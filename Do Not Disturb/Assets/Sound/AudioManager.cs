@@ -7,9 +7,11 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     [Header("#BGM")]
-    public AudioClip bgmClip;
+    public AudioClip[] bgmClips;
     public float bgmVolume;
-    AudioSource bgmPlayer;
+    public int bgmClipcount;
+    AudioSource[] bgmPlayers;
+    int bgmIndex;
 
     [Header("#SFX")]
     public AudioClip[] sfxClips;
@@ -18,6 +20,7 @@ public class AudioManager : MonoBehaviour
     AudioSource[] sfxPlayers;
     int channelIndex;
 
+    public enum Bgm {Wait =0, Battle}
     public enum Sfx {Chopping, Jump, Mining, Run, Shovel, Ui, Walk}
 
     void Awake()
@@ -28,14 +31,18 @@ public class AudioManager : MonoBehaviour
 
     void Init()
     {
-        // 배경음 초기화
+        //// 배경음 초기화
         GameObject bgmobject = new GameObject("BgmPlayer");
         bgmobject.transform.parent = transform;
-        bgmPlayer = bgmobject.AddComponent<AudioSource>();
-        bgmPlayer.playOnAwake = false;
-        bgmPlayer.loop = true;
-        bgmPlayer.volume = bgmVolume;
-        bgmPlayer.clip = bgmClip;
+        bgmPlayers = new AudioSource[bgmClipcount];
+
+        for (int index = 0; index < bgmPlayers.Length; index++)
+        {
+            bgmPlayers[index] = bgmobject.AddComponent<AudioSource>();
+            bgmPlayers[index].playOnAwake = false;
+            bgmPlayers[index].loop = true;
+            bgmPlayers[index].volume = bgmVolume;
+        }
 
         // 효과음 초기화
         GameObject sfxobject = new GameObject("SfxPlayer");
@@ -49,17 +56,17 @@ public class AudioManager : MonoBehaviour
             sfxPlayers[index].volume = sfxVolume;
         }
     }
-    
+
     //배경음악 호출
-    public void PlayerBgm(bool isPlay)
+    public void PlayerBgm(Bgm bgm)
     {
-        if(isPlay)
+        if (bgm == 0)
         {
-            bgmPlayer.Play();
+            bgmPlayers[0].Play();
         }
         else
         {
-            bgmPlayer.Stop();
+            bgmPlayers[1].Play();
         }
     }
 
