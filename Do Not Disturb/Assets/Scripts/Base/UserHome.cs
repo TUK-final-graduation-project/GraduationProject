@@ -15,4 +15,9 @@ public class UserHome : MonoBehaviour
             // userbase가 졌으므로 끝~!
         }
     }
+
+    public void setHP(int value)
+    {
+        HP = value;
+    }
 }

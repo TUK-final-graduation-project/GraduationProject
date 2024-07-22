@@ -71,6 +71,7 @@ public class PlayerItem : MonoBehaviour
             actionText.gameObject.SetActive(true);
             actionText.text = hitInfo.transform.GetComponent<ItemAcquisition>().item.itemName
                 + " È¹µæ " + "<color=yellow>" + "</color>";
+            actionText.color = Color.yellow;
         }
     }
 
