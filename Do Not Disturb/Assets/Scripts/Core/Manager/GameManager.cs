@@ -126,6 +126,17 @@ public class GameManager : MonoBehaviour
             {
                 stage = maxStage;
                 state = States.gameEnd;
+
+                foreach(ComSpawnPoint spawn in spawns)
+                {
+                    if (!spawn.GetComponent<ComSpawnPoint>().isConquer)
+                    {
+                        // 게임 짐 
+                        // 진 엔딩 장면으로
+                    }
+                }
+                // 게임 이김
+                // 이긴 엔딩 장면으로
             }
         }
     }
