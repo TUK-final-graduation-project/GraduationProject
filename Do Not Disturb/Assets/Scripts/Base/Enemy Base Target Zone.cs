@@ -1,22 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
-public class TargetZone : MonoBehaviour
+public class EnemyBaseTargetZone : MonoBehaviour
 {
     public ComSpawnPoint[] spawnPoints;
-
-
     private void Awake()
     {
         spawnPoints = FindObjectsOfType(typeof(ComSpawnPoint)) as ComSpawnPoint[];
     }
+
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Unit" && collision.gameObject.layer == 10 )
+        if (collision.gameObject.GetComponent<OurUnitController>() != null)
         {
-            if ( transform.parent.gameObject.GetComponent<ComSpawnPoint>().isConquer)
+            if (transform.parent.gameObject.GetComponent<ComSpawnPoint>().isConquer)
             {
                 float minDistance = float.MaxValue;
                 float tmp;
@@ -28,26 +26,21 @@ public class TargetZone : MonoBehaviour
                         if (minDistance > tmp)
                         {
                             minDistance = tmp;
-                            collision.gameObject.GetComponent<UnitCs>().target = b.gameObject;
-                            collision.gameObject.GetComponent<UnitCs>().RequestPathToMgr();
+                            collision.gameObject.GetComponent<OurUnitController>().target = b.gameObject;
+                            collision.gameObject.GetComponent<OurUnitController>().Base = b.gameObject;
+                            collision.gameObject.GetComponent<OurUnitController>().RequestPathToMgr();
                         }
                     }
                 }
-                if (collision.gameObject.GetComponent<UnitCs>().target == gameObject)
+                if (collision.gameObject.GetComponent<OurUnitController>().target == gameObject)
                 {
                     // game end
                 }
             }
             else
             {
-
-                collision.gameObject.GetComponent<UnitCs>().OnDestroy();
-                // collision.gameObject.GetComponent<UnitCs>().anim.SetBool("isWalk", false);
-                // Debug.Log(collision.gameObject.name);
-                if ( gameObject.layer == 17)
-                {
-                    transform.parent.gameObject.GetComponent<ComSpawnPoint>().OnDamage();
-                }
+                collision.gameObject.GetComponent<OurUnitController>().OnDestroy();
+                transform.parent.gameObject.GetComponent<ComSpawnPoint>().OnDamage();
             }
         }
     }

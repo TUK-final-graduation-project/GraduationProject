@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitAnimation : MonoBehaviour
+public class OurUnitAnimationManager : MonoBehaviour
 {
-    public Unit parent;
+    public OurUnitController parent;
     void StartAttack()
     {
         parent.StartAttack();

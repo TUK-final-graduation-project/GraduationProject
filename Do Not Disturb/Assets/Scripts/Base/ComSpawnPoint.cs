@@ -27,6 +27,7 @@ public class ComSpawnPoint : MonoBehaviour
 
     private void Awake()
     {
+        target = UserBase;
         switch (element)
         {
             case Element.fire:
@@ -42,7 +43,6 @@ public class ComSpawnPoint : MonoBehaviour
                 unit = Dear;
                 break;
         }
-
     }
 
     public IEnumerator Spawn(int num)
@@ -51,10 +51,10 @@ public class ComSpawnPoint : MonoBehaviour
         {
             Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
             GameObject _iUnit = Instantiate(unit, transform.position, targetRotation);
-            _iUnit.GetComponent<UnitCs>().target = target;
-            _iUnit.GetComponent<UnitCs>().UserBase = UserBase;
+            _iUnit.GetComponent<EnemyUnitController>().target = target;
+            _iUnit.GetComponent<EnemyUnitController>().Base = UserBase;
 
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(5f);
         }
         yield return new WaitForSeconds(0.1f);
     }
@@ -62,7 +62,7 @@ public class ComSpawnPoint : MonoBehaviour
     public void StartSpawn(int num)
     {
         float minDistance = float.MaxValue;
-        float tmp = 0;
+        float tmp;
         target = UserBase;
         towers = FindObjectsOfType(typeof(Tower)) as Tower[];
         foreach (Tower tower in towers)
