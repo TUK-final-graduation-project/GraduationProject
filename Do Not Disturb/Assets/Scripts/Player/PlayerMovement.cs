@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator anim;
     private Camera cam;
     private CharacterController controller;
+    private GameManager gameManager; // Reference to the GameManager
 
     public bool toggleCameraRotation;
     public bool isRun;
@@ -37,11 +38,13 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         cam = Camera.main;
         controller = GetComponent<CharacterController>();
+        gameManager = FindObjectOfType<GameManager>(); // Initialize GameManager reference
         //anotherPlayer = GetComponent<MyAnotherPlayer>();
 
         if (anim == null) Debug.LogError("Animator component is missing on " + gameObject.name);
         if (controller == null) Debug.LogError("CharacterController component is missing on " + gameObject.name);
-        HP = 100; 
+        if (gameManager == null) Debug.LogError("GameManager component is missing in the scene.");
+        HP = 100;
         //if (anotherPlayer == null) Debug.LogError("AnotherPlayer component is missing on " + gameObject.name);
     }
 
@@ -143,11 +146,11 @@ public class PlayerMovement : MonoBehaviour
     {
         attackDamage = damage;
     }
-     public void SetSpeed(float speed_)
+    public void SetSpeed(float speed_)
     {
         speed = speed_;
     }
-     public void SetRunSpeed(float run_speed)
+    public void SetRunSpeed(float run_speed)
     {
         runSpeed = run_speed;
     }
