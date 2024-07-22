@@ -19,9 +19,9 @@ public class TestSceneManager : MonoBehaviour
     public ComSpawnPoint fireLandMark;
     public GameObject obs;
 
-    int lobbyScene = 2;
-    int gameScene = 0;
-    int optionScene = 1;
+    int lobbyScene = 0;
+    int gameScene = 1;
+    int optionScene = 2;
     void Update()
     {
         vDown = Input.GetButton("Debug SpawnUnit");

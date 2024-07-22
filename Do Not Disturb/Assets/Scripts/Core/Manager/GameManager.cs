@@ -167,11 +167,11 @@ public class GameManager : MonoBehaviour
 
     public void GoToLobby()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(0);
     }
     public void GoToSetting()
     {
-        SceneManager.LoadScene(1);
+        //SceneManager.LoadScene(2);
     }
 
     public void GameQuit()
