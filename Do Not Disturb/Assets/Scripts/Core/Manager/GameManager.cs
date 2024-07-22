@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -32,6 +33,9 @@ public class GameManager : MonoBehaviour
 
     public Laboratory laboratory;
     public Tower tower;
+    public bool isPaused;
+
+    public GameObject settingsPanel; // 설정 UI 패널
 
     private CraftMenu craftMenu; // CraftMenu 클래스 인스턴스 변수 추가
     float uiTime;
@@ -41,6 +45,7 @@ public class GameManager : MonoBehaviour
         uiTime = readyTime;
         readyTime = coolTimeOfReady;
         battleTime = coolTimeOfBattle;
+        isPaused = false;
 
         // CraftMenu 인스턴스 초기화
         craftMenu = GetComponent<CraftMenu>();
@@ -51,13 +56,26 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            // isPuase가 true이면 일시 정지 해제
+            if (isPaused)
+            {
+                ResumeSetting();
+            }
+            // isPuase가 false이면 일시 정지
+            else
+            {
+                PauseSetting();
+            }
+        }
         if (state == States.ready)
         {
             Ready();
         }
         else if (state == States.battle)
         {
-            
+
             Battle();
         }
         playTime += Time.deltaTime;
@@ -128,6 +146,38 @@ public class GameManager : MonoBehaviour
         enemyCntTxt.text = "X " + enemyCnt.ToString();
     }
 
+    // 게임 시간 로직
+    public void PauseSetting()
+    {
+        Time.timeScale = 0; // 게임 일시 정지
+        isPaused = true; // 상태 변경
+        settingsPanel.SetActive(true); // 설정 UI 표시
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void ResumeSetting()
+    {
+        Time.timeScale = 1; // 게임 재개
+        isPaused = false; // 상태 변경
+        settingsPanel.SetActive(false); // 설정 UI 숨김
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void GoToLobby()
+    {
+        SceneManager.LoadScene(2);
+    }
+    public void GoToSetting()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    public void GameQuit()
+    {
+        Application.Quit();
+    }
 
     // 업그레이드 관련
     public void UpgradePlayerSpeed(int coinNum)
@@ -159,7 +209,6 @@ public class GameManager : MonoBehaviour
     {
         laboratory.UpgradeTowerHP(tower, hp);
     }
-
 
     public void UpgradeTowerDef(int def)
     {

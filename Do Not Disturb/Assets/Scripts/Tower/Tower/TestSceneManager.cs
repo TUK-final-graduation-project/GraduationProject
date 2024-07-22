@@ -21,7 +21,7 @@ public class TestSceneManager : MonoBehaviour
 
     int lobbyScene = 2;
     int gameScene = 0;
-    int OptionScene = 1;
+    int optionScene = 1;
     void Update()
     {
         vDown = Input.GetButton("Debug SpawnUnit");
@@ -60,7 +60,7 @@ public class TestSceneManager : MonoBehaviour
         }
         if (nDown)
         {
-            SceneManager.LoadScene(OptionScene);
+            SceneManager.LoadScene(optionScene);
         }
         if (mDown)
         {
@@ -83,7 +83,7 @@ public class TestSceneManager : MonoBehaviour
     }
     public void OnOptionSceneStart()
     {
-        SceneManager.LoadScene(OptionScene);
+        SceneManager.LoadScene(optionScene);
     }
     public void OnLobbySceneStart()
     {
