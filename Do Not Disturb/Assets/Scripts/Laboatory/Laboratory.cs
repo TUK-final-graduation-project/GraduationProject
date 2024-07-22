@@ -28,7 +28,8 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradePlayerSpeed()
     {
-        player.SetSpeed(player.speed + 20);
+        player.SetSpeed(player.speed + 5);
+        player.SetRunSpeed(player.runSpeed + 5);
         Debug.Log("coinCount : " + player.coinCount + "| speed : " + player.speed);
     }
 
