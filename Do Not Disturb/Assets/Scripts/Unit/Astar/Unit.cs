@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
@@ -8,97 +7,72 @@ using Vector3 = UnityEngine.Vector3;
 public class Unit : MonoBehaviour
 {
     public enum Type { Melee, Range };
-    public enum Team { User, Com };
-    public enum UnitState { Chase, Attack, Targeting, Dead, Damaged };
+    public enum UnitState { Walk, Targeting, Attack, GoToBoss };
 
-    [Header("Unit Type")]
-    public Type type;
-    public Team team;
-
-    [Header("Unit State")]
-    public int HP;
-    public UnitState State;
-    public GameObject target;
-    public GameObject Base;
-    public float speed = 10;
+    [Header("Unit")]
     Animator anim;
     Rigidbody rigid;
-    Tower[] towers;
+    public UnitState state;
+    public Type type;
+
+    [Header("Unit Chase")]
+    public int speed = 5;
+    public GameObject target;
+    public GameObject Base;
+    Vector3[] path;
+    int targetIndex;
 
     [Header("Melee Unit")]
     public BoxCollider meleeArea;
-    public bool isDear;
 
     [Header("Range Unit")]
     public GameObject bullet;
 
-    Vector3[] path;
-    int targetIndex;
-
-    public GameObject meshObj;
-    public GameObject effectObj;
-
-
-    public GameObject[] bossList;
+    private CancellationTokenSource pathFindingCts;
+    private CancellationTokenSource targetingCts;
+    private CancellationTokenSource attackCts;
 
     private void Awake()
     {
-        rigid = GetComponent<Rigidbody>();
-        anim = GetComponentInChildren<Animator>();
-
-        StartCoroutine(MoveUnit());
-    }
-
-    IEnumerator MoveUnit()
-    {
-        CalculateUnitTarget();
-
-        yield return new WaitForSeconds(5f);
-    }
-
-    private void CalculateUnitTarget()
-    {
-        // 3순위: 각 베이스
         target = Base;
-
-        // 2순위: 유닛
-
-
-        // 1순위: 각 보스
-        foreach ( GameObject boss in bossList)
-        {
-            if ( boss.activeSelf)
-            {
-                target = boss;
-                break;
-            }
-        }
-
-        
+        anim = GetComponentInChildren<Animator>();
+        rigid = GetComponent<Rigidbody>();
+        Invoke("RequestPathToMgr", 1);
+        StartTargeting();
     }
 
+    ///////////////// 길 찾기 ///////////////////// 
+    void StartPathFinding()
+    {
+        pathFindingCts = new CancellationTokenSource();
+        FollowPath(pathFindingCts.Token).Forget();
+    }
+    void StopPathFinding()
+    {
+        if ( pathFindingCts != null)
+        {
+            pathFindingCts.Cancel();
+            pathFindingCts.Dispose();
+            pathFindingCts = null;
+        }
+    }
     public void RequestPathToMgr()
     {
         UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
         transform.rotation = targetRotation;
         AstarManager.RequestPath(transform.position, target.transform.position, OnPathFound);
-        State = UnitState.Chase;
     }
-
-    // 길 찾기 시작하기
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
         if (pathSuccessful && this != null)
         {
             path = newPath;
             targetIndex = 0;
-            StopCoroutine("FollowPath");
-            StartCoroutine("FollowPath");
+            state = UnitState.Walk;
+            StartPathFinding();
         }
     }
-
-    // 움직이기
-    IEnumerator FollowPath()
+    async UniTaskVoid FollowPath(CancellationToken token)
     {
         Vector3 currentWaypoint;
 
@@ -106,25 +80,50 @@ public class Unit : MonoBehaviour
         {
             currentWaypoint = path[0];
 
-            while (true)
+            while (!token.IsCancellationRequested)
             {
                 if ((int)transform.position.x == (int)currentWaypoint.x && (int)transform.position.z == (int)currentWaypoint.z)
                 {
                     targetIndex++;
                     if (targetIndex >= path.Length)
                     {
-                        yield break;
+                        return;
                     }
                     currentWaypoint = path[targetIndex];
                 }
                 transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
-                yield return null;
+                await UniTask.Yield();
             }
         }
     }
 
+    //////////////////////////////////////////////
+    
+    ///////////////// 타겟팅 //////////////////////
+    void StartTargeting()
+    {
+        targetingCts = new CancellationTokenSource();
+        Targeting(targetingCts.Token).Forget();
+    }
+    void StopTargeting()
+    {
+        if (targetingCts != null)
+        {
+            targetingCts.Cancel();
+            targetingCts.Dispose();
+            targetingCts = null;
+        }
+    }
+    async UniTaskVoid Targeting(CancellationToken token)
+    {
+        while( state == UnitState.Walk && !token.IsCancellationRequested)
+        {
+            FindUnit();
 
-    void Targeting()
+            await UniTask.Delay(1000, cancellationToken: token);
+        }
+    }
+    private void FindUnit()
     {
         float targetRadius = 0;
         float targetRange = 0;
@@ -139,237 +138,99 @@ public class Unit : MonoBehaviour
             targetRadius = 0.5f;
             targetRange = 25f;
         }
-        RaycastHit[] rayHits = { };
-        if (team == Team.User)
-        {
-            rayHits =
+        RaycastHit[] rayHits =
                 Physics.SphereCastAll(transform.position, targetRadius, transform.forward, targetRange, LayerMask.GetMask("Com"));
-        }
-        else if (team == Team.Com)
+
+        if (rayHits.Length > 0)
         {
-            rayHits =
-                Physics.SphereCastAll(transform.position, targetRadius, transform.forward, targetRange, LayerMask.GetMask("User"));
-        }
-        if (rayHits.Length > 0 && State != UnitState.Attack)
-        {
-            StopCoroutine("FollowPath");
+            state = UnitState.Attack;
             target = rayHits[0].collider.gameObject;
-            StartCoroutine(Attack());
+            StartAttacking();
         }
     }
+    //////////////////////////////////////////////
 
-    IEnumerator Attack()
+    /////////////////// 공격 //////////////////////
+    void StartAttacking()
     {
-        State = UnitState.Attack;
-        anim.SetBool("isAttack", true);
-        rigid.isKinematic = true;
-
-        while (true)
+        StopPathFinding();
+        StopTargeting();
+        attackCts = new CancellationTokenSource();
+        Attack(attackCts.Token).Forget();
+    }
+    void StopAttacking()
+    {
+        if (attackCts != null)
         {
-            if (type == Type.Melee)
-            {
-                yield return new WaitForSeconds(0.1f);
-                rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
-                meleeArea.enabled = true;
-
-                yield return new WaitForSeconds(0.5f);
-                rigid.velocity = Vector3.zero;
-                meleeArea.enabled = false;
-
-                yield return new WaitForSeconds(0.5f);
-            }
-            else if (type == Type.Range)
-            {
-                yield return new WaitForSeconds(0.5f);
-
-                GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 1.5f, Quaternion.identity);
-                Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
-
-                Vector3 direction = (target.transform.position - transform.position).normalized;
-                rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
-
-                yield return new WaitForSeconds(2f);
-            }
-
-            anim.SetBool("isAttack", false);
-            rigid.isKinematic = false;
-            State = UnitState.Targeting;
-
-            if (target == null || target == Base)
-            {
-                State = UnitState.Chase;
-                //if ( isDear )
-                //{
-                //    HP = -10;
-                //    Vector3 reactVec = transform.position - target.transform.position;
-                //    StartCoroutine(OnDamage(reactVec, false));
-                //}
-                yield break;
-            }
-
+            attackCts.Cancel();
+            attackCts.Dispose();
+            attackCts = null;
         }
     }
-
-    void FreezeVelocity()
+    async UniTask Attack(CancellationToken token)
     {
-        if (rigid.isKinematic == false)
+        while( state == UnitState.Attack && !token.IsCancellationRequested )
         {
-            rigid.velocity = Vector3.zero;
-            rigid.angularVelocity = Vector3.zero;
-        }
-    }
+            anim.SetTrigger("DoAttack");
 
-    void FindNextTarget()
-    {
-        target = Base;
-        float minDistance = Vector3.Distance(transform.position, Base.transform.position);
-        float tmp;
-        towers = FindObjectsOfType(typeof(Tower)) as Tower[];
-        foreach (Tower tower in towers)
-        {
-            tmp = Vector3.Distance(transform.position, tower.transform.position);
-            if (minDistance > tmp)
-            {
-                minDistance = tmp;
-                target = tower.gameObject;
-            }
-        }
-        RequestPathToMgr();
-    }
+            await UniTask.Delay(1000, cancellationToken: token);
 
-    private void FixedUpdate()
-    {
-        if (State != UnitState.Dead)
-        {
             if (target == null)
             {
-                FindNextTarget();
-            }
-            if (State != UnitState.Targeting)
-            {
-                StopCoroutine("Attack");
-                Targeting();
-            }
-            FreezeVelocity();
-
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "UserAttack" && team == Team.Com)
-        {
-            if (State != UnitState.Damaged) // 무적 상태가 아닐 때
-            {
-                UnitAttack attack = other.GetComponent<UnitAttack>();
-                HP -= attack.damage;
-                if (other.GetComponent<Rigidbody>() != null) // 원거리 공격인 경우
-                {
-                    Destroy(other.gameObject);
-                }
-                Vector3 reactVec = transform.position - other.transform.position;
-                StartCoroutine(OnDamage(reactVec, false));
-            }
-        }
-        else if (other.tag == "ComAttack" && team == Team.User)
-        {
-            if (State != UnitState.Damaged) // 무적 상태가 아닐 때
-            {
-                UnitAttack attack = other.GetComponent<UnitAttack>();
-                HP -= attack.damage;
-                if (other.GetComponent<Rigidbody>() != null) // 원거리 공격인 경우
-                {
-
-                    Destroy(other.gameObject);
-                }
-                Vector3 reactVec = transform.position - other.transform.position;
-                StartCoroutine(OnDamage(reactVec, false));
+                state = UnitState.Walk;
+                target = Base;
+                RequestPathToMgr();
+                StartTargeting();
+                return;
             }
         }
     }
-    IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
+
+    public void StartAttack()
     {
-        StopCoroutine("FollowPath");
-        yield return new WaitForSeconds(0.1f);
 
-        UnitState tmp = State;
-        State = UnitState.Damaged;
+        rigid.isKinematic = true;
 
-        if (HP <= 0)
+        if (type == Type.Melee)
         {
-            gameObject.layer = gameObject.layer + 1;
-
-            reactVec = reactVec.normalized;
-            reactVec += Vector3.up;
-            rigid.AddForce(reactVec * 5, ForceMode.Impulse);
-
-            OnDestroy();
+            rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
+            meleeArea.enabled = true;
         }
-        else
+        else if (type == Type.Range)
         {
-            yield return new WaitForSeconds(1f); // 1초 무적
-            State = tmp;
-            StartCoroutine("FollowPath");
+
+            GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 1.5f, Quaternion.identity);
+            Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
+
+            Vector3 direction = (target.transform.position - transform.position).normalized;
+            rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
+
         }
     }
-    public void OnDestroy()
+    public void EndAttack()
     {
-        anim.SetBool("isDie", true);
-        StopCoroutine("FollowPath");
-        State = UnitState.Dead;
-        // effectObj.SetActive(true);
-
-        Destroy(gameObject, 3);
-    }
-    public void HitByBomb(Vector3 explosionPos)
-    {
-        HP -= 100;
-        Vector3 reactVec = transform.position - explosionPos;
-        StartCoroutine(OnDamage(reactVec, true));
-    }
-
-    public void HitByWizardBoss()
-    {
-        HP -= 10;
-        if (HP <= 0)
+        if (type == Type.Melee)
         {
-            gameObject.layer = gameObject.layer + 1;
-            OnDestroy();
-        }
-    }
-
-    public void HitByOakBoss()
-    {
-        StopCoroutine("FollowPath");
-        StopCoroutine("Attack");
-
-        StartCoroutine("DamagedByBoss");
-    }
-    IEnumerator DamagedByBoss()
-    {
-        while (true)
-        {
-            transform.position += Vector3.up;
-
-            if (transform.position.y >= 30f)
-            {
-                break;
-            }
-            yield return null;
+            rigid.velocity = Vector3.zero;
+            meleeArea.enabled = false;
         }
 
-        yield return new WaitForSeconds(1f);
-
-        while (true)
-        {
-            transform.position -= Vector3.up * 3;
-
-            if (transform.position.y <= 0f)
-            {
-                OnDestroy();
-                yield break;
-            }
-            yield return null;
-        }
+        rigid.isKinematic = false;
+    }
+    //////////////////////////////////////////////
+    void FreezeVelocity()
+    {
+        rigid.velocity = Vector3.zero;
+        rigid.angularVelocity = Vector3.zero;
+    }
+    private void FixedUpdate()
+    {
+        FreezeVelocity();
+    }
+    private void OnDestroy()
+    {
+        StopPathFinding();
+        StopAttacking();
+        StopTargeting();
     }
 }
