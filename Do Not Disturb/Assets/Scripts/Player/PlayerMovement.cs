@@ -15,11 +15,12 @@ public class PlayerMovement : MonoBehaviour
     public float animationThreshold = 1f;
     public int coinCount = 0;
     public State state;
+    public float friction = 0.1f;
 
     private Animator anim;
     private Camera cam;
     private CharacterController controller;
-    private GameManager gameManager; // Reference to the GameManager
+    private GameManager gameManager;
 
     public bool toggleCameraRotation;
     public bool isRun;
@@ -31,21 +32,17 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 targetVelocity;
     private Vector3 yVelocity;
 
-    //private MyAnotherPlayer anotherPlayer;
-
     void Start()
     {
         anim = GetComponent<Animator>();
         cam = Camera.main;
         controller = GetComponent<CharacterController>();
-        gameManager = FindObjectOfType<GameManager>(); // Initialize GameManager reference
-        //anotherPlayer = GetComponent<MyAnotherPlayer>();
+        gameManager = FindObjectOfType<GameManager>();
 
         if (anim == null) Debug.LogError("Animator component is missing on " + gameObject.name);
         if (controller == null) Debug.LogError("CharacterController component is missing on " + gameObject.name);
         if (gameManager == null) Debug.LogError("GameManager component is missing in the scene.");
         HP = 100;
-        //if (anotherPlayer == null) Debug.LogError("AnotherPlayer component is missing on " + gameObject.name);
     }
 
     void FixedUpdate()
@@ -55,7 +52,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        toggleCameraRotation = Input.GetKey(KeyCode.LeftAlt);
         isRun = Input.GetKey(KeyCode.LeftShift);
 
         InputMovement();
@@ -78,7 +74,10 @@ public class PlayerMovement : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
-        Vector3 moveDirection = forward * Input.GetAxis("Vertical") + right * Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+        float horizontalInput = Input.GetAxis("Horizontal");
+
+        Vector3 moveDirection = forward * verticalInput + right * horizontalInput;
         targetVelocity = moveDirection.normalized * finalSpeed;
 
         if (targetVelocity.magnitude > 0)
@@ -90,6 +89,8 @@ public class PlayerMovement : MonoBehaviour
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, Time.deltaTime * (1.0f / decelerationTime));
         }
 
+        currentVelocity *= (1 - friction * Time.deltaTime);
+
         if (jDown)
         {
             if (!isJump)
@@ -97,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
                 yVelocity.y = jumpForce;
                 isJump = true;
                 anim.SetTrigger("Jump");
-                AudioManager.instance.PlaySfx(AudioManager.Sfx.Jump);
+                //AudioManager.instance.PlaySfx(AudioManager.Sfx.Jump);
             }
         }
         else
@@ -111,14 +112,21 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(finalMove);
 
         currentSpeed = currentVelocity.magnitude;
+
+        anim.SetFloat("Horizontal", horizontalInput);
+        anim.SetFloat("Vertical", verticalInput);
+
+        // Set Blend Tree blend based on speed
+        float blend = Mathf.Clamp(currentSpeed / runSpeed, 0f, 1f);
+        anim.SetFloat("Blend", blend);
+
         if (currentSpeed > animationThreshold)
         {
-            float percent = ((isRun) ? 1 : 0.5f) * (currentSpeed / finalSpeed);
-            anim.SetFloat("Blend", percent, 0.5f, Time.deltaTime);
+            toggleCameraRotation = false;
         }
         else
         {
-            anim.SetFloat("Blend", 0, 0.5f, Time.deltaTime);
+            toggleCameraRotation = true;
         }
     }
 
