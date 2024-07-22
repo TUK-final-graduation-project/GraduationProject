@@ -8,8 +8,6 @@ public class PlayerItem : MonoBehaviour
     [SerializeField]
     private float range; // 습득 가능한 최대 거리.
 
-    private bool pickupActivated = false; // 습득 가능할 시 true.
-
     // 아이템 레이어에만 반응하도록 레이어 마스크를 설정.
     [SerializeField]
     private LayerMask layerMask;
@@ -67,16 +65,15 @@ public class PlayerItem : MonoBehaviour
     {
         if (hitInfo != null && hitInfo.transform.GetComponent<ItemAcquisition>() != null)
         {
-            pickupActivated = true;
             actionText.gameObject.SetActive(true);
             actionText.text = hitInfo.transform.GetComponent<ItemAcquisition>().item.itemName
                 + " 획득 " + "<color=yellow>" + "</color>";
+            actionText.color = Color.yellow;
         }
     }
 
     private void InfoDisappear()
     {
-        pickupActivated = false;
         actionText.gameObject.SetActive(false);
     }
 }

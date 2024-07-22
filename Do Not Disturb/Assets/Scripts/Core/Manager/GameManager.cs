@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,8 +24,9 @@ public class GameManager : MonoBehaviour
 
     public Text stageTxt;
     public Text playTimeTxt;
-
     public Text enemyCntTxt;
+    public Text coinTxt;  // Text component to display coin count
+    public Text actionText; // Text component to display action messages
 
     public RectTransform bossHealthGroup;
     public RectTransform bossHealthBar;
@@ -36,9 +38,13 @@ public class GameManager : MonoBehaviour
     public bool isPaused;
 
     public GameObject settingsPanel; // 설정 UI 패널
+    public GameObject scorePanel; // 코인 UI 패널
 
     private CraftMenu craftMenu; // CraftMenu 클래스 인스턴스 변수 추가
+    private PlayerMovement playerMovement; // Reference to PlayerMovement
+
     float uiTime;
+
     private void Awake()
     {
         state = States.ready;
@@ -53,7 +59,17 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("CraftMenu 컴포넌트를 찾을 수 없습니다.");
         }
+
+        // Find the PlayerMovement component in the scene
+        playerMovement = FindObjectOfType<PlayerMovement>();
+        if (playerMovement == null)
+        {
+            Debug.LogError("PlayerMovement 컴포넌트를 찾을 수 없습니다.");
+        }
+
+        StartCoroutine(UpdateCoins()); // Start the coroutine to update coins
     }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -75,11 +91,11 @@ public class GameManager : MonoBehaviour
         }
         else if (state == States.battle)
         {
-
             Battle();
         }
         playTime += Time.deltaTime;
     }
+
     void Ready()
     {
         readyTime -= Time.deltaTime;
@@ -114,21 +130,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpgradeDiscountItem(int coinNum)
-    {
-        if (craftMenu != null)
-        {
-            craftMenu.ApplyDiscount(coinNum); // ApplyDiscount는 CraftMenu 클래스에 구현할 메서드
-        }
-        else
-        {
-            Debug.LogError("CraftMenu 인스턴스가 없습니다.");
-        }
-    }
     private void LateUpdate()
     {
-        // LateUpdate: Update()가 끝난 후 호출되는 생명주기
-
         int hour = (int)(uiTime / 3600);
         int min = (int)((uiTime - hour * 3600) / 60);
         int second = (int)(uiTime % 60);
@@ -144,9 +147,36 @@ public class GameManager : MonoBehaviour
         playTimeTxt.text = string.Format("{0:00}", hour) + ":" + string.Format("{0:00}", min) + ":" + string.Format("{0:00}", second);
 
         enemyCntTxt.text = "X " + enemyCnt.ToString();
+
+        if (playerMovement != null)
+        {
+            coinTxt.text = "Coins: " + playerMovement.coinCount.ToString(); // Update the coin count in UI
+        }
     }
 
-    // 게임 시간 로직
+    private IEnumerator UpdateCoins()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f); // Wait for 1 second
+            if (playerMovement != null)
+            {
+                playerMovement.coinCount += 1; // Increase player's coin count
+            }
+        }
+    }
+
+    private IEnumerator ShowActionText(string message, Color color, float duration)
+    {
+        actionText.text = message;
+        actionText.color = color;
+        actionText.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(duration);
+
+        actionText.gameObject.SetActive(false);
+    }
+
     public void PauseSetting()
     {
         Time.timeScale = 0; // 게임 일시 정지
@@ -167,11 +197,11 @@ public class GameManager : MonoBehaviour
 
     public void GoToLobby()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(0);
     }
     public void GoToSetting()
     {
-        SceneManager.LoadScene(1);
+        //SceneManager.LoadScene(2);
     }
 
     public void GameQuit()
@@ -179,53 +209,150 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-    // 업그레이드 관련
+    public void UpgradeDiscountItem(int coinNum)
+    {
+        if (craftMenu != null)
+        {
+            if (playerMovement.coinCount >= coinNum)
+            {
+                playerMovement.coinCount -= coinNum;
+                craftMenu.ApplyDiscount(coinNum); // ApplyDiscount는 CraftMenu 클래스에 구현할 메서드
+                StartCoroutine(ShowActionText("건설 아이템이 할인 되었습니다!", Color.green, 2.0f));
+            }
+            else
+            {
+                StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+            }
+        }
+        else
+        {
+            Debug.LogError("CraftMenu 인스턴스가 없습니다.");
+        }
+    }
+
     public void UpgradePlayerSpeed(int coinNum)
     {
-        laboratory.UpgradePlayerSpeed(coinNum);
+        if (playerMovement.coinCount >= coinNum)
+        {
+            playerMovement.coinCount -= coinNum;
+            laboratory.UpgradePlayerSpeed();
+            StartCoroutine(ShowActionText("이동속도가 증가 되었습니다!", Color.green, 2.0f));
+        }
+        else
+        {
+            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+        }
     }
 
     public void UpgradePlayerHP(int coinNum)
     {
-        laboratory.UpgradePlayerHP(coinNum);
+        if (playerMovement.coinCount >= coinNum)
+        {
+            playerMovement.coinCount -= coinNum;
+            laboratory.UpgradePlayerHP();
+            StartCoroutine(ShowActionText("플레이어의 체력이 강화되었습니다!", Color.green, 2.0f));
+        }
+        else
+        {
+            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+        }
     }
 
     public void UpgradePlayerDamage(int coinNum)
     {
-        laboratory.UpgradePlayerDamage(coinNum);
+        if (playerMovement.coinCount >= coinNum)
+        {
+            playerMovement.coinCount -= coinNum;
+            laboratory.UpgradePlayerDamage();
+            StartCoroutine(ShowActionText("플레이어 공격력이 강화되었습니다!", Color.green, 2.0f));
+        }
+        else
+        {
+            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+        }
     }
 
-    public void UpgradeBase()
+    public void UpgradeBase(int coinNum)
     {
-        laboratory.UpgradeUserBase();
+        if (playerMovement.coinCount >= coinNum)
+        {
+            playerMovement.coinCount -= coinNum;
+            laboratory.UpgradeUserBase();
+            StartCoroutine(ShowActionText("기지 생명력이 회복되었습니다!", Color.green, 2.0f));
+        }
+        else
+        {
+            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+        }
     }
 
-    public void UpgradeTowerBuildSpeed(int speed)
+    public void UpgradeTowerBuildSpeed(int coinNum, int speed)
     {
-        laboratory.UpgradeTowerBuildSpeed(tower, speed);
+        if (playerMovement.coinCount >= coinNum)
+        {
+            playerMovement.coinCount -= coinNum;
+            laboratory.UpgradeTowerBuildSpeed(tower, speed);
+            StartCoroutine(ShowActionText("타워 건설 속도가 증가되었습니다!", Color.green, 2.0f));
+        }
+        else
+        {
+            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+        }
     }
 
-    public void UpgradeTowerHP(int hp)
+    public void UpgradeTowerHP(int coinNum, int hp)
     {
-        laboratory.UpgradeTowerHP(tower, hp);
+        if (playerMovement.coinCount >= coinNum)
+        {
+            playerMovement.coinCount -= coinNum;
+            laboratory.UpgradeTowerHP(tower, hp);
+            StartCoroutine(ShowActionText("타워 생명력이 강화되었습니다!", Color.green, 2.0f));
+        }
+        else
+        {
+            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+        }
     }
 
-    public void UpgradeTowerDef(int def)
+    public void UpgradeTowerDef(int coinNum, int def)
     {
-        laboratory.UpgradeTowerDef(tower, def);
+        if (playerMovement.coinCount >= coinNum)
+        {
+            playerMovement.coinCount -= coinNum;
+            laboratory.UpgradeTowerDef(tower, def);
+            StartCoroutine(ShowActionText("타워 방어력이 강화되었습니다!", Color.green, 2.0f));
+        }
+        else
+        {
+            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+        }
     }
 
-    public void UpgradeTowerAttackSpeed(int attSpeed)
+    public void UpgradeTowerAttackSpeed(int coinNum, int attSpeed)
     {
-        laboratory.UpgradeTowerAttackSpeed(tower, attSpeed);
+        if (playerMovement.coinCount >= coinNum)
+        {
+            playerMovement.coinCount -= coinNum;
+            laboratory.UpgradeTowerAttackSpeed(tower, attSpeed);
+            StartCoroutine(ShowActionText("타워 공격속도가 강화되었습니다!", Color.green, 2.0f));
+        }
+        else
+        {
+            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+        }
     }
 
-
-    // Resource
     public void UpgradeResourceRespawnSpeed(int coinNum)
     {
-        laboratory.UpgradeResourceRespawnSpeed(coinNum);
-
+        if (playerMovement.coinCount >= coinNum)
+        {
+            playerMovement.coinCount -= coinNum;
+            laboratory.UpgradeResourceRespawnSpeed();
+            StartCoroutine(ShowActionText("자원 생성 속도가 강화되었습니다!", Color.green, 2.0f));
+        }
+        else
+        {
+            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+        }
     }
-
 }
