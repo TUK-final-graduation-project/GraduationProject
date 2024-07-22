@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2608289001581676006}
   - component: {fileID: 7048482293386659468}
-  - component: {fileID: 5162468427412967009}
   - component: {fileID: 7828408571643532941}
+  - component: {fileID: 7058117661022054158}
   m_Layer: 12
   m_Name: Golem
   m_TagString: Unit
@@ -62,30 +62,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5162468427412967009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2620933005345935657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef88989a4a1ec4540941d15d21849532, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  team: 1
-  HP: 100
-  State: 0
-  target: {fileID: 0}
-  UserBase: {fileID: 0}
-  speed: 10
-  meleeArea: {fileID: 0}
-  isDear: 0
-  bullet: {fileID: 0}
-  meshObj: {fileID: 7950318652776003278}
-  effectObj: {fileID: 0}
 --- !u!65 &7828408571643532941
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -107,6 +83,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.06, y: 4.48, z: 2.41}
   m_Center: {x: 0, y: 2.29, z: 0}
+--- !u!114 &7058117661022054158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2620933005345935657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1a98f8829d002439cb19bbe122168a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  type: 0
+  HP: 0
+  speed: 5
+  target: {fileID: 0}
+  Base: {fileID: 0}
+  meleeArea: {fileID: 0}
+  bullet: {fileID: 0}
 --- !u!1001 &7103405182556113823
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -206,6 +202,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c020ed648de155e40bd268efa8d8563a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7342250634292945498}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c020ed648de155e40bd268efa8d8563a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 568142496549705943}
     - targetCorrespondingSourceObject: {fileID: 7742780737561719692, guid: c020ed648de155e40bd268efa8d8563a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7656913420305904708}
@@ -358,3 +357,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &568142496549705943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7950318652776003278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f5a06409d419143bd1bb8bed2ba368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 7058117661022054158}

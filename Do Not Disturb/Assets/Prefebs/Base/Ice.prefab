@@ -64,8 +64,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5788577651944666569}
-  - component: {fileID: 5863055066704873308}
   - component: {fileID: 3780798173401131548}
+  - component: {fileID: 3894480460080728999}
   m_Layer: 17
   m_Name: Target Zone
   m_TagString: TargetPos
@@ -88,19 +88,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3836868213887844268}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5863055066704873308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3612247494576002398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44ba8a9dfe186684f9032e46bd6b3614, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPoints: []
 --- !u!135 &3780798173401131548
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -122,6 +109,19 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 148.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3894480460080728999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3612247494576002398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a2d9bbd7879be649aa6ab0c811f8790, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoints: []
 --- !u!1 &7446504718679475390
 GameObject:
   m_ObjectHideFlags: 0

@@ -58,9 +58,6 @@ public class UserSpawnPoint : MonoBehaviour
                 }
             }
         }
-        //unit.GetComponent<UnitCs>().target = target;
-        //GameObject _iUnit = Instantiate(unit, transform.position, transform.rotation);
-        //_iUnit.GetComponent<UnitCs>().RequestPathToMgr();
         StartCoroutine(Spawn());
     }
 
@@ -70,9 +67,7 @@ public class UserSpawnPoint : MonoBehaviour
         {
             Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
             GameObject _iUnit = Instantiate(unit, transform.position, targetRotation);
-            _iUnit.GetComponent<UnitCs>().target = target;
-
-            // _iUnit.GetComponent<UnitCs>().RequestPathToMgr();
+            _iUnit.GetComponent<OurUnitController>().target = target;
 
             num -= 1;
 
@@ -88,8 +83,8 @@ public class UserSpawnPoint : MonoBehaviour
     {
         if ( num <= 0)
         {
-            StopCoroutine("Spawn");
-            Destroy(Base);
+            StopCoroutine(Spawn());
+            Destroy(gameObject);
         }
     }
     public void OnDamage()

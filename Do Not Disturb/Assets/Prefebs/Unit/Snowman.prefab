@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5832398550959947862}
   - component: {fileID: 4509607524410291823}
-  - component: {fileID: 6497620281863811648}
   - component: {fileID: 2319520557444036486}
+  - component: {fileID: 5081278503140881079}
   m_Layer: 12
   m_Name: Snowman
   m_TagString: Unit
@@ -62,30 +62,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6497620281863811648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2383117156456374144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef88989a4a1ec4540941d15d21849532, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  team: 1
-  HP: 30
-  State: 0
-  target: {fileID: 0}
-  UserBase: {fileID: 0}
-  speed: 3
-  meleeArea: {fileID: 0}
-  isDear: 0
-  bullet: {fileID: 4373434199967324875, guid: 2f5c1e55c38f1954686ee501a7410cf5, type: 3}
-  meshObj: {fileID: 6536369147235064217}
-  effectObj: {fileID: 0}
 --- !u!65 &2319520557444036486
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -107,6 +83,26 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.29, y: 2.25, z: 1.74}
   m_Center: {x: 0, y: 1.12, z: 0.13}
+--- !u!114 &5081278503140881079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2383117156456374144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1a98f8829d002439cb19bbe122168a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  type: 1
+  HP: 0
+  speed: 5
+  target: {fileID: 0}
+  Base: {fileID: 0}
+  meleeArea: {fileID: 0}
+  bullet: {fileID: 4373434199967324875, guid: 2f5c1e55c38f1954686ee501a7410cf5, type: 3}
 --- !u!1001 &6229798567562306760
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -214,6 +210,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1559d6f0fa4e2864bae899df66bbaa3d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7189703207078402973}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1559d6f0fa4e2864bae899df66bbaa3d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8221126659655009697}
     - targetCorrespondingSourceObject: {fileID: -2422315340263230684, guid: 1559d6f0fa4e2864bae899df66bbaa3d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4361516149302636355}
@@ -345,6 +344,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8221126659655009697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6536369147235064217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0f5a06409d419143bd1bb8bed2ba368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 5081278503140881079}
 --- !u!1 &7311482966443834744 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5547542145952523856, guid: 1559d6f0fa4e2864bae899df66bbaa3d, type: 3}

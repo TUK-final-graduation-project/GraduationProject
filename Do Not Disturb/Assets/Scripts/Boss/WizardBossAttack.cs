@@ -49,9 +49,9 @@ public class WizardBossAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ( other.tag == "Unit" )
+        if ( other.tag == "Unit" && other.GetComponent<OurUnitController>() != null)
         {
-            other.GetComponent<UnitCs>().HitByWizardBoss();
+            other.GetComponent<OurUnitController>().OnHitEnter("Wizard", transform.position);
         }
     }
 }

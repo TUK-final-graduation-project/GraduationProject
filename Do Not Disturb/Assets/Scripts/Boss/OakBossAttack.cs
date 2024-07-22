@@ -8,9 +8,9 @@ public class OakBossAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Unit")
+        if (other.tag == "Unit" && other.GetComponent<OurUnitController>() != null)
         {
-            other.GetComponent<UnitCs>().HitByOakBoss();
+            other.GetComponent<OurUnitController>().OnHitEnter("Oak", transform.position);
         }
     }
 

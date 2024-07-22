@@ -4,22 +4,19 @@ using UnityEngine;
 
 public class TowerTargetZone : MonoBehaviour
 {
-    public ComSpawnPoint[] spawnPoints;
-
-    private void Awake()
-    {
-        spawnPoints = FindObjectsOfType(typeof(ComSpawnPoint)) as ComSpawnPoint[];
-    }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Unit")
+        if (collision.gameObject.GetComponent<EnemyUnitController>() != null)
         {
-            // 데모를 위한 block
-            collision.gameObject.GetComponent<UnitCs>().OnDestroy();
-
-            // collision.gameObject.GetComponent<UnitCs>().anim.SetBool("isWalk", false);
-            // Debug.Log(collision.gameObject.name);
+            collision.gameObject.GetComponent<EnemyUnitController>().OnDestroy();
             transform.parent.gameObject.GetComponent<Tower>().OnDamage();
+
+            if (transform.parent.gameObject.GetComponent<Tower>().isConquer)
+            {
+                collision.gameObject.GetComponent<EnemyUnitController>().target = 
+                    collision.gameObject.GetComponent<EnemyUnitController>().Base;
+                collision.gameObject.GetComponent<EnemyUnitController>().RequestPathToMgr();
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ public class Bomb : MonoBehaviour
 
         foreach (RaycastHit hitObj in rayHits)
         {
-            hitObj.transform.GetComponent<UnitCs>().HitByBomb(transform.position);
+            hitObj.transform.GetComponent<EnemyUnitController>().OnHitEnter("Bomb", transform.position);
         }
 
         Destroy(gameObject, 4);
