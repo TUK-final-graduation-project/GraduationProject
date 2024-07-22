@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Laboratory : MonoBehaviour
 {
@@ -10,6 +9,25 @@ public class Laboratory : MonoBehaviour
     public PlayerMovement player;
     public ResourceManager manager;
     public UserHome home;
+    public Tower tower;
+
+    // 강화에 필요한 코인 개수
+    public int PlayerSpeedCost = 50;
+    public int BaseHPCost = 100;
+    public int ResourceRespawnTimeCost = 50;
+
+    public int ResourceRequiredItemsCost = 100;
+    public int TowerHPCost = 100;
+    public int TowerSpeedCost = 100;
+
+    public int UserUnitHP = 100;
+    public int UserUnitSpeed = 100;
+    public int EnemyUnitHP = 100;
+    public int EnemyUnitSpeed = 100;
+
+    // 버튼 및 텍스트 컴포넌트
+    public Button[] upgradeButton = new Button[10];
+    public Text[] upgradeButtonText = new Text[10];
 
     private int userBaseMaxHP = 100;
 
@@ -20,10 +38,57 @@ public class Laboratory : MonoBehaviour
             uiPanel.SetActive(false); // UI 패널을 비활성화
             Cursor.visible = false; // 커서 숨기기
         }
+        UpdateButtonUI();
+    }
+
+    public void UpdateButtonUI()
+    {
+        upgradeButtonText[0].text = PlayerSpeedCost + " coins";
+        upgradeButtonText[1].text = BaseHPCost + " coins";
+        upgradeButtonText[2].text = ResourceRespawnTimeCost + " coins";
+        upgradeButtonText[3].text = ResourceRequiredItemsCost + " coins";
+        upgradeButtonText[4].text = TowerHPCost + " coins";
+        upgradeButtonText[5].text = TowerSpeedCost + " coins";
+        upgradeButtonText[6].text = UserUnitHP + " coins";
+        upgradeButtonText[7].text = UserUnitSpeed + " coins";
+        upgradeButtonText[8].text = EnemyUnitHP + " coins";
+        upgradeButtonText[9].text = EnemyUnitSpeed + " coins";
+
+        // 코인 확인 후 색상 변경
+        UpdateButtonColor(upgradeButton[0], player.coinCount >= PlayerSpeedCost);
+        UpdateButtonColor(upgradeButton[1], player.coinCount >= BaseHPCost);
+        UpdateButtonColor(upgradeButton[2], player.coinCount >= ResourceRespawnTimeCost);
+        UpdateButtonColor(upgradeButton[3], player.coinCount >= ResourceRequiredItemsCost);
+        UpdateButtonColor(upgradeButton[4], player.coinCount >= TowerHPCost);
+        UpdateButtonColor(upgradeButton[5], player.coinCount >= TowerSpeedCost);
+        UpdateButtonColor(upgradeButton[6], player.coinCount >= UserUnitHP);
+        UpdateButtonColor(upgradeButton[7], player.coinCount >= UserUnitSpeed);
+        UpdateButtonColor(upgradeButton[8], player.coinCount >= EnemyUnitHP);
+        UpdateButtonColor(upgradeButton[9], player.coinCount >= EnemyUnitSpeed);
+
+    }
+
+    public void UpdateButtonColor(Button button, bool isAffordable)
+    {
+        ColorBlock colors = button.colors;
+        if (isAffordable)
+        {
+            colors.normalColor = Color.white; 
+            colors.selectedColor = Color.white;
+            colors.highlightedColor = Color.green;
+        }
+        else
+        {
+            colors.normalColor = Color.red;
+            colors.selectedColor = Color.red;
+            colors.highlightedColor = Color.red;
+        }
+        button.colors = colors;
     }
 
     void Update()
     {
+        UpdateButtonUI();
     }
 
     public void UpgradePlayerSpeed()
@@ -48,32 +113,40 @@ public class Laboratory : MonoBehaviour
     public void UpgradeUserBase()
     {
         home.setHP(userBaseMaxHP);
-    }
-
-    public void UpgradeTowerHP(Tower tower, int newHP)
-    {
-        tower.SetHP(newHP);
-    }
-
-    public void UpgradeTowerAttackSpeed(Tower tower, float speed)
-    {
-        tower.SetAttackSpeed(speed);
-    }
-
-    public void UpgradeTowerDef(Tower tower, int def)
-    {
-        tower.SetDef(def);
-    }
-
-    public void UpgradeTowerBuildSpeed(Tower tower, float buildSpeed)
-    {
-        // Implement this if needed
+        Debug.Log("coinCount : " + player.coinCount + "| userBaseHP : " + home.HP);
     }
 
     public void UpgradeResourceRespawnSpeed()
     {
         manager.MinusRespawnTime(10);
         Debug.Log("coinCount : " + player.coinCount + "| respawnTime : " + manager.respawnTime);
+    }
+
+    public void UpgradeTowerHP()
+    {
+        tower.SetHP(100);
+    }
+
+    public void UpgradeTowerAttackSpeed()
+    {
+        tower.SetAttackSpeed(100);
+    }
+
+    public void UpgradeUserUnitSpeed()
+    {
+        //userUnit.SetSpeed();
+    }
+    public void UpgradeUserUnitDamage()
+    {
+        //userUnit.SetDamage();
+    }
+    public void UpgradeEnemyUnitSpeed()
+    {
+        //enemyUnit.SetSpeed();
+    }
+    public void UpgradeEnemyUnitDamage()
+    {
+        //enemyUnit.SetDamage();
     }
 
     private void OnTriggerEnter(Collider other)
