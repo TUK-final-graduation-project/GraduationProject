@@ -70,7 +70,7 @@ public class OurUnitController : MonoBehaviour
         {
             path = newPath;
             targetIndex = 0;
-            state = UnitState.Walk;
+            // state = UnitState.Walk;
             StartPathFinding();
         }
     }
@@ -89,6 +89,10 @@ public class OurUnitController : MonoBehaviour
                     targetIndex++;
                     if (targetIndex >= path.Length)
                     {
+                        if ( state == UnitState.GoToBoss )
+                        {
+                            StartAttacking();
+                        }
                         return;
                     }
                     currentWaypoint = path[targetIndex];
@@ -243,6 +247,18 @@ public class OurUnitController : MonoBehaviour
     }
     //////////////////////////////////////////////
 
+
+    /////////////////// 보스 ///////////////////////
+    public void BossTargeting()
+    {
+        StopAttacking();
+        StopPathFinding();
+        StopTargeting();
+        RequestPathToMgr();
+        state = UnitState.GoToBoss;
+    }
+    //////////////////////////////////////////////
+    
     ////////////////// 데미지 /////////////////////
     private void OnDamage(Vector3 reactVec)
     {

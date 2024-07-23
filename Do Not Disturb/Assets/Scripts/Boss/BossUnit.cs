@@ -43,6 +43,7 @@ public class BossUnit : MonoBehaviour
         foreach(OurUnitController unit in units)
         {
             unit.target = BossPoint;
+            unit.BossTargeting();
         }
         Invoke("RequestPathToMgr", 1);
     }
