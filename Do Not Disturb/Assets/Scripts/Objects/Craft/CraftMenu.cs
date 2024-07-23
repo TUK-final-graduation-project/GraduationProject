@@ -225,10 +225,9 @@ public class CraftMenu : MonoBehaviour
     }
 
     // 코인 할인
-    public void ApplyDiscount(int coinNum)
+    public void ApplyDiscount(float dr)
     {
-        // 예: 코인 숫자에 따라 할인을 5% 증가시키는 로직
-        discountRate += 0.05f * coinNum;
+        discountRate = dr;
         if (discountRate > 0.5f) // 최대 할인율 제한 (예: 50%)
         {
             discountRate = 0.5f;
