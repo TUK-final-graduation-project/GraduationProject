@@ -12,7 +12,7 @@ public class Sliceable : MonoBehaviour
     private bool reverseWindTriangles = false;
 
     [SerializeField]
-    private bool useGravity = false;
+    private bool useGravity = true;
 
     [SerializeField]
     private bool shareVertices = false;
