@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public RectTransform bossHealthBar;
 
     public ComSpawnPoint[] spawns;
+    public GameObject[] Bosses;
 
     public Laboratory laboratory;
     public bool isPaused;
@@ -121,6 +122,18 @@ public class GameManager : MonoBehaviour
             state = States.ready;
             battleTime = coolTimeOfBattle;
             stage += 1;
+            if ( stage == 4)
+            {
+                Bosses[0].SetActive(true);
+            }
+            else if ( stage == 7)
+            {
+                Bosses[1].SetActive(true);
+            }
+            else if ( stage == 10)
+            {
+                Bosses[2].SetActive(true);
+            }
             foreach (ComSpawnPoint spawn in spawns)
             {
                 spawn.StartSpawn(stage + 1);
