@@ -92,6 +92,10 @@ public class GameManager : MonoBehaviour
         {
             Battle();
         }
+        if (CalculateGameEnd())
+        {
+            SceneManager.LoadScene(2);
+        }
         playTime += Time.deltaTime;
     }
 
@@ -126,20 +130,21 @@ public class GameManager : MonoBehaviour
                 stage = maxStage;
                 state = States.gameEnd;
 
-                foreach(ComSpawnPoint spawn in spawns)
-                {
-                    if (!spawn.GetComponent<ComSpawnPoint>().isConquer)
-                    {
-                        // 게임 짐 
-                        // 진 엔딩 장면으로
-                    }
-                }
-                // 게임 이김
-                // 이긴 엔딩 장면으로
+                SceneManager.LoadScene(2);
             }
         }
     }
-
+    bool CalculateGameEnd()
+    {
+        foreach(ComSpawnPoint spawn in spawns)
+        {
+            if (!spawn.isConquer)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     private void LateUpdate()
     {
         int hour = (int)(uiTime / 3600);

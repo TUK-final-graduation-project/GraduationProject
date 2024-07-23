@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UserHome : MonoBehaviour
 {
@@ -11,8 +12,7 @@ public class UserHome : MonoBehaviour
         HP -= 50;
         if ( HP < 0)
         {
-            // 승패 판정
-            // userbase가 졌으므로 끝~!
+            SceneManager.LoadScene(3);
         }
     }
 
