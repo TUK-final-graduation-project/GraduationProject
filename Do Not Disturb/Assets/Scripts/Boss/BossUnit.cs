@@ -30,6 +30,8 @@ public class BossUnit : MonoBehaviour
     Vector3[] path;
     int targetIndex;
 
+    OurUnitController[] units;
+
     public GameObject BossAttack;
 
     private void Awake()
@@ -37,6 +39,11 @@ public class BossUnit : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
 
+        units = FindObjectsOfType(typeof(OurUnitController)) as OurUnitController[];
+        foreach(OurUnitController unit in units)
+        {
+            unit.target = BossPoint;
+        }
         Invoke("RequestPathToMgr", 1);
     }
 

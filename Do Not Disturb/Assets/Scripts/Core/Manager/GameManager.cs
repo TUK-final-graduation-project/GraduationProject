@@ -93,10 +93,10 @@ public class GameManager : MonoBehaviour
         {
             Battle();
         }
-        if (CalculateGameEnd())
-        {
-            SceneManager.LoadScene(2);
-        }
+        //if (CalculateGameEnd())
+        //{
+        //    SceneManager.LoadScene(2);
+        //}
         playTime += Time.deltaTime;
     }
 
@@ -109,6 +109,22 @@ public class GameManager : MonoBehaviour
         {
             state = States.battle;
             readyTime = coolTimeOfReady;
+            if (stage == 4)
+            {
+                Bosses[0].SetActive(true);
+            }
+            else if (stage == 7)
+            {
+                Bosses[1].SetActive(true);
+            }
+            else if (stage == 10)
+            {
+                Bosses[2].SetActive(true);
+            }
+            foreach (ComSpawnPoint spawn in spawns)
+            {
+                spawn.StartSpawn(stage + 1);
+            }
         }
     }
 
@@ -116,22 +132,7 @@ public class GameManager : MonoBehaviour
     {
         battleTime -= Time.deltaTime;
         uiTime = battleTime;
-        if (stage == 4)
-        {
-            Bosses[0].SetActive(true);
-        }
-        else if (stage == 7)
-        {
-            Bosses[1].SetActive(true);
-        }
-        else if (stage == 10)
-        {
-            Bosses[2].SetActive(true);
-        }
-        foreach (ComSpawnPoint spawn in spawns)
-        {
-            spawn.StartSpawn(stage + 1);
-        }
+
         if (battleTime < 0)
         {
             state = States.ready;
