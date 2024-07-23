@@ -255,6 +255,11 @@ public class BossUnit : MonoBehaviour
                 StartCoroutine(OnDamage(reactVec, false));
             }
         }
+        if ( other.tag == "User")
+        {
+            other.gameObject.GetComponent<OurUnitController>().StopTpBossPoint();
+            // 여기서 움직이는 거 멈추기
+        }
     }
 
     IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
@@ -285,7 +290,7 @@ public class BossUnit : MonoBehaviour
 
     public void OnDestroy()
     {
-        anim.SetBool("isDie", true);
+        anim.SetTrigger("isDie");
         State = UnitState.Dead;
         // effectObj.SetActive(true);
 

@@ -160,6 +160,7 @@ public class OurUnitController : MonoBehaviour
     {
         StopPathFinding();
         StopTargeting();
+        state = UnitState.Attack;
         attackCts = new CancellationTokenSource();
         Attack(attackCts.Token).Forget();
     }
@@ -256,6 +257,10 @@ public class OurUnitController : MonoBehaviour
         StopTargeting();
         RequestPathToMgr();
         state = UnitState.GoToBoss;
+    }
+    public void StopTpBossPoint()
+    {
+        StartAttacking();
     }
     //////////////////////////////////////////////
     

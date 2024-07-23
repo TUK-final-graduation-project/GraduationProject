@@ -20799,9 +20799,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: RockBoss
       objectReference: {fileID: 0}
+    - target: {fileID: 3520907659200381198, guid: d8f242e186763a44a9d8767da93d07eb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7697193669086684440, guid: d8f242e186763a44a9d8767da93d07eb, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8641591103310987111, guid: d8f242e186763a44a9d8767da93d07eb, type: 3}
+      propertyPath: HP
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8641591103310987111, guid: d8f242e186763a44a9d8767da93d07eb, type: 3}
       propertyPath: target
@@ -25709,13 +25717,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stage: 1
-  maxStage: 2
+  maxStage: 10
   state: 0
   enemyCnt: 0
   battleTime: 3
   readyTime: 3
   playTime: 0
-  coolTimeOfReady: 1000
+  coolTimeOfReady: 3
   coolTimeOfBattle: 3
   menuPanel: {fileID: 325716372}
   gamePanel: {fileID: 1164931403}
@@ -25731,7 +25739,10 @@ MonoBehaviour:
   - {fileID: 1531840591}
   - {fileID: 268070402}
   - {fileID: 1232560099}
-  Bosses: []
+  Bosses:
+  - {fileID: 1562433083}
+  - {fileID: 2020866946}
+  - {fileID: 1257471550}
   laboratory: {fileID: 8594060696110946828}
   isPaused: 0
   settingsPanel: {fileID: 897217487}
@@ -34847,6 +34858,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4501903411537258, guid: 52b2dd90b973b4b4cae0206dc54205e3, type: 3}
   m_PrefabInstance: {fileID: 1253404861}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1257471550 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9139307742299922951, guid: 515fdc829330b7d45be11dedc8fd9647, type: 3}
+  m_PrefabInstance: {fileID: 1916497913}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1260733699
 GameObject:
   m_ObjectHideFlags: 0
@@ -39210,6 +39226,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: OakBoss
       objectReference: {fileID: 0}
+    - target: {fileID: 7824352900121025242, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -43387,6 +43407,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4074108683802570, guid: ce6d0eda755266e4d85c532f7dc62628, type: 3}
   m_PrefabInstance: {fileID: 1561975451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1562433083 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3520907659200381198, guid: d8f242e186763a44a9d8767da93d07eb, type: 3}
+  m_PrefabInstance: {fileID: 748885590}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1565847838
 GameObject:
@@ -51950,6 +51975,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WizardBoss
       objectReference: {fileID: 0}
+    - target: {fileID: 9139307742299922951, guid: 515fdc829330b7d45be11dedc8fd9647, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -55305,6 +55334,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2015698529}
   m_CullTransparentMesh: 1
+--- !u!1 &2020866946 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7824352900121025242, guid: 975f5045eaf3a1145a3e6044f4e5823d, type: 3}
+  m_PrefabInstance: {fileID: 1391031602}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2022502988
 PrefabInstance:
   m_ObjectHideFlags: 0
