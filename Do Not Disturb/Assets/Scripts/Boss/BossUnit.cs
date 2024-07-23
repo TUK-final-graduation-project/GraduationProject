@@ -194,7 +194,7 @@ public class BossUnit : MonoBehaviour
         {
             case BossType.Rock:
                 {
-                    if (indicator.active == true)
+                    if (indicator.activeSelf == true)
                     {
                         if ( indicator.transform.localScale.x <= 40f)
                         {
@@ -205,7 +205,7 @@ public class BossUnit : MonoBehaviour
                 }
             case BossType.Wizard:
                 {
-                    if ( indicator.active == true)
+                    if ( indicator.activeSelf == true)
                     {
                         if (BossAttack != null && BossAttack.GetComponent<WizardBossAttack>().isExplosion == true)
                         {
@@ -216,7 +216,7 @@ public class BossUnit : MonoBehaviour
                 }
             case BossType.Oak:
                 {
-                    if (indicator.active == true)
+                    if (indicator.activeSelf == true)
                     {
                         if (indicator.transform.localScale.x >= 30f)
                         {

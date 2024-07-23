@@ -52,7 +52,10 @@ public class RockBossAttack : MonoBehaviour
 
         foreach (RaycastHit hitObj in rayHits)
         {
-            hitObj.transform.GetComponent<UnitCs>().HitByBomb(transform.position);
+            if (hitObj.transform.GetComponent<OurUnitController>() != null)
+            {
+                hitObj.transform.GetComponent<OurUnitController>().OnHitEnter("Bomb", transform.position);
+            }
         }
 
         Destroy(gameObject, 4);

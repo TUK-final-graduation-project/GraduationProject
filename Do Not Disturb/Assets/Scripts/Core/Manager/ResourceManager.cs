@@ -36,7 +36,7 @@ public class ResourceManager : MonoBehaviour
         }
         SpawnAllPrefabs();  // 프리팹 생성
         StartCoroutine(RespawnCycle());  // 리스폰 사이클 시작
-        AudioManager.instance.PlayerBgm(AudioManager.Bgm.Wait);
+        //AudioManager.instance.PlayerBgm(AudioManager.Bgm.Wait);
     }
 
     void Update()
