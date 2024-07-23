@@ -42,9 +42,7 @@ public class Tower : MonoBehaviour
 
     IEnumerator Attack()
     {
-
         isAttack = true;
-        Quaternion originRotation = transform.rotation;
         switch (type)
         {
             case Type.Focus:
@@ -54,7 +52,7 @@ public class Tower : MonoBehaviour
                     if (target != null)
                     {
                         Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
-                        rotateObj.transform.rotation = targetRotation;
+                        rotateObj.transform.rotation = new Quaternion(0, targetRotation.y, 0, targetRotation.w);
                         Focus();
                     }
                     yield return new WaitForSeconds(0.5f);
@@ -66,7 +64,7 @@ public class Tower : MonoBehaviour
                     yield return new WaitForSeconds(0.1f);
                     rotateObj.GetComponent<Rotate>().isRotate = false;
                     Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
-                    rotateObj.transform.rotation = targetRotation;
+                    rotateObj.transform.rotation = new Quaternion(0, targetRotation.y, 0, targetRotation.w);
                     // 데모를 위한 block
                     Wide();
                     yield return new WaitForSeconds(10f);
@@ -80,7 +78,7 @@ public class Tower : MonoBehaviour
                 break;
         }
         isAttack = false;
-        transform.rotation = originRotation;
+        transform.rotation = Quaternion.identity;
     }
 
     void Wide()
@@ -134,11 +132,11 @@ public class Tower : MonoBehaviour
     {
         HP = hp;
     }
-      public void SetAttackSpeed(float speed)
+    public void SetAttackSpeed(float speed)
     {
         attackSpeed = speed;
     }
-      public void SetDef(int def)
+    public void SetDef(int def)
     {
         Def = def;
     }

@@ -8,7 +8,7 @@ using static Unity.Burst.Intrinsics.X86.Avx;
 public class EnemyUnitController : MonoBehaviour
 {
     public enum Type { Melee, Range };
-    public enum UnitState { Walk, Targeting, Attack, GoToBoss };
+    public enum UnitState { Walk, Targeting, Attack, GoToBoss, Damaged };
 
     [Header("Unit")]
     Animator anim;
@@ -43,7 +43,7 @@ public class EnemyUnitController : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         Invoke("RequestPathToMgr", 1);
         StartTargeting();
-        StartFindTower();
+        Invoke("StartFindTower", 1);
     }
 
     ///////////////// 길 찾기 ///////////////////// 
@@ -143,7 +143,7 @@ public class EnemyUnitController : MonoBehaviour
             targetRange = 25f;
         }
         RaycastHit[] rayHits =
-                Physics.SphereCastAll(transform.position, targetRadius, transform.forward, targetRange, LayerMask.GetMask("Com"));
+                Physics.SphereCastAll(transform.position, targetRadius, transform.forward, targetRange, LayerMask.GetMask("User"));
 
         if (rayHits.Length > 0)
         {
@@ -160,9 +160,18 @@ public class EnemyUnitController : MonoBehaviour
         FindingCts = new CancellationTokenSource();
         Finding(FindingCts.Token).Forget();
     }
+    void StopFindTower()
+    {
+        if (FindingCts != null)
+        {
+            FindingCts.Cancel();
+            FindingCts.Dispose();
+            FindingCts = null;
+        }
+    }
     async UniTaskVoid Finding(CancellationToken token)
     {
-        while (state == UnitState.Walk && !token.IsCancellationRequested)
+        while (!token.IsCancellationRequested)
         {
             if ( target == Base || target == null)
             {
@@ -239,12 +248,14 @@ public class EnemyUnitController : MonoBehaviour
         }
         else if (type == Type.Range)
         {
+            if ( target != null )
+            {
+                GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 1.5f, Quaternion.identity);
+                Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
 
-            GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 1.5f, Quaternion.identity);
-            Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
-
-            Vector3 direction = (target.transform.position - transform.position).normalized;
-            rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
+                Vector3 direction = (target.transform.position - transform.position).normalized;
+                rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
+            }
 
         }
     }
@@ -268,13 +279,17 @@ public class EnemyUnitController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        FreezeVelocity();
+        if ( rigid.isKinematic == false)
+        { 
+            FreezeVelocity(); 
+        }
     }
     public void OnDestroy()
     {
         StopPathFinding();
         StopAttacking();
         StopTargeting();
+        StopFindTower();
         anim.SetTrigger("DoDie");
 
         Destroy(gameObject, 2);
@@ -284,20 +299,20 @@ public class EnemyUnitController : MonoBehaviour
     ////////////////// 데미지 /////////////////////
     private void OnDamage(Vector3 reactVec)
     {
-        if (HP <= 0)
+        if (HP <= 0 && state != UnitState.Damaged)
         {
             gameObject.layer = gameObject.layer + 1;
 
             reactVec = reactVec.normalized;
             reactVec += Vector3.up;
             rigid.AddForce(reactVec * 5, ForceMode.Impulse);
-
+            state = UnitState.Damaged;
             OnDestroy();
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "ComAttack")
+        if (other.tag == "UserAttack")
         {
             UnitAttack attack = other.GetComponent<UnitAttack>();
             HP -= attack.damage;
@@ -313,25 +328,6 @@ public class EnemyUnitController : MonoBehaviour
     {
         switch (type)
         {
-            case "Oak":
-                {
-                    StopAttacking();
-                    StopPathFinding();
-                    StopTargeting();
-
-                    DamagedByOak().Forget();
-                    break;
-                }
-            case "Wizard":
-                {
-                    HP -= 10;
-                    if (HP <= 0)
-                    {
-                        gameObject.layer = gameObject.layer + 1;
-                        OnDestroy();
-                    }
-                    break;
-                }
             case "Bomb":
                 {
                     HP -= 100;
@@ -339,33 +335,6 @@ public class EnemyUnitController : MonoBehaviour
                     OnDamage(reactVec);
                     break;
                 }
-        }
-    }
-    async UniTaskVoid DamagedByOak()
-    {
-        while (true)
-        {
-            transform.position += Vector3.up;
-
-            if (transform.position.y >= 30f)
-            {
-                break;
-            }
-            await UniTask.Yield();
-        }
-
-        await UniTask.Delay(1000);
-
-        while (true)
-        {
-            transform.position -= Vector3.up * 3;
-
-            if (transform.position.y <= 0f)
-            {
-                OnDestroy();
-                return;
-            }
-            await UniTask.Yield();
         }
     }
     //////////////////////////////////////////////

@@ -222,8 +222,11 @@ public class OurUnitController : MonoBehaviour
     //////////////////////////////////////////////
     void FreezeVelocity()
     {
-        rigid.velocity = Vector3.zero;
-        rigid.angularVelocity = Vector3.zero;
+        if ( rigid.isKinematic == false)
+        {
+            rigid.velocity = Vector3.zero;
+            rigid.angularVelocity = Vector3.zero;
+        }
     }
     private void FixedUpdate()
     {
