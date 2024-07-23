@@ -67,10 +67,7 @@ public class TestSceneManager : MonoBehaviour
             SceneManager.LoadScene(lobbyScene);
         }
 
-        if(escDown)
-        {
-            Application.Quit();
-        }
+        
     }
 
     public void OnApplicationQuit()
