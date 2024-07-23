@@ -114,7 +114,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a80f45c3e963f458b07dde8d07c995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints: []
 --- !u!1 &3622023769585167731
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +240,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 239378781582670930, guid: 6e3da69f0672efe48993f9c753d2b64b, type: 3}
+  - {fileID: 2100000, guid: 20b95b002b59a0d4caab642ce1511496, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -324,7 +323,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3661639628750336703, guid: 6e3da69f0672efe48993f9c753d2b64b, type: 3}
+  - {fileID: 2100000, guid: 2d0496070c18ba849a2f7b063eb888bf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -426,6 +425,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   HP: 1000000
+  Def: 0
+  attackSpeed: 0
   isConquer: 0
   releasePoint: {fileID: 4555925341104733648}
   grenadeObject: {fileID: 3859444798459112897, guid: 14e048f61c13bac459035fbc8864b1ff, type: 3}
