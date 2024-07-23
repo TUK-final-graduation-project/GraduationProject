@@ -19,11 +19,6 @@ public class Tower : MonoBehaviour
 
     public GameObject rotateObj;
     GameObject target;
-    private void Update()
-    {
-
-    }
-
 
     void Targeting()
     {
@@ -100,12 +95,12 @@ public class Tower : MonoBehaviour
         Vector3 nextVec = releasePoint.transform.forward;
         nextVec.Normalize();
         // nextVec.y = 10;
-
         GameObject instantGrenade = Instantiate(grenadeObject, releasePoint.transform.position, transform.rotation);
-        Rigidbody rigidGrenade = instantGrenade.GetComponent<Rigidbody>();
-        rigidGrenade.AddForce(nextVec, ForceMode.Impulse);
-        //rigidGrenade.AddTorque(Vector3.back, ForceMode.Impulse);
-        rigidGrenade.velocity = nextVec * 2;
+        instantGrenade.GetComponent<SlowBullet>().TargetPosition = target.transform.position;
+        //Rigidbody rigidGrenade = instantGrenade.GetComponent<Rigidbody>();
+        //rigidGrenade.AddForce(nextVec, ForceMode.Impulse);
+        ////rigidGrenade.AddTorque(Vector3.back, ForceMode.Impulse);
+        //rigidGrenade.velocity = nextVec * 2;
     }
 
     void Blade()
@@ -126,8 +121,6 @@ public class Tower : MonoBehaviour
             Destroy(transform.parent.gameObject, 5);
         }
     }
-
-
     public void SetHP(int hp)
     {
         HP = hp;

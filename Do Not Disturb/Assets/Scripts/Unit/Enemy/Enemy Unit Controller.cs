@@ -335,6 +335,14 @@ public class EnemyUnitController : MonoBehaviour
                     OnDamage(reactVec);
                     break;
                 }
+            case "Slow":
+                {
+                    if ( speed > 1)
+                    {
+                        speed -= 1;
+                    }
+                    break;
+                }
         }
     }
     //////////////////////////////////////////////

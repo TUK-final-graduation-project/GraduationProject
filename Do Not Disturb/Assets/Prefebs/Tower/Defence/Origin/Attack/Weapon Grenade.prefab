@@ -4839,7 +4839,7 @@ GameObject:
   - component: {fileID: 5896321925999917583}
   - component: {fileID: 8157581141328347479}
   - component: {fileID: 5966494873291537541}
-  - component: {fileID: 125224245574885966}
+  - component: {fileID: 9042722951206145098}
   m_Layer: 0
   m_Name: Weapon Grenade
   m_TagString: Untagged
@@ -4912,7 +4912,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.7
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &125224245574885966
+--- !u!114 &9042722951206145098
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4921,12 +4921,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3859444798459112897}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4672f1c3205901e40b2e9643cb86112d, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e5110a417d62794d966f8290293ac18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshObj: {fileID: 5478091515920214836}
-  effectObj: {fileID: 2797748383327897733}
-  rigid: {fileID: 8157581141328347479}
+  TargetPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &4667839057610167909
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4987,10 +4985,5 @@ PrefabInstance:
 --- !u!4 &5137982210903716238 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 001370a02e1c96744a7fa9320e00cc05, type: 3}
-  m_PrefabInstance: {fileID: 4667839057610167909}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5478091515920214836 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 001370a02e1c96744a7fa9320e00cc05, type: 3}
   m_PrefabInstance: {fileID: 4667839057610167909}
   m_PrefabAsset: {fileID: 0}
