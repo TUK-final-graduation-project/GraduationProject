@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
 
     public RectTransform bossHealthGroup;
     public RectTransform bossHealthBar;
+    float bossHealth;
 
     public ComSpawnPoint[] spawns;
     public GameObject[] Bosses;
@@ -68,6 +69,8 @@ public class GameManager : MonoBehaviour
         }
 
         StartCoroutine(UpdateCoins()); // Start the coroutine to update coins
+
+        bossHealthGroup.transform.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -112,14 +115,17 @@ public class GameManager : MonoBehaviour
             if (stage == 4)
             {
                 Bosses[0].SetActive(true);
+                bossHealthGroup.gameObject.SetActive(true);
             }
             else if (stage == 7)
             {
                 Bosses[1].SetActive(true);
+                bossHealthGroup.gameObject.SetActive(true);
             }
             else if (stage == 10)
             {
                 Bosses[2].SetActive(true);
+                bossHealthGroup.gameObject.SetActive(true);
             }
             foreach (ComSpawnPoint spawn in spawns)
             {
@@ -386,6 +392,38 @@ public class GameManager : MonoBehaviour
         else
         {
             StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+        }
+    }
+
+    public void UpdateBossHP()
+    {
+        switch(stage)
+        {
+            case 4:
+                {
+                    bossHealth = Bosses[0].GetComponent<BossUnit>().HP / 100f;
+                    Debug.Log(bossHealth);
+                    bossHealthBar.transform.localScale = new Vector3(bossHealth, 1, 1);
+                    break;
+                }
+            case 7:
+                {
+                    bossHealth = Bosses[1].GetComponent<BossUnit>().HP / 100f;
+                    Debug.Log(bossHealth);
+                    bossHealthBar.transform.localScale = new Vector3(bossHealth, 1, 1);
+                    break;
+                }
+            case 10:
+                {
+                    bossHealth = Bosses[2].GetComponent<BossUnit>().HP / 100f;
+                    Debug.Log(bossHealth);
+                    bossHealthBar.transform.localScale = new Vector3(bossHealth, 1, 1);
+                    break;
+                }
+        }
+        if ( bossHealth <= 0 )
+        {
+            bossHealthGroup.gameObject.SetActive(false);
         }
     }
 }

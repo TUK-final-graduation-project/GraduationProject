@@ -10,7 +10,7 @@ public class BossUnit : MonoBehaviour
 
     [Header("Unit State")]
     public BossType type;
-    public int HP;
+    public int HP = 1000;
     public UnitState State;
     public GameObject target;
     public GameObject BossPoint;
@@ -33,6 +33,8 @@ public class BossUnit : MonoBehaviour
     OurUnitController[] units;
 
     public GameObject BossAttack;
+
+    public GameManager gameManager;
 
     private void Awake()
     {
@@ -261,6 +263,8 @@ public class BossUnit : MonoBehaviour
 
         UnitState tmp = State;
         State = UnitState.Damaged;
+
+        gameManager.UpdateBossHP();
 
         if (HP <= 0)
         {
