@@ -93,10 +93,10 @@ public class GameManager : MonoBehaviour
         {
             Battle();
         }
-        //if (CalculateGameEnd())
-        //{
-        //    SceneManager.LoadScene(2);
-        //}
+        if (CalculateGameEnd())
+        {
+            SceneManager.LoadScene(2);
+        }
         playTime += Time.deltaTime;
     }
 

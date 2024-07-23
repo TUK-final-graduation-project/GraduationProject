@@ -243,7 +243,7 @@ public class EnemyUnitController : MonoBehaviour
 
         if (type == Type.Melee)
         {
-            rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
+            // rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
             meleeArea.enabled = true;
         }
         else if (type == Type.Range)
