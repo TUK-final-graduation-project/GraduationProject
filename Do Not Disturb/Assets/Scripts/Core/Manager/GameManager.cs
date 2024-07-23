@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
 
         if (playerMovement != null)
         {
-            coinTxt.text = "Coins: " + playerMovement.coinCount.ToString();
+            coinTxt.text = playerMovement.coinCount.ToString() + " $";
             laboratory.UpdateButtonUI();
         }
     }
