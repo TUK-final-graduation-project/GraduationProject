@@ -6,12 +6,15 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
 
-    [Header("#BGM")]
-    public AudioClip[] bgmClips;
-    public float bgmVolume;
-    public int bgmClipcount;
-    AudioSource[] bgmPlayers;
-    int bgmIndex;
+    [Header("#WaitBGM")]
+    public AudioClip WbgmClip;
+    public float WbgmVolume;
+    AudioSource WbgmPlayer;
+
+    [Header("#BattleBGM")]
+    public AudioClip BbgmClip;
+    public float BbgmVolume;
+    AudioSource BbgmPlayer;
 
     [Header("#SFX")]
     public AudioClip[] sfxClips;
@@ -20,7 +23,6 @@ public class AudioManager : MonoBehaviour
     AudioSource[] sfxPlayers;
     int channelIndex;
 
-    public enum Bgm {Wait =0, Battle}
     public enum Sfx {Chopping, Jump, Mining, Run, Shovel, Ui, Walk}
 
     void Awake()
@@ -31,24 +33,29 @@ public class AudioManager : MonoBehaviour
 
     void Init()
     {
-        //// 배경음 초기화
-        GameObject bgmobject = new GameObject("BgmPlayer");
-        bgmobject.transform.parent = transform;
-        bgmPlayers = new AudioSource[bgmClipcount];
+        // 대기 배경음 초기화
+        GameObject Wbgmobject = new GameObject("WBgmPlayer");
+        Wbgmobject.transform.parent = transform;
+        WbgmPlayer = Wbgmobject.AddComponent<AudioSource>();
+        WbgmPlayer.playOnAwake = false;
+        WbgmPlayer.loop = true;
+        WbgmPlayer.volume = BbgmVolume;
+        WbgmPlayer.clip = BbgmClip;
 
-        for (int index = 0; index < bgmPlayers.Length; index++)
-        {
-            bgmPlayers[index] = bgmobject.AddComponent<AudioSource>();
-            bgmPlayers[index].playOnAwake = false;
-            bgmPlayers[index].loop = true;
-            bgmPlayers[index].volume = bgmVolume;
-        }
+        // 전투 배경음 초기화
+        GameObject Bbgmobject = new GameObject("BBgmPlayer");
+        Bbgmobject.transform.parent = transform;
+        BbgmPlayer = Bbgmobject.AddComponent<AudioSource>();
+        BbgmPlayer.playOnAwake = false;
+        BbgmPlayer.loop = true;
+        BbgmPlayer.volume = BbgmVolume;
+        BbgmPlayer.clip = BbgmClip;
 
         // 효과음 초기화
         GameObject sfxobject = new GameObject("SfxPlayer");
         sfxobject.transform.parent = transform;
         sfxPlayers = new AudioSource[channels];
-        
+  
         for(int index =0; index < sfxPlayers.Length;index++)
         {
             sfxPlayers[index] = sfxobject.AddComponent<AudioSource>();
@@ -57,16 +64,29 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    //배경음악 호출
-    public void PlayerBgm(Bgm bgm)
+    // 대기 배경음악 호출
+    public void WPlayBgm(bool isplay)
     {
-        if (bgm == 0)
+        if(isplay)
         {
-            bgmPlayers[0].Play();
+            WbgmPlayer.Play();
         }
         else
         {
-            bgmPlayers[1].Play();
+            WbgmPlayer.Stop();
+        }
+    }
+
+    //전투 배경음악 호출
+    public void BPlayBgm(bool isplay)
+    {
+        if (isplay)
+        {
+            BbgmPlayer.Play();
+        }
+        else
+        {
+            BbgmPlayer.Stop();
         }
     }
 
