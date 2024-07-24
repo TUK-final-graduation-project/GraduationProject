@@ -127,7 +127,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -145,7 +145,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a80f45c3e963f458b07dde8d07c995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints: []
 --- !u!1 &4336365001652038799
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +240,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 239378781582670930, guid: d7b5c97e1969db54b8067b7fdcca1b92, type: 3}
+  - {fileID: 2100000, guid: dfd5469a0e77fd04cb7485231c84c8b8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -343,6 +342,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   HP: 1000000
+  Def: 0
+  attackSpeed: 0
   isConquer: 0
   releasePoint: {fileID: 3903984497960740249}
   grenadeObject: {fileID: 836468125748963867, guid: 81f9474c1ffe7084da761fa4a9366023, type: 3}
@@ -410,7 +411,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 239378781582670930, guid: d7b5c97e1969db54b8067b7fdcca1b92, type: 3}
+  - {fileID: 2100000, guid: dfd5469a0e77fd04cb7485231c84c8b8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -493,7 +494,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3661639628750336703, guid: d7b5c97e1969db54b8067b7fdcca1b92, type: 3}
+  - {fileID: 2100000, guid: 081ec178bb6b11f438805d1efec61e67, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

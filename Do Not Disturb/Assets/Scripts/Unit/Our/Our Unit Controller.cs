@@ -70,7 +70,7 @@ public class OurUnitController : MonoBehaviour
         {
             path = newPath;
             targetIndex = 0;
-            state = UnitState.Walk;
+            // state = UnitState.Walk;
             StartPathFinding();
         }
     }
@@ -89,6 +89,10 @@ public class OurUnitController : MonoBehaviour
                     targetIndex++;
                     if (targetIndex >= path.Length)
                     {
+                        if ( state == UnitState.GoToBoss )
+                        {
+                            StartAttacking();
+                        }
                         return;
                     }
                     currentWaypoint = path[targetIndex];
@@ -156,6 +160,7 @@ public class OurUnitController : MonoBehaviour
     {
         StopPathFinding();
         StopTargeting();
+        state = UnitState.Attack;
         attackCts = new CancellationTokenSource();
         Attack(attackCts.Token).Forget();
     }
@@ -193,7 +198,7 @@ public class OurUnitController : MonoBehaviour
 
         if (type == Type.Melee)
         {
-            rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
+            //rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
             meleeArea.enabled = true;
         }
         else if (type == Type.Range)
@@ -222,8 +227,11 @@ public class OurUnitController : MonoBehaviour
     //////////////////////////////////////////////
     void FreezeVelocity()
     {
-        rigid.velocity = Vector3.zero;
-        rigid.angularVelocity = Vector3.zero;
+        if ( rigid.isKinematic == false)
+        {
+            rigid.velocity = Vector3.zero;
+            rigid.angularVelocity = Vector3.zero;
+        }
     }
     private void FixedUpdate()
     {
@@ -240,6 +248,22 @@ public class OurUnitController : MonoBehaviour
     }
     //////////////////////////////////////////////
 
+
+    /////////////////// 보스 ///////////////////////
+    public void BossTargeting()
+    {
+        StopAttacking();
+        StopPathFinding();
+        StopTargeting();
+        RequestPathToMgr();
+        state = UnitState.GoToBoss;
+    }
+    public void StopTpBossPoint()
+    {
+        StartAttacking();
+    }
+    //////////////////////////////////////////////
+    
     ////////////////// 데미지 /////////////////////
     private void OnDamage(Vector3 reactVec)
     {

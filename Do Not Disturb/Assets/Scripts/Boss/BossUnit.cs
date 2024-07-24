@@ -10,7 +10,7 @@ public class BossUnit : MonoBehaviour
 
     [Header("Unit State")]
     public BossType type;
-    public int HP;
+    public int HP = 1000;
     public UnitState State;
     public GameObject target;
     public GameObject BossPoint;
@@ -30,13 +30,23 @@ public class BossUnit : MonoBehaviour
     Vector3[] path;
     int targetIndex;
 
+    OurUnitController[] units;
+
     public GameObject BossAttack;
+
+    public GameManager gameManager;
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
 
+        units = FindObjectsOfType(typeof(OurUnitController)) as OurUnitController[];
+        foreach(OurUnitController unit in units)
+        {
+            unit.target = BossPoint;
+            unit.BossTargeting();
+        }
         Invoke("RequestPathToMgr", 1);
     }
 
@@ -245,6 +255,11 @@ public class BossUnit : MonoBehaviour
                 StartCoroutine(OnDamage(reactVec, false));
             }
         }
+        if ( other.tag == "User")
+        {
+            other.gameObject.GetComponent<OurUnitController>().StopTpBossPoint();
+            // 여기서 움직이는 거 멈추기
+        }
     }
 
     IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
@@ -253,6 +268,8 @@ public class BossUnit : MonoBehaviour
 
         UnitState tmp = State;
         State = UnitState.Damaged;
+
+        gameManager.UpdateBossHP();
 
         if (HP <= 0)
         {
@@ -273,7 +290,7 @@ public class BossUnit : MonoBehaviour
 
     public void OnDestroy()
     {
-        anim.SetBool("isDie", true);
+        anim.SetTrigger("isDie");
         State = UnitState.Dead;
         // effectObj.SetActive(true);
 

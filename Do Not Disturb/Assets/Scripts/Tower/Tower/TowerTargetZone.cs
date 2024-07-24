@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class TowerTargetZone : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.GetComponent<EnemyUnitController>() != null)
+        if (other.gameObject.GetComponent<EnemyUnitController>() != null)
         {
-            collision.gameObject.GetComponent<EnemyUnitController>().OnDestroy();
+            other.gameObject.GetComponent<EnemyUnitController>().OnDestroy();
             transform.parent.gameObject.GetComponent<Tower>().OnDamage();
 
             if (transform.parent.gameObject.GetComponent<Tower>().isConquer)
             {
-                collision.gameObject.GetComponent<EnemyUnitController>().target = 
-                    collision.gameObject.GetComponent<EnemyUnitController>().Base;
-                collision.gameObject.GetComponent<EnemyUnitController>().RequestPathToMgr();
+                other.gameObject.GetComponent<EnemyUnitController>().target =
+                    other.gameObject.GetComponent<EnemyUnitController>().Base;
+                other.gameObject.GetComponent<EnemyUnitController>().RequestPathToMgr();
             }
         }
     }
+
 }
