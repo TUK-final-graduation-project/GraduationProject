@@ -40,6 +40,8 @@ public class Laboratory : MonoBehaviour
         }
         UpdateButtonUI();
     }
+    //AudioManager.instance.PlaySfx(AudioManager.Sfx.Ui); ui클릭소리 
+
 
     public void UpdateButtonUI()
     {
@@ -93,6 +95,7 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradePlayerSpeed()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         player.SetSpeed(player.speed + 5);
         player.SetRunSpeed(player.runSpeed + 5);
         Debug.Log("coinCount : " + player.coinCount + "| speed : " + player.speed);
@@ -100,52 +103,62 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradePlayerHP()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         player.SetHP(player.maxHP);
         Debug.Log("coinCount : " + player.coinCount + "| HP : " + player.HP);
     }
 
     public void UpgradePlayerDamage()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         player.SetDamage(player.attackDamage + 20);
         Debug.Log("coinCount : " + player.coinCount + "| attackDamage : " + player.attackDamage);
     }
 
     public void UpgradeUserBase()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         home.setHP(userBaseMaxHP);
         Debug.Log("coinCount : " + player.coinCount + "| userBaseHP : " + home.HP);
     }
 
     public void UpgradeResourceRespawnSpeed()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         manager.MinusRespawnTime(10);
         Debug.Log("coinCount : " + player.coinCount + "| respawnTime : " + manager.respawnTime);
     }
 
     public void UpgradeTowerHP()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         tower.SetHP(100);
     }
 
     public void UpgradeTowerAttackSpeed()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         tower.SetAttackSpeed(100);
     }
 
     public void UpgradeUserUnitSpeed()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         //userUnit.SetSpeed();
     }
     public void UpgradeUserUnitDamage()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         //userUnit.SetDamage();
     }
     public void UpgradeEnemyUnitSpeed()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         //enemyUnit.SetSpeed();
     }
     public void UpgradeEnemyUnitDamage()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         //enemyUnit.SetDamage();
     }
 
@@ -158,6 +171,7 @@ public class Laboratory : MonoBehaviour
                 uiPanel.SetActive(true); // 플레이어가 연구소 근처에 왔을 때 UI 패널을 활성화
                 Cursor.visible = true; // 커서 보이기
                 Cursor.lockState = CursorLockMode.None;
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Lab);
             }
         }
     }

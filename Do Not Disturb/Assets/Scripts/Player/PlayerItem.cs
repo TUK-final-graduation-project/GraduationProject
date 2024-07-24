@@ -51,6 +51,7 @@ public class PlayerItem : MonoBehaviour
             {
                 inven.AcquireItem(getItem.item);
                 Debug.Log(getItem.item.itemName + " 획득했습니다 / 총 " + getItem.item.itemCount + "개");
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Item);
                 Destroy(hitInfo.transform.gameObject);
                 hitInfo = null; // 아이템을 파괴한 후 hitInfo를 null로 설정
             }

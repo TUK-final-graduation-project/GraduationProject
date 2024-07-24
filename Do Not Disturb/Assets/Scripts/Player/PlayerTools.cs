@@ -83,10 +83,22 @@ public class PlayerTools : MonoBehaviour
             equipTool.Use();
 
             Debug.Log("Swing");
-            if (sward) anim.SetTrigger("Sward");
-            if (axe) anim.SetTrigger("Axe");
-            if (pickax) anim.SetTrigger("Pickax");
-            swingDelay = 0;
+            if (sward)
+            {
+                anim.SetTrigger("Sward");
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Shovel);
+            }
+            if (axe)
+            {
+                anim.SetTrigger("Axe");
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Chopping);
+            }
+            if (pickax)
+            {
+                anim.SetTrigger("Pickax");
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Mining);
+            }
+                swingDelay = 0;
         }
     }
 
@@ -125,6 +137,9 @@ public class PlayerTools : MonoBehaviour
             //½º¿ÒÁ¾·á ¾Ë¸®±â
             Invoke("SwapOut", swapDelay);
         }
+        // 1 °Ë 2 °î±ªÀÌ 3 µµ³¢
+        
+        
 
         if (swapToolNull)
         {

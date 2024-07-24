@@ -16,6 +16,11 @@ public class AudioManager : MonoBehaviour
     public float BbgmVolume;
     AudioSource BbgmPlayer;
 
+    [Header("#BossBGM")]
+    public AudioClip SbgmClip;
+    public float SbgmVolume;
+    AudioSource SbgmPlayer;
+
     [Header("#SFX")]
     public AudioClip[] sfxClips;
     public float sfxVolume;
@@ -23,7 +28,7 @@ public class AudioManager : MonoBehaviour
     AudioSource[] sfxPlayers;
     int channelIndex;
 
-    public enum Sfx {Chopping, Jump, Mining, Run, Shovel, Ui, Walk}
+    public enum Sfx {Chopping, Jump, Mining, Run, Shovel, Ui, Walk, Wind, Bomb, Magic, Throw, Build, Lab, Level, Item, Fail}
 
     void Awake()
     {
@@ -39,8 +44,8 @@ public class AudioManager : MonoBehaviour
         WbgmPlayer = Wbgmobject.AddComponent<AudioSource>();
         WbgmPlayer.playOnAwake = false;
         WbgmPlayer.loop = true;
-        WbgmPlayer.volume = BbgmVolume;
-        WbgmPlayer.clip = BbgmClip;
+        WbgmPlayer.volume = WbgmVolume;
+        WbgmPlayer.clip = WbgmClip;
 
         // 전투 배경음 초기화
         GameObject Bbgmobject = new GameObject("BBgmPlayer");
@@ -50,6 +55,15 @@ public class AudioManager : MonoBehaviour
         BbgmPlayer.loop = true;
         BbgmPlayer.volume = BbgmVolume;
         BbgmPlayer.clip = BbgmClip;
+
+        // 보스 배경음 초기화
+        GameObject Sbgmobject = new GameObject("SBgmPlayer");
+        Sbgmobject.transform.parent = transform;
+        SbgmPlayer = Sbgmobject.AddComponent<AudioSource>();
+        SbgmPlayer.playOnAwake = false;
+        SbgmPlayer.loop = true;
+        SbgmPlayer.volume = SbgmVolume;
+        SbgmPlayer.clip = SbgmClip;
 
         // 효과음 초기화
         GameObject sfxobject = new GameObject("SfxPlayer");
@@ -87,6 +101,19 @@ public class AudioManager : MonoBehaviour
         else
         {
             BbgmPlayer.Stop();
+        }
+    }
+
+    //보스 배경음악 호출
+    public void SPlayBgm(bool isplay)
+    {
+        if (isplay)
+        {
+            SbgmPlayer.Play();
+        }
+        else
+        {
+            SbgmPlayer.Stop();
         }
     }
 

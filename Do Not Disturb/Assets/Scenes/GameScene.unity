@@ -51352,6 +51352,73 @@ Transform:
   - {fileID: 1996746219}
   m_Father: {fileID: 935305939}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1888554423
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1888554425}
+  - component: {fileID: 1888554424}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1888554424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1888554423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82bfeb43169eca744882f4a7734c9448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WbgmClip: {fileID: 8300000, guid: ee132935d2caae747a9eaec7ba274e63, type: 3}
+  WbgmVolume: 0.2
+  BbgmClip: {fileID: 8300000, guid: b3492779c6cc92a44973ce9df0c1d7c3, type: 3}
+  BbgmVolume: 0.2
+  SbgmClip: {fileID: 8300000, guid: 1320870a5c1e97a4f9ef6089734e73a0, type: 3}
+  SbgmVolume: 0.2
+  sfxClips:
+  - {fileID: 8300000, guid: f1fa13a1260fe784db346717145e1f71, type: 3}
+  - {fileID: 8300000, guid: 597c56e23c67163469ec870280e3c9a1, type: 3}
+  - {fileID: 8300000, guid: d422c924bf803af4f8b911aa49217e49, type: 3}
+  - {fileID: 8300000, guid: 11e408893067ce54d97d50f932438968, type: 3}
+  - {fileID: 8300000, guid: 1752505297129924c8b366eabdce0780, type: 3}
+  - {fileID: 8300000, guid: 7bb72c8c1cd91334b9d56e70857c78f4, type: 3}
+  - {fileID: 8300000, guid: 1159ec5bfc78f964983437ab9c60e0dd, type: 3}
+  - {fileID: 8300000, guid: 62da7a1072cbadb44ae739d36c744c74, type: 3}
+  - {fileID: 8300000, guid: b12359154b9fb8c41957165896de1f2f, type: 3}
+  - {fileID: 8300000, guid: 8fa10ac903a11874287d3458e21fe8a2, type: 3}
+  - {fileID: 8300000, guid: 29197de5626a7b442b2a9bdfca483a4c, type: 3}
+  - {fileID: 8300000, guid: b1ccfc8ef52e2d94b830ecacd09ca56c, type: 3}
+  - {fileID: 8300000, guid: 57101a58e84921e4097960a502b3cbee, type: 3}
+  - {fileID: 8300000, guid: c79026ec2281d7044a7425f0ab9fb4ab, type: 3}
+  sfxVolume: 0.2
+  channels: 16
+--- !u!4 &1888554425
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1888554423}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1890839025
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62159,3 +62226,4 @@ SceneRoots:
   - {fileID: 457422682}
   - {fileID: 1773233067}
   - {fileID: 321382699}
+  - {fileID: 1888554425}

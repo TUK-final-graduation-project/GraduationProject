@@ -98,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
                 yVelocity.y = jumpForce;
                 isJump = true;
                 anim.SetTrigger("Jump");
-                //AudioManager.instance.PlaySfx(AudioManager.Sfx.Jump);
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Jump);
             }
         }
         else
@@ -112,6 +112,15 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(finalMove);
 
         currentSpeed = currentVelocity.magnitude;
+
+        //if(isRun)
+        //{
+        //    AudioManager.instance.PlaySfx(AudioManager.Sfx.Run);
+        //}
+        //else
+        //{
+        //    AudioManager.instance.PlaySfx(AudioManager.Sfx.Walk);
+        //}
 
         anim.SetFloat("Horizontal", horizontalInput);
         anim.SetFloat("Vertical", verticalInput);

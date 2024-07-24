@@ -87,6 +87,7 @@ public class CraftMenu : MonoBehaviour
     // 슬롯을 클릭했을 때 호출되는 함수
     public void SlotClick(int _slotNumber)
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Ui);
         currentCraft = craftTower[_slotNumber];
         // 미리 보기 생성
         go_Preview = Instantiate(craftTower[_slotNumber].go_PreviewPrefab, tf_Player.position + tf_Player.forward, Quaternion.identity);
@@ -157,6 +158,7 @@ public class CraftMenu : MonoBehaviour
                 {
                     Instantiate(go_Prefab, hitInfo.point, Quaternion.identity);
                     Debug.Log("Build : " + tf_Player.transform.position);
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Build);
                     Destroy(go_Preview);
                     isActivated = false;
                     isPreviewActivated = false;

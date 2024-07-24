@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(UpdateCoins()); // Start the coroutine to update coins
 
         bossHealthGroup.transform.gameObject.SetActive(false);
+        AudioManager.instance.WPlayBgm(true);
     }
 
     private void Update()
@@ -112,20 +113,28 @@ public class GameManager : MonoBehaviour
         {
             state = States.battle;
             readyTime = coolTimeOfReady;
+            AudioManager.instance.WPlayBgm(false);
             if (stage == 4)
             {
+                AudioManager.instance.SPlayBgm(true);
                 Bosses[0].SetActive(true);
                 bossHealthGroup.gameObject.SetActive(true);
             }
             else if (stage == 7)
             {
+                AudioManager.instance.SPlayBgm(true);
                 Bosses[1].SetActive(true);
                 bossHealthGroup.gameObject.SetActive(true);
             }
             else if (stage == 10)
             {
+                AudioManager.instance.SPlayBgm(true);
                 Bosses[2].SetActive(true);
                 bossHealthGroup.gameObject.SetActive(true);
+            }
+            else
+            {
+                AudioManager.instance.BPlayBgm(true);
             }
             foreach (ComSpawnPoint spawn in spawns)
             {
@@ -144,6 +153,10 @@ public class GameManager : MonoBehaviour
             state = States.ready;
             battleTime = coolTimeOfBattle;
             stage += 1;
+
+            AudioManager.instance.SPlayBgm(false);
+            AudioManager.instance.BPlayBgm(false);
+            AudioManager.instance.WPlayBgm(true);
             if (stage == (maxStage + 1))
             {
                 stage = maxStage;
@@ -247,6 +260,11 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    void fail()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
+        StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+    }
 
     public void UpgradePlayerSpeed()
     {
@@ -258,7 +276,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+            fail();
         }
     }
 
@@ -273,7 +291,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+            fail();
         }
     }
 
@@ -287,7 +305,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+            fail();
         }
     }
 
@@ -303,7 +321,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+                fail();
             }
         }
         else
@@ -322,7 +340,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+            fail();
         }
     }
 
@@ -336,7 +354,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+            fail();
         }
     }
 
@@ -350,7 +368,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+            fail();
         }
     }
 
@@ -364,7 +382,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+            fail();
         }
     }
     public void UpgradeEnemyUnitSpeed()
@@ -377,7 +395,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+            fail();
         }
     }
 
@@ -391,7 +409,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowActionText("코인이 부족합니다!", Color.red, 2.0f));
+            fail();
         }
     }
 
