@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VictoryBoss : MonoBehaviour
+public class PlayerAttackToBoss : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
