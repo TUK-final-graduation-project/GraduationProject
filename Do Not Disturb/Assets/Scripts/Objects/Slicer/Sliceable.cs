@@ -79,5 +79,4 @@ public class Sliceable : MonoBehaviour
             smoothVertices = value;
         }
     }
-
 }
