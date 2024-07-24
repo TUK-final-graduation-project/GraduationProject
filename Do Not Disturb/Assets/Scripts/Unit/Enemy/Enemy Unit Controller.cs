@@ -206,6 +206,7 @@ public class EnemyUnitController : MonoBehaviour
     {
         StopPathFinding();
         StopTargeting();
+        state = UnitState.Attack;
         attackCts = new CancellationTokenSource();
         Attack(attackCts.Token).Forget();
     }
@@ -220,7 +221,7 @@ public class EnemyUnitController : MonoBehaviour
     }
     async UniTask Attack(CancellationToken token)
     {
-        while (state == UnitState.Attack && !token.IsCancellationRequested)
+        while (!token.IsCancellationRequested)
         {
             anim.SetTrigger("DoAttack");
 
