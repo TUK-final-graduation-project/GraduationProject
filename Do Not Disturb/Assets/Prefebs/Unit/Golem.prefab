@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7048482293386659468}
   - component: {fileID: 7828408571643532941}
   - component: {fileID: 7058117661022054158}
+  - component: {fileID: 8650341245664634447}
   m_Layer: 12
   m_Name: Golem
   m_TagString: Unit
@@ -81,8 +82,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.06, y: 4.48, z: 2.41}
-  m_Center: {x: 0, y: 2.29, z: 0}
+  m_Size: {x: 3.06, y: 4.48, z: 3.59}
+  m_Center: {x: 0, y: 2.29, z: 0.44}
 --- !u!114 &7058117661022054158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,6 +104,27 @@ MonoBehaviour:
   Base: {fileID: 0}
   meleeArea: {fileID: 8237893890443613741}
   bullet: {fileID: 0}
+--- !u!65 &8650341245664634447
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2620933005345935657}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.06, y: 4.48, z: 3.59}
+  m_Center: {x: 0, y: 2.29, z: 0.44}
 --- !u!1001 &3832557413073067327
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -155,7 +177,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8827176806910104731, guid: da886f7353226ac4a88776565062e76e, type: 3}
+    - {fileID: 3227197336743545277, guid: da886f7353226ac4a88776565062e76e, type: 3}
+    - {fileID: 4991971418971151113, guid: da886f7353226ac4a88776565062e76e, type: 3}
+    - {fileID: 3234127573511719165, guid: da886f7353226ac4a88776565062e76e, type: 3}
+    - {fileID: 7234042566174676768, guid: da886f7353226ac4a88776565062e76e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7144346169776710297, guid: da886f7353226ac4a88776565062e76e, type: 3}

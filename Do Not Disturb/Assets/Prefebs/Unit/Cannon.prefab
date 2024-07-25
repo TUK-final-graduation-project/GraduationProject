@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2531917991480254085}
   - component: {fileID: 3571259993916103153}
   - component: {fileID: 4186720073882107929}
+  - component: {fileID: 8435036535463590716}
   m_Layer: 12
   m_Name: Cannon
   m_TagString: Unit
@@ -103,6 +104,27 @@ MonoBehaviour:
   Base: {fileID: 0}
   meleeArea: {fileID: 0}
   bullet: {fileID: 7410593534733093535, guid: 1b90233520024594888d1b5c894e6e3f, type: 3}
+--- !u!65 &8435036535463590716
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690158630459058033}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.88, y: 3.18, z: 3.23}
+  m_Center: {x: 0, y: 1.49, z: 0}
 --- !u!1001 &6084108839845679788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -155,7 +177,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1980630162826701333, guid: 98fe5d71f2d4b1f409e79e032f4eaf4d, type: 3}
+    - {fileID: 3610975807130762673, guid: 98fe5d71f2d4b1f409e79e032f4eaf4d, type: 3}
+    - {fileID: 8231500535778715703, guid: 98fe5d71f2d4b1f409e79e032f4eaf4d, type: 3}
+    - {fileID: 3410661091567798559, guid: 98fe5d71f2d4b1f409e79e032f4eaf4d, type: 3}
+    - {fileID: 7664537306977827255, guid: 98fe5d71f2d4b1f409e79e032f4eaf4d, type: 3}
+    - {fileID: 290110702605749132, guid: 98fe5d71f2d4b1f409e79e032f4eaf4d, type: 3}
+    - {fileID: 2000369186659276323, guid: 98fe5d71f2d4b1f409e79e032f4eaf4d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

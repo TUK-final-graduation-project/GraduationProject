@@ -25,7 +25,7 @@ public class OurUnitController : MonoBehaviour
     int targetIndex;
 
     [Header("Melee Unit")]
-    public BoxCollider meleeArea;
+    public GameObject meleeArea;
 
     [Header("Range Unit")]
     public GameObject bullet;
@@ -135,12 +135,12 @@ public class OurUnitController : MonoBehaviour
 
         if (type == Type.Melee)
         {
-            targetRadius = 1f;
+            targetRadius = 4f;
             targetRange = 3f;
         }
         else if (type == Type.Range)
         {
-            targetRadius = 0.5f;
+            targetRadius = 5f;
             targetRange = 25f;
         }
         RaycastHit[] rayHits =
@@ -178,7 +178,6 @@ public class OurUnitController : MonoBehaviour
         while (state == UnitState.Attack && !token.IsCancellationRequested)
         {
             anim.SetTrigger("DoAttack");
-
             await UniTask.Delay(1000, cancellationToken: token);
 
             if (target == null)
@@ -199,16 +198,16 @@ public class OurUnitController : MonoBehaviour
         if (type == Type.Melee)
         {
             //rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
-            meleeArea.enabled = true;
+            meleeArea.SetActive(true);
         }
         else if (type == Type.Range)
         {
 
-            GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 1.5f, Quaternion.identity);
+            GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 1.5f, transform.rotation);
             Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
 
             Vector3 direction = (target.transform.position - transform.position).normalized;
-            rigidBullet.AddForce(direction * 10, ForceMode.Impulse);
+            rigidBullet.velocity = Vector3.forward * 50f;
 
         }
     }
@@ -217,7 +216,7 @@ public class OurUnitController : MonoBehaviour
         if (type == Type.Melee)
         {
             rigid.velocity = Vector3.zero;
-            meleeArea.enabled = false;
+            meleeArea.SetActive(false);
         }
 
         rigid.isKinematic = false;

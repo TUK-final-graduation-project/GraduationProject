@@ -32,11 +32,11 @@ public class WizardBossAttack : MonoBehaviour
     {
         if (isRight && transform.position.x <= FinalPosition.x)
         {
-            transform.position += dir * 0.7f;
+            transform.position += dir * 0.5f;
         }
         else if ( !isRight && transform.position.x >= FinalPosition.x)
         {
-            transform.position += dir * 0.7f;
+            transform.position += dir * 0.5f;
         }
         else
         {

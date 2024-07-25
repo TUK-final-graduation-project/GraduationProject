@@ -1,10 +1,12 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class BossUnit : MonoBehaviour
 {
-    public enum UnitState { Chase, Attack, Targeting, Dead, Damaged };
+    public enum UnitState { Chase, Attack, Dead, Damaged };
     public enum BossType {  Rock, Wizard, Oak };
 
 
@@ -17,13 +19,11 @@ public class BossUnit : MonoBehaviour
     public float speed = 10;
 
     public GameObject meshObj;
-    public GameObject effectObj;
 
     Animator anim;
     Rigidbody rigid;
 
     [Header("Boss Attack")]
-
     public GameObject bullet;
     public GameObject indicator;
 
@@ -31,10 +31,8 @@ public class BossUnit : MonoBehaviour
     int targetIndex;
 
     OurUnitController[] units;
-
     public GameObject BossAttack;
-
-    public GameManager gameManager;
+    private CancellationTokenSource attackCts;
 
     private void Awake()
     {
@@ -50,6 +48,8 @@ public class BossUnit : MonoBehaviour
         Invoke("RequestPathToMgr", 1);
     }
 
+    // ============== 이동 ============== 
+
     public void RequestPathToMgr()
     {
         UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
@@ -57,19 +57,16 @@ public class BossUnit : MonoBehaviour
         AstarManager.RequestPath(transform.position, target.transform.position, OnPathFound);
         State = UnitState.Chase;
     }
-    // 길 찾기 시작하기
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
         if (pathSuccessful && this != null)
         {
             path = newPath;
             targetIndex = 0;
-            StopCoroutine("FollowPath");
-            StartCoroutine("FollowPath");
+            FollowPath().Forget();
         }
     }
-    // 움직이기
-    IEnumerator FollowPath()
+    async UniTaskVoid FollowPath()
     {
         Vector3 currentWaypoint;
 
@@ -85,37 +82,152 @@ public class BossUnit : MonoBehaviour
                     if (targetIndex >= path.Length)
                     {
                         anim.SetTrigger("atBossPoint");
-                        StartCoroutine("Attack");
-                        yield break;
+                        StartAttacking();
+                        return;
                     }
                     currentWaypoint = path[targetIndex];
                 }
                 transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
-                yield return null;
+                await UniTask.Yield();
             }
         }
     }
 
-    IEnumerator Attack()
+    // ============== 공격 ============== 
+
+    void StartAttacking()
     {
-        yield return new WaitForSeconds(10f);
-        
         State = UnitState.Attack;
-
-        while (true)
+        attackCts = new CancellationTokenSource();
+        Attack(attackCts.Token).Forget();
+    }
+    void StopAttacking()
+    {
+        if (attackCts != null)
         {
-            anim.SetTrigger("isAttack");
-            rigid.isKinematic = true;
-
-            yield return new WaitForSeconds(6f);
-            rigid.isKinematic = false;
+            attackCts.Cancel();
+            attackCts.Dispose();
+            attackCts = null;
+        }
+    }
+    async UniTask Attack(CancellationToken token)
+    {
+        while ( State == UnitState.Attack && !token.IsCancellationRequested)
+        {
+            anim.SetTrigger("DoAttack");
+            await UniTask.Delay(2000, cancellationToken: token);
         }
     }
 
+    // ============ 업데이트 ============ 
+
+    void FreezeVelocity()
+    {
+        if (rigid.isKinematic == false || State != UnitState.Dead)
+        {
+            rigid.velocity = Vector3.zero;
+            rigid.angularVelocity = Vector3.zero;
+        }
+    }
+    private void FixedUpdate()
+    {
+        FreezeVelocity();
+
+        switch (type)
+        {
+            case BossType.Rock:
+                {
+                    if (indicator.activeSelf == true)
+                    {
+                        if ( indicator.transform.localScale.x <= 40f)
+                        {
+                            indicator.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
+                        }
+                    }
+                    break;
+                }
+            case BossType.Wizard:
+                {
+                    if ( indicator.activeSelf == true)
+                    {
+                        if (BossAttack != null && BossAttack.GetComponent<WizardBossAttack>().isExplosion == true)
+                        {
+                            indicator.SetActive(false);
+                        }
+                    }
+                    break;
+                }
+            case BossType.Oak:
+                {
+                    if (indicator.activeSelf == true)
+                    {
+                        if (indicator.transform.localScale.x >= 30f)
+                        {
+                            indicator.transform.localScale -= new Vector3(0.2f, 0.2f, 0.2f);
+                        }
+                    }
+                    break;
+                }
+        }
+        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+    }
+
+    // ============= 데미지 ============= 
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "UserAttack")
+        {
+            UnitAttack attack = other.GetComponent<UnitAttack>();
+            HP -= attack.damage;
+            if (other.GetComponent<Rigidbody>() != null) // 원거리 공격인 경우
+            {
+                Destroy(other.gameObject);
+            }
+            Vector3 reactVec = transform.position - other.transform.position;
+            OnDamage(reactVec).Forget();
+        }
+    }
+    public void PlayerDamage(Vector3 pos)
+    {
+        HP -= 100;
+        Vector3 reactVec = transform.position - pos;
+        OnDamage(reactVec).Forget();
+    }
+    async UniTaskVoid OnDamage(Vector3 reactVec)
+    {
+        await UniTask.Delay(100);
+
+        if ( HP <= 0)
+        {
+            reactVec = reactVec.normalized;
+            reactVec += Vector3.up;
+            rigid.AddForce(reactVec * 5, ForceMode.Impulse);
+
+            OnDestroy();
+        }
+        else
+        {
+            anim.SetTrigger("DoDamaged");
+            await UniTask.Delay(1000);
+            State = UnitState.Attack;
+
+            return;
+        }
+    }
+    public void OnDestroy()
+    {
+        State = UnitState.Dead;
+        StopAttacking();
+        anim.SetTrigger("DoDie");
+
+        Destroy(gameObject, 3);
+    }
+
+    // =========== 애니메이션 =========== 
 
     private void MakeIndicator()
     {
-
         switch (type)
         {
             case BossType.Wizard:
@@ -157,23 +269,21 @@ public class BossUnit : MonoBehaviour
         }
 
     }
-
     private void MakeAttack()
     {
         switch (type)
         {
             case BossType.Wizard:
                 {
-                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Magic);
+                    //AudioManager.instance.PlaySfx(AudioManager.Sfx.Magic);
                     BossAttack = Instantiate(bullet, indicator.transform.GetChild(0).transform.position, Quaternion.identity);
                     BossAttack.GetComponent<WizardBossAttack>().FinalPosition = indicator.transform.GetChild(1).transform.position;
                     break;
                 }
             case BossType.Oak:
                 {
+                    //AudioManager.instance.PlaySfx(AudioManager.Sfx.Wind);
                     BossAttack = Instantiate(bullet, indicator.transform.position, Quaternion.identity);
-                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Wind);
-                    //BossAttack.GetComponent<OakBossAttack>().FinalPosition = indicator.transform.GetChild(1).transform.position;
                     break;
                 }
             case BossType.Rock:
@@ -185,118 +295,5 @@ public class BossUnit : MonoBehaviour
                 }
         }
 
-    }
-
-    void FreezeVelocity()
-    {
-        if (rigid.isKinematic == false)
-        {
-            rigid.velocity = Vector3.zero;
-            rigid.angularVelocity = Vector3.zero;
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (State != UnitState.Dead)
-        {
-            FreezeVelocity();
-        }
-
-        switch (type)
-        {
-            case BossType.Rock:
-                {
-                    if (indicator.activeSelf == true)
-                    {
-                        if ( indicator.transform.localScale.x <= 40f)
-                        {
-                            indicator.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
-                        }
-                    }
-                    break;
-                }
-            case BossType.Wizard:
-                {
-                    if ( indicator.activeSelf == true)
-                    {
-                        if (BossAttack != null && BossAttack.GetComponent<WizardBossAttack>().isExplosion == true)
-                        {
-                            indicator.SetActive(false);
-                        }
-                    }
-                    break;
-                }
-            case BossType.Oak:
-                {
-                    if (indicator.activeSelf == true)
-                    {
-                        if (indicator.transform.localScale.x >= 30f)
-                        {
-                            indicator.transform.localScale -= new Vector3(0.2f, 0.2f, 0.2f);
-                        }
-                    }
-                    break;
-                }
-        }
-        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "UserAttack")
-        {
-            if (State != UnitState.Damaged) // 무적 상태가 아닐 때
-            {
-                UnitAttack attack = other.GetComponent<UnitAttack>();
-                HP -= attack.damage;
-                if (other.GetComponent<Rigidbody>() != null) // 원거리 공격인 경우
-                {
-                    Destroy(other.gameObject);
-                }
-                Vector3 reactVec = transform.position - other.transform.position;
-                StartCoroutine(OnDamage(reactVec, false));
-            }
-        }
-        if ( other.tag == "User")
-        {
-            other.gameObject.GetComponent<OurUnitController>().StopTpBossPoint();
-            // 여기서 움직이는 거 멈추기
-        }
-    }
-
-    IEnumerator OnDamage(Vector3 reactVec, bool isGrenade)
-    {
-        yield return new WaitForSeconds(0.1f);
-
-        UnitState tmp = State;
-        State = UnitState.Damaged;
-
-        gameManager.UpdateBossHP();
-
-        if (HP <= 0)
-        {
-            gameObject.layer = gameObject.layer + 1;
-
-            reactVec = reactVec.normalized;
-            reactVec += Vector3.up;
-            rigid.AddForce(reactVec * 5, ForceMode.Impulse);
-
-            OnDestroy();
-        }
-        else
-        {
-            yield return new WaitForSeconds(1f); // 1초 무적
-            State = tmp;
-        }
-    }
-
-    public void OnDestroy()
-    {
-        anim.SetTrigger("isDie");
-        State = UnitState.Dead;
-        // effectObj.SetActive(true);
-
-        Destroy(gameObject, 3);
     }
 }
