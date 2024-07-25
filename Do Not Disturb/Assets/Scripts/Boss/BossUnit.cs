@@ -66,10 +66,16 @@ public class BossUnit : MonoBehaviour
         if (path.Length > 0)
         {
             currentWaypoint = path[0];
-
+            currentWaypoint.y = 0; // y를 0으로 고정
             while (true)
             {
-                if ((int)transform.position.x == (int)currentWaypoint.x && (int)transform.position.z == (int)currentWaypoint.z)
+                if (this == null)
+                {
+                    return;
+                }
+                Vector3 direction = (currentWaypoint - transform.position).normalized;
+                direction.y = 0; // y 방향은 0으로 고정
+                if (Vector3.Distance(transform.position, currentWaypoint) < 0.1f)
                 {
                     targetIndex++;
                     if (targetIndex >= path.Length)
@@ -87,8 +93,13 @@ public class BossUnit : MonoBehaviour
                         return;
                     }
                     currentWaypoint = path[targetIndex];
+                    currentWaypoint.y = 0; // y를 0으로 고정
+                    transform.rotation = Quaternion.LookRotation(currentWaypoint - transform.position);
                 }
-                transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+                else
+                {
+                    transform.position += direction * speed * Time.deltaTime;
+                }
                 await UniTask.Yield();
             }
         }
