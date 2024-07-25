@@ -90,6 +90,9 @@ public class PathFinding : MonoBehaviour
     // close list의 노드 길로 만들기
     Vector3[] RetracePath(Node StartNode, Node EndNode)
     {
+
+        Debug.Log("start:" + StartNode.worldPosition);
+        Debug.Log("end:" + EndNode.worldPosition);
         List<Node> path = new List<Node>();
         Node currentNode = EndNode;
 
@@ -110,12 +113,13 @@ public class PathFinding : MonoBehaviour
         List<Vector3> waypoints = new List<Vector3>();
         Vector2 directionOld = Vector2.zero;
 
-        for (int i = 1; i < path.Count; i++)
+        waypoints.Add(path[0].worldPosition);
+        for (int i = 2; i < path.Count; i++)
         {
             Vector2 directionNew = new Vector2(path[i-1].gridX - path[i].gridX, path[i-1].gridY - path[i].gridY);
             if (directionOld != directionNew)
             {
-                waypoints.Add(path[i].worldPosition);
+                waypoints.Add(path[i-1].worldPosition);
             }
             directionOld = directionNew;
         }
@@ -128,6 +132,7 @@ public class PathFinding : MonoBehaviour
         int distX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
         int distY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
 
+        // 가로, 세로 한 칸: 10 || 대각선: 14로 cost 계산함
         if (distX > distY)
         {
             return 14 * distY + 10 * (distX - distY);

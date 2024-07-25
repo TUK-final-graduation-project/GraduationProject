@@ -38,13 +38,6 @@ public class BossUnit : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
-
-        units = FindObjectsOfType(typeof(OurUnitController)) as OurUnitController[];
-        foreach(OurUnitController unit in units)
-        {
-            unit.target = BossPoint;
-            unit.BossTargeting();
-        }
         Invoke("RequestPathToMgr", 1);
     }
 
@@ -83,6 +76,14 @@ public class BossUnit : MonoBehaviour
                     {
                         anim.SetTrigger("atBossPoint");
                         StartAttacking();
+
+                        units = FindObjectsOfType(typeof(OurUnitController)) as OurUnitController[];
+                        foreach (OurUnitController unit in units)
+                        {
+                            unit.target = gameObject;
+                            unit.BossTargeting();
+                        }
+
                         return;
                     }
                     currentWaypoint = path[targetIndex];
@@ -255,7 +256,7 @@ public class BossUnit : MonoBehaviour
                 }
             case BossType.Rock:
                 {
-                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Throw);
+                    //AudioManager.instance.PlaySfx(AudioManager.Sfx.Throw);
                     Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
 
                     UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
@@ -288,7 +289,7 @@ public class BossUnit : MonoBehaviour
                 }
             case BossType.Rock:
                 {
-                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Bomb);
+                    //AudioManager.instance.PlaySfx(AudioManager.Sfx.Bomb);
                     BossAttack = Instantiate(bullet, transform.position + Vector3.up * 15f, Quaternion.identity);
                     BossAttack.GetComponent<RockBossAttack>().TargetPosition = indicator.transform.position - Vector3.up;
                     break;

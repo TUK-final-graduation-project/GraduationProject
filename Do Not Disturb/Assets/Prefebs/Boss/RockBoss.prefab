@@ -34,6 +34,7 @@ Transform:
   m_Children:
   - {fileID: 3395856070457834965}
   - {fileID: 1414435444275622798}
+  - {fileID: 5599748602779308739}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &5761084568969677652
@@ -82,7 +83,6 @@ MonoBehaviour:
   BossPoint: {fileID: 0}
   speed: 30
   meshObj: {fileID: 3399341466924565559}
-  effectObj: {fileID: 0}
   bullet: {fileID: 3383397831979674463, guid: ddaddf2c432348b42b8cca9a723a2b8f, type: 3}
   indicator: {fileID: 7697193669086684440}
   BossAttack: {fileID: 0}
@@ -107,6 +107,59 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &5253613333179434210
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5599748602779308739}
+  - component: {fileID: 2613059034379644477}
+  m_Layer: 18
+  m_Name: UnitStopZone
+  m_TagString: Boss
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5599748602779308739
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5253613333179434210}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1997902523889920628}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &2613059034379644477
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5253613333179434210}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 21.71
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7697193669086684440
 GameObject:
   m_ObjectHideFlags: 0

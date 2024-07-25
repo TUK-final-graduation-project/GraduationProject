@@ -37,6 +37,7 @@ public class OurUnitController : MonoBehaviour
     private void Awake()
     {
         target = Base;
+        state = UnitState.Walk;
         anim = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
         Invoke("RequestPathToMgr", 1);
@@ -70,7 +71,6 @@ public class OurUnitController : MonoBehaviour
         {
             path = newPath;
             targetIndex = 0;
-            // state = UnitState.Walk;
             StartPathFinding();
         }
     }
@@ -84,6 +84,10 @@ public class OurUnitController : MonoBehaviour
 
             while (!token.IsCancellationRequested)
             {
+                if (this == null)
+                {
+                    return;
+                }
                 if ((int)transform.position.x == (int)currentWaypoint.x && (int)transform.position.z == (int)currentWaypoint.z)
                 {
                     targetIndex++;
@@ -97,6 +101,7 @@ public class OurUnitController : MonoBehaviour
                     }
                     currentWaypoint = path[targetIndex];
                 }
+                transform.rotation = Quaternion.LookRotation(currentWaypoint - transform.position);
                 transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
                 await UniTask.Yield();
             }
@@ -123,6 +128,10 @@ public class OurUnitController : MonoBehaviour
     {
         while (state == UnitState.Walk && !token.IsCancellationRequested)
         {
+            if (this == null)
+            {
+                return;
+            }
             FindUnit();
 
             await UniTask.Delay(1000, cancellationToken: token);
@@ -148,7 +157,6 @@ public class OurUnitController : MonoBehaviour
 
         if (rayHits.Length > 0)
         {
-            state = UnitState.Attack;
             target = rayHits[0].collider.gameObject;
             StartAttacking();
         }
@@ -159,7 +167,6 @@ public class OurUnitController : MonoBehaviour
     void StartAttacking()
     {
         StopPathFinding();
-        StopTargeting();
         state = UnitState.Attack;
         attackCts = new CancellationTokenSource();
         Attack(attackCts.Token).Forget();
@@ -177,6 +184,10 @@ public class OurUnitController : MonoBehaviour
     {
         while (state == UnitState.Attack && !token.IsCancellationRequested)
         {
+            if ( this == null )
+            {
+                return;
+            }
             anim.SetTrigger("DoAttack");
             await UniTask.Delay(1000, cancellationToken: token);
 
@@ -185,7 +196,6 @@ public class OurUnitController : MonoBehaviour
                 state = UnitState.Walk;
                 target = Base;
                 RequestPathToMgr();
-                StartTargeting();
                 return;
             }
         }
@@ -213,13 +223,13 @@ public class OurUnitController : MonoBehaviour
     }
     public void EndAttack()
     {
+        rigid.isKinematic = false;
         if (type == Type.Melee)
         {
             rigid.velocity = Vector3.zero;
             meleeArea.SetActive(false);
         }
 
-        rigid.isKinematic = false;
     }
     //////////////////////////////////////////////
 
@@ -247,18 +257,17 @@ public class OurUnitController : MonoBehaviour
     }
     //////////////////////////////////////////////
 
-
     /////////////////// º¸½º ///////////////////////
     public void BossTargeting()
     {
+        state = UnitState.GoToBoss;
         StopAttacking();
         StopPathFinding();
-        StopTargeting();
         RequestPathToMgr();
-        state = UnitState.GoToBoss;
     }
-    public void StopTpBossPoint()
+    public void StopToBossPoint()
     {
+        StopPathFinding();
         StartAttacking();
     }
     //////////////////////////////////////////////
@@ -327,6 +336,10 @@ public class OurUnitController : MonoBehaviour
     {
         while(true)
         {
+            if (this == null)
+            {
+                return;
+            }
             transform.position += Vector3.up;
 
             if (transform.position.y >= 30f)
