@@ -90,9 +90,6 @@ public class PathFinding : MonoBehaviour
     // close list의 노드 길로 만들기
     Vector3[] RetracePath(Node StartNode, Node EndNode)
     {
-
-        Debug.Log("start:" + StartNode.worldPosition);
-        Debug.Log("end:" + EndNode.worldPosition);
         List<Node> path = new List<Node>();
         Node currentNode = EndNode;
 
