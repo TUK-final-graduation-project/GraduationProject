@@ -255,7 +255,7 @@ public class BossUnit : MonoBehaviour
                 }
             case BossType.Rock:
                 {
-                    //AudioManager.instance.PlaySfx(AudioManager.Sfx.Throw);
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Throw);
                     Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
 
                     UnityEngine.Quaternion targetRotation = Quaternion.LookRotation(pos - transform.position);
@@ -288,7 +288,7 @@ public class BossUnit : MonoBehaviour
                 }
             case BossType.Rock:
                 {
-                    //AudioManager.instance.PlaySfx(AudioManager.Sfx.Bomb);
+                    AudioManager.instance.PlaySfx(AudioManager.Sfx.Bomb);
                     BossAttack = Instantiate(bullet, transform.position + Vector3.up * 15f, Quaternion.identity);
                     BossAttack.GetComponent<RockBossAttack>().TargetPosition = indicator.transform.position - Vector3.up;
                     break;
