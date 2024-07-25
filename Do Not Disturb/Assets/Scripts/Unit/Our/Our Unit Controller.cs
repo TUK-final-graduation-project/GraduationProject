@@ -40,6 +40,16 @@ public class OurUnitController : MonoBehaviour
         state = UnitState.Walk;
         anim = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
+
+        BossUnit[] bosses = FindObjectsOfType(typeof(BossUnit)) as BossUnit[];
+        foreach(BossUnit boss in bosses)
+        {
+            if ( boss.isReady == true)
+            {
+                target = boss.gameObject;
+                break;
+            }
+        }
         Invoke("RequestPathToMgr", 1);
         StartTargeting();
     }

@@ -17,6 +17,7 @@ public class BossUnit : MonoBehaviour
     public GameObject target;
     public GameObject BossPoint;
     public float speed = 10;
+    public bool isReady = false;
 
     public GameObject meshObj;
 
@@ -75,7 +76,7 @@ public class BossUnit : MonoBehaviour
                 }
                 Vector3 direction = (currentWaypoint - transform.position).normalized;
                 direction.y = 0; // y 방향은 0으로 고정
-                if (Vector3.Distance(transform.position, currentWaypoint) < 0.1f)
+                if (Vector3.Distance(transform.position, currentWaypoint) < 0.5f)
                 {
                     targetIndex++;
                     if (targetIndex >= path.Length)
@@ -86,10 +87,10 @@ public class BossUnit : MonoBehaviour
                         units = FindObjectsOfType(typeof(OurUnitController)) as OurUnitController[];
                         foreach (OurUnitController unit in units)
                         {
-                            unit.target = gameObject;
+                            unit.target = this.gameObject;
                             unit.BossTargeting();
                         }
-
+                        isReady = true;
                         return;
                     }
                     currentWaypoint = path[targetIndex];
