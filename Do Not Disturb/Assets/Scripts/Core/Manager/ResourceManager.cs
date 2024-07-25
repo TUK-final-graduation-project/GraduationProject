@@ -23,7 +23,10 @@ public class ResourceManager : MonoBehaviour
     public float respawnTime = 30f;        // 리스폰 주기 (초 단위)
     [SerializeField]
     private float minSpawnDistance = 5f;   // 최소 생성 거리 (중복 생성 방지용)
-
+    [SerializeField]
+    private float exclusionZoneWidth = 200f; // 생성 예외 영역 너비
+    [SerializeField]
+    private float exclusionZoneHeight = 200f;   // 생성 예외 영역 높이
     private Dictionary<GameObject, List<GameObject>> activePrefabs = new Dictionary<GameObject, List<GameObject>>();  // 활성화된 프리팹 리스트
     private Dictionary<GameObject, Vector3> respawnQueue = new Dictionary<GameObject, Vector3>();  // 리스폰 대기열
 
@@ -52,7 +55,7 @@ public class ResourceManager : MonoBehaviour
             {
                 Vector3 spawnPosition = GetRandomPosition();  // 랜덤 위치 계산
                 // 위치가 이미 점유되었는지 확인
-                while (IsPositionOccupied(spawnPosition))
+                while (IsPositionOccupied(spawnPosition) || IsWithinExclusionZone(spawnPosition))
                 {
                     spawnPosition = GetRandomPosition();  // 새로운 랜덤 위치 계산
                 }
@@ -70,6 +73,16 @@ public class ResourceManager : MonoBehaviour
         float x = Random.Range(-mapWidth / 2, mapWidth / 2);
         float z = Random.Range(-mapHeight / 2, mapHeight / 2);
         return new Vector3(x, 0, z);
+    }
+
+    bool IsWithinExclusionZone(Vector3 position)
+    {
+        float exclusionZoneXMin = -exclusionZoneWidth / 2;
+        float exclusionZoneXMax = exclusionZoneWidth / 2;
+        float exclusionZoneZMin = -exclusionZoneHeight / 2;
+        float exclusionZoneZMax = exclusionZoneHeight / 2;
+
+        return position.x > exclusionZoneXMin && position.x < exclusionZoneXMax && position.z > exclusionZoneZMin && position.z < exclusionZoneZMax;
     }
 
     // 주어진 위치에 이미 생성되었는지 확인
@@ -118,7 +131,7 @@ public class ResourceManager : MonoBehaviour
                         if (respawnQueue.ContainsKey(prefab))
                         {
                             Vector3 position = respawnQueue[prefab];  // 리스폰할 위치
-                            if (!IsPositionOccupied(position))
+                            if (!IsPositionOccupied(position) && !IsWithinExclusionZone(position))
                             {
                                 var spawnedObject = Instantiate(prefab, position, Quaternion.identity);
                                 currentPrefabs.Add(spawnedObject);  // 리스트에 추가
