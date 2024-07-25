@@ -19,7 +19,7 @@ public class OakBossAttack : MonoBehaviour
         time += 0.1f;
         if ( time >= 3f)
         {
-            Destroy(gameObject);
+            Destroy(gameObject, 4);
         }
     }
 }
