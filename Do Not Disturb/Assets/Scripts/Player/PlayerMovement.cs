@@ -86,8 +86,11 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, Time.deltaTime * (1.0f / decelerationTime));
+            // 현재 속도에 비례한 감속 속도 계산
+            float decelerationFactor = Mathf.Max(friction, 1.0f / decelerationTime);
+            currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, Time.deltaTime * decelerationFactor * currentVelocity.magnitude);
         }
+
 
         currentVelocity *= (1 - friction * Time.deltaTime);
 

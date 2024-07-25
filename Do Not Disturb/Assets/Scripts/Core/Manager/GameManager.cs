@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(UpdateCoins()); // Start the coroutine to update coins
 
         bossHealthGroup.transform.gameObject.SetActive(false);
-        AudioManager.instance.WPlayBgm(true);
+        //AudioManager.instance.WPlayBgm(true);
     }
 
     private void Update()
