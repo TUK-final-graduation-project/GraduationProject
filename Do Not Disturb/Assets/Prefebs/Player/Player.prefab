@@ -1098,7 +1098,7 @@ GameObject:
   - component: {fileID: 8397664252170379483}
   m_Layer: 0
   m_Name: Sword
-  m_TagString: Untagged
+  m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2269,6 +2269,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c84c0c9b5b251394f919568f209c4ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 100
+  maxHP: 100
+  attackDamage: 100
   speed: 10
   runSpeed: 20
   smoothness: 10
@@ -2277,6 +2280,9 @@ MonoBehaviour:
   jumpForce: 5
   gravity: -9.8
   animationThreshold: 1
+  coinCount: 0
+  state: 0
+  friction: 0.1
   toggleCameraRotation: 1
   isRun: 0
   isJump: 0

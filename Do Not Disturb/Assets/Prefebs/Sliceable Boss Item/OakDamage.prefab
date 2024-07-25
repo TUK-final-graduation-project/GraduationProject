@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 1935986260298729315}
   - component: {fileID: -7688305010232312178}
   - component: {fileID: -490257889991671406}
+  - component: {fileID: 1505973006867847794}
   m_Layer: 0
-  m_Name: Sliceable_Rock_Big
+  m_Name: OakDamage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.31180745, y: -0.05823377, z: -0.36784428, w: 0.8741142}
   m_LocalPosition: {x: 4.1062784, y: 3.018709, z: 1.0572385}
-  m_LocalScale: {x: 1.3898383, y: 3.8578398, z: 3.5273783}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2.41, y: 6.689551, z: 6.1165257}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -36.012, y: 9.075, z: -48.6}
@@ -124,3 +125,16 @@ MonoBehaviour:
   useGravity: 1
   shareVertices: 0
   smoothVertices: 0
+--- !u!114 &1505973006867847794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8317507532356440673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98a83869862fa5d44bae6d58ad8a6b89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 0}

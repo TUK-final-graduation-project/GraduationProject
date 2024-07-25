@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class PlayerAttackToBoss : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public BossUnit boss;
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.tag == "Sword")
+        {
+            boss.PlayerDamage(other.transform.position);
+        }
     }
 }
