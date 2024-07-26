@@ -19,6 +19,8 @@ public class Pickax : MonoBehaviour
         // 충돌한 오브젝트가 Rock 태그를 가지고 있고,
         // 플레이어가 곡괭이를 사용하고 있는 경우에만 실행된다.
         if (other.transform.tag == "Rock" && player.GetToolIndex() == 1)
+        {
             other.gameObject.GetComponent<Rock>().Mining();
+        }
     }
 }

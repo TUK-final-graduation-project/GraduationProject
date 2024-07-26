@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5864412405035872863}
   - component: {fileID: 5317863052914351261}
   - component: {fileID: 4853319859510810106}
+  - component: {fileID: 7340848072613180872}
   m_Layer: 8
   m_Name: TreeBase
   m_TagString: Tree
@@ -156,6 +157,27 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.09076665
   m_Center: {x: -0.06420521, y: -0.0035457779, z: 0.116736874}
+--- !u!65 &7340848072613180872
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792115306752777566}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.22528298, y: 0.16246808, z: 0.114310235}
+  m_Center: {x: -0.067002684, y: -0.0062812753, z: 0.11620813}
 --- !u!1 &1225329296697345466
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,7 +558,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5692122583491224668}
-  - component: {fileID: 977830521086279984}
   m_Layer: 8
   m_Name: CanDropItem_Tree 1
   m_TagString: Tree
@@ -561,27 +582,6 @@ Transform:
   - {fileID: 8659039816554235336}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &977830521086279984
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3413995709408903035}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.06, y: 0.04, z: 0.03}
-  m_Center: {x: -0.013, y: 0.01, z: 0.024}
 --- !u!1 &5274742607276070117
 GameObject:
   m_ObjectHideFlags: 0
