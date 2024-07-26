@@ -33,6 +33,8 @@ public class PlayerTools : MonoBehaviour
     float swingDelay;               // 스윙 딜레이
     bool isCrafting;
 
+    bool isUIOpen;                  // UI가 열려 있는지 확인
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,10 +71,9 @@ public class PlayerTools : MonoBehaviour
                 if (isCrafting)*/
     }
 
-
     void Swing()
     {
-        if (equipTool == null)
+        if (equipTool == null || isUIOpen)
             return;
 
         swingDelay += Time.deltaTime;
@@ -86,26 +87,25 @@ public class PlayerTools : MonoBehaviour
             if (sward)
             {
                 anim.SetTrigger("Sward");
-                AudioManager.instance.PlaySfx(AudioManager.Sfx.Shovel);
+                //AudioManager.instance.PlaySfx(AudioManager.Sfx.Shovel);
             }
             if (axe)
             {
                 anim.SetTrigger("Axe");
-                AudioManager.instance.PlaySfx(AudioManager.Sfx.Chopping);
+                //AudioManager.instance.PlaySfx(AudioManager.Sfx.Chopping);
             }
             if (pickax)
             {
                 anim.SetTrigger("Pickax");
-                AudioManager.instance.PlaySfx(AudioManager.Sfx.Mining);
+                //AudioManager.instance.PlaySfx(AudioManager.Sfx.Mining);
             }
-                swingDelay = 0;
+            swingDelay = 0;
         }
     }
 
-
     void Swap()
     {
-        //중복교체 막음
+        // 중복교체 막음
         if (swapTool1 && (!hasTools[0] || equipToolIndex == 0))
             return;
         if (swapTool2 && (!hasTools[1] || equipToolIndex == 1))
@@ -129,30 +129,26 @@ public class PlayerTools : MonoBehaviour
             equipTool = tools[toolIndex].GetComponent<Tools>();
             equipTool.gameObject.SetActive(true);
 
-            //장착 애니메이션 활성화
+            // 장착 애니메이션 활성화
             anim.SetTrigger("Swap");
 
             isSwap = true;
 
-            //스왑종료 알리기
+            // 스왑종료 알리기
             Invoke("SwapOut", swapDelay);
         }
-        // 1 검 2 곡괭이 3 도끼
-        
-        
 
         if (swapToolNull)
         {
             equipTool?.gameObject.SetActive(false);
 
-            //해제 애니메이션 활성화
+            // 해제 애니메이션 활성화
             anim.SetTrigger("Swap");
             isSwap = true;
 
-            //스왑종료 알리기
+            // 스왑종료 알리기
             Invoke("SwapOut", swapDelay);
         }
-
     }
 
     void SwapOut()
@@ -164,5 +160,11 @@ public class PlayerTools : MonoBehaviour
     public int GetToolIndex()
     {
         return equipToolIndex;
+    }
+
+    // UI 열기/닫기 함수 (UI 매니저에서 호출)
+    public void SetUIOpen(bool isOpen)
+    {
+        isUIOpen = isOpen;
     }
 }

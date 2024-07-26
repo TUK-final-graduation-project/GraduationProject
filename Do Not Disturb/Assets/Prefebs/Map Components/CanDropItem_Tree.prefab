@@ -147,6 +147,7 @@ GameObject:
   - component: {fileID: 5864412405035872863}
   - component: {fileID: 5317863052914351261}
   - component: {fileID: 4853319859510810106}
+  - component: {fileID: 6949144217097192498}
   m_Layer: 8
   m_Name: TreeBase
   m_TagString: Tree
@@ -291,6 +292,27 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.2705605
   m_Center: {x: 0.006584406, y: -2.3302385e-15, z: 1.8360236}
+--- !u!65 &6949144217097192498
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792115306752777566}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.8535004, y: 4.8534923, z: 6.6105247}
+  m_Center: {x: 0.029953003, y: 0.02994895, z: 2.2262406}
 --- !u!1 &3131500433163209652
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,7 +427,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5692122583491224668}
-  - component: {fileID: 4987070534323790123}
   m_Layer: 8
   m_Name: CanDropItem_Tree
   m_TagString: Tree
@@ -430,27 +451,6 @@ Transform:
   - {fileID: 8659039816554235336}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &4987070534323790123
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3413995709408903035}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1.39, z: 1}
-  m_Center: {x: 0, y: 0.67, z: 0}
 --- !u!1 &3451698614490196894
 GameObject:
   m_ObjectHideFlags: 0

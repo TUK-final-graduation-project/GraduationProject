@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4563073262211997762}
-  - component: {fileID: 5113915716224659485}
   m_Layer: 8
   m_Name: CanDropItem_Rock
   m_TagString: Rock
@@ -34,27 +33,6 @@ Transform:
   - {fileID: 905661208592529751}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &5113915716224659485
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9104936863900534501}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.25, y: 1, z: 1.35}
-  m_Center: {x: 0, y: 0.29, z: 0}
 --- !u!1001 &800294310275669692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1841,6 +1819,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4cd49488b8d111245a5dede1dcf6e754, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8615149843302789750}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4cd49488b8d111245a5dede1dcf6e754, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2440115516364796742}
   m_SourcePrefab: {fileID: 100100000, guid: 4cd49488b8d111245a5dede1dcf6e754, type: 3}
 --- !u!4 &8462909258941281242 stripped
 Transform:
@@ -1919,3 +1900,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!65 &2440115516364796742
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9095471954143439200}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0123431, y: 0.009018051, z: 0.013056274}
+  m_Center: {x: -0.000038022885, y: 0.0035322309, z: -0.0002720065}

@@ -29,7 +29,7 @@ public class Rock : MonoBehaviour
         Destroy(clone, destroyTime);
 
         hp--;
-
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Mining);
         if (hp <= 0)
             Destruction();
     }
@@ -39,7 +39,6 @@ public class Rock : MonoBehaviour
     {
         col.enabled = false;
         Destroy(go_rock);
-
         go_debris.SetActive(true);
         Destroy(go_debris, destroyTime);
         for (int i = 0; i < 5; i++)
