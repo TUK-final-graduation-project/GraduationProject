@@ -6,13 +6,13 @@ using UnityEngine;
 public class RockBossAttack : MonoBehaviour
 {
     public GameObject meshObj;
-    public GameObject effectObj;
     public Rigidbody rigid;
 
     public bool isExplosion;
     bool isArrive;
 
     public Vector3 TargetPosition;
+    public GameObject effect;
 
     Vector3 dir;
 
@@ -47,7 +47,7 @@ public class RockBossAttack : MonoBehaviour
 
         isExplosion = true;
         meshObj.SetActive(false);
-
+        effect.SetActive(true);
         RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, 15, Vector3.up, 0f, LayerMask.GetMask("User"));
 
         foreach (RaycastHit hitObj in rayHits)
