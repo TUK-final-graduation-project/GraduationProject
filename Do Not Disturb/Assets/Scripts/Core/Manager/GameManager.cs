@@ -46,8 +46,6 @@ public class GameManager : MonoBehaviour
 
     float uiTime;
 
-    public VideoPlayer Video;
-    
     private void Awake()
     {
         state = States.ready;
@@ -121,7 +119,8 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.WPlayBgm(false);
             if (stage == 4)
             {
-                Video.Play();
+                
+
                 AudioManager.instance.SPlayBgm(true);
                 Bosses[0].SetActive(true);
                 bossHealthGroup.gameObject.SetActive(true);

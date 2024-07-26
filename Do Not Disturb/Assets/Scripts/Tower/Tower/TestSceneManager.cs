@@ -20,9 +20,9 @@ public class TestSceneManager : MonoBehaviour
     public GameObject obs;
 
     int lobbyScene = 0;
-    int gameScene = 3;
+    int gameScene = 1;
     int optionScene = 2;
-    int CinematicScene_Start = 1;
+    int CinematicScene_Start = 3;
     void Update()
     {
         vDown = Input.GetButton("Debug SpawnUnit");
