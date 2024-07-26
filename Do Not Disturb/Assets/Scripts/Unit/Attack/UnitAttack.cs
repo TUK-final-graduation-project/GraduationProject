@@ -31,4 +31,11 @@ public class UnitAttack : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    ///////////// set ÇÔ¼öµé /////////////////
+    public void SetDamage(int _damage)
+    {
+        damage = _damage;
+    }
+    /////////////////////////////////////////
 }

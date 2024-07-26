@@ -381,4 +381,11 @@ public class OurUnitController : MonoBehaviour
         }
     }
     //////////////////////////////////////////////
+    
+    public void SetSpeed(int _speed)
+    {
+        speed = _speed;
+    }
+
+
 }

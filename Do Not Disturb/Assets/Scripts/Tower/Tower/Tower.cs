@@ -9,7 +9,6 @@ public class Tower : MonoBehaviour
 
     public Type type;
     public int HP;          // 생명력
-    public int Def;         // 방어력
     public float attackSpeed;    // 공격 속도
     public bool isConquer = false;
     public GameObject releasePoint;
@@ -20,6 +19,23 @@ public class Tower : MonoBehaviour
     public GameObject rotateObj;
     GameObject target;
 
+
+    private void Awake()
+    {
+        switch (type)
+        {
+            case Type.Wide:
+                {
+                    attackSpeed = 10f;
+                    break;
+                }
+            case Type.Focus:
+                {
+                    attackSpeed = 2f;
+                    break;
+                }
+        }
+    }
     void Targeting()
     {
         RaycastHit[] rayHits = { };
@@ -50,7 +66,7 @@ public class Tower : MonoBehaviour
                         rotateObj.transform.rotation = new Quaternion(0, targetRotation.y, 0, targetRotation.w);
                         Focus();
                     }
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSeconds(attackSpeed);
                     rotateObj.GetComponent<Rotate>().isRotate = true;
                     break;
                 }
@@ -62,7 +78,7 @@ public class Tower : MonoBehaviour
                     rotateObj.transform.rotation = new Quaternion(0, targetRotation.y, 0, targetRotation.w);
                     // 데모를 위한 block
                     Wide();
-                    yield return new WaitForSeconds(10f);
+                    yield return new WaitForSeconds(attackSpeed);
                     rotateObj.GetComponent<Rotate>().isRotate = true;
                     break;
                 }
@@ -112,18 +128,15 @@ public class Tower : MonoBehaviour
             Destroy(transform.parent.gameObject, 2);
         }
     }
-    public void SetHP(int hp)
+    public void SetHP(int _hp)
     {
-        HP = hp;
+        HP = _hp;
     }
-    public void SetAttackSpeed(float speed)
+    public void SetAttackSpeed(float _speed)
     {
-        attackSpeed = speed;
+        attackSpeed = _speed;
     }
-    public void SetDef(int def)
-    {
-        Def = def;
-    }
+
 
 
 }
