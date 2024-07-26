@@ -14,7 +14,10 @@ public class PlayerAttackToBoss : MonoBehaviour
     {
         if (other.tag == "Sword")
         {
-            boss.PlayerDamage(other.transform.position);
+            if ( boss != null )
+            {
+                boss.PlayerDamage(other.transform.position);
+            }
         }
     }
 }

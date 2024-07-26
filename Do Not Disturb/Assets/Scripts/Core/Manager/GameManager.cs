@@ -49,9 +49,12 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         state = States.ready;
+
         uiTime = readyTime;
+
         readyTime = coolTimeOfReady;
         battleTime = coolTimeOfBattle;
+
         isPaused = false;
 
         // CraftMenu 인스턴스 초기화
@@ -70,15 +73,13 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(UpdateCoins()); // Start the coroutine to update coins
 
-        bossHealthGroup.transform.gameObject.SetActive(false);
         Invoke("SetBgm", 1);
     }
-    void SetBgm()
-    {
-        AudioManager.instance.WPlayBgm(true);
-    }
+
     private void Update()
     {
+        playTime += Time.deltaTime;
+
         if (Input.GetKeyDown(KeyCode.P))
         {
             // isPuase가 true이면 일시 정지 해제
@@ -92,31 +93,44 @@ public class GameManager : MonoBehaviour
                 PauseSetting();
             }
         }
-        if (state == States.ready)
+
+        switch (state)
         {
-            Ready();
+            case States.ready:
+                {
+                    Ready();
+                    break;
+                }
+            case States.battle:
+                {
+                    Battle();
+                    break;
+                }
         }
-        else if (state == States.battle)
-        {
-            Battle();
-        }
-        if (CalculateGameEnd())
-        {
-            SceneManager.LoadScene(2);
-        }
-        playTime += Time.deltaTime;
+
+        //if (CalculateGameEnd())
+        //{
+        //    SceneManager.LoadScene(2);
+        //}
+    }
+
+    void SetBgm()
+    {
+        AudioManager.instance.WPlayBgm(true);
     }
 
     void Ready()
     {
+        // 시간 업데이트
         readyTime -= Time.deltaTime;
         uiTime = readyTime;
 
         if (readyTime < 0)
         {
+            AudioManager.instance.WPlayBgm(false);
             state = States.battle;
             readyTime = coolTimeOfReady;
-            AudioManager.instance.WPlayBgm(false);
+
             if (stage == 4)
             {
                 AudioManager.instance.SPlayBgm(true);
@@ -148,6 +162,7 @@ public class GameManager : MonoBehaviour
 
     void Battle()
     {
+        // 시간 업데이트
         battleTime -= Time.deltaTime;
         uiTime = battleTime;
 
@@ -155,17 +170,20 @@ public class GameManager : MonoBehaviour
         {
             state = States.ready;
             battleTime = coolTimeOfBattle;
+
             stage += 1;
 
             AudioManager.instance.SPlayBgm(false);
             AudioManager.instance.BPlayBgm(false);
             AudioManager.instance.WPlayBgm(true);
+
+            // 웨이브가 끝난 경우
             if (stage == (maxStage + 1))
             {
                 stage = maxStage;
                 state = States.gameEnd;
 
-                SceneManager.LoadScene(2);
+                SceneManager.LoadScene(2/* 승리 씬 */);
             }
 
         }
@@ -181,6 +199,7 @@ public class GameManager : MonoBehaviour
         }
         return true;
     }
+
     private void LateUpdate()
     {
         int hour = (int)(uiTime / 3600);
@@ -195,6 +214,7 @@ public class GameManager : MonoBehaviour
         {
             stageTxt.text = "STAGE " + stage;
         }
+
         playTimeTxt.text = string.Format("{0:00}", hour) + ":" + string.Format("{0:00}", min) + ":" + string.Format("{0:00}", second);
 
         enemyCntTxt.text = "X " + enemyCnt.ToString();
@@ -417,32 +437,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpdateBossHP()
+    public void UpdateBossHP(float bossHP, float maxHP)
     {
-        switch(stage)
-        {
-            case 4:
-                {
-                    bossHealth = Bosses[0].GetComponent<BossUnit>().HP / 100f;
-                    Debug.Log(bossHealth);
-                    bossHealthBar.transform.localScale = new Vector3(bossHealth, 1, 1);
-                    break;
-                }
-            case 7:
-                {
-                    bossHealth = Bosses[1].GetComponent<BossUnit>().HP / 100f;
-                    Debug.Log(bossHealth);
-                    bossHealthBar.transform.localScale = new Vector3(bossHealth, 1, 1);
-                    break;
-                }
-            case 10:
-                {
-                    bossHealth = Bosses[2].GetComponent<BossUnit>().HP / 100f;
-                    Debug.Log(bossHealth);
-                    bossHealthBar.transform.localScale = new Vector3(bossHealth, 1, 1);
-                    break;
-                }
-        }
+        bossHealth = bossHP / maxHP;
+        bossHealthBar.transform.localScale = new Vector3(bossHealth, 1, 1);
+
         if ( bossHealth <= 0 )
         {
             bossHealthGroup.gameObject.SetActive(false);

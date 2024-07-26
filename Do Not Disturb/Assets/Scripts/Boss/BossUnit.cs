@@ -12,7 +12,8 @@ public class BossUnit : MonoBehaviour
 
     [Header("Unit State")]
     public BossType type;
-    public int HP = 1000;
+    public float HP = 1000f;
+    float MaxHP = 1000f;
     public UnitState State;
     public GameObject target;
     public GameObject BossPoint;
@@ -34,10 +35,12 @@ public class BossUnit : MonoBehaviour
     OurUnitController[] units;
     public GameObject BossAttack;
     public UnitStopZone stopzone;
+    public GameManager manager;
     private CancellationTokenSource attackCts;
 
     private void Awake()
     {
+        HP = MaxHP;
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         Invoke("RequestPathToMgr", 1);
@@ -200,6 +203,8 @@ public class BossUnit : MonoBehaviour
                 Destroy(other.gameObject);
             }
             Vector3 reactVec = transform.position - other.transform.position;
+
+            manager.UpdateBossHP(HP, MaxHP);
             if (HP <= 0)
             {
                 reactVec = reactVec.normalized;
@@ -219,6 +224,7 @@ public class BossUnit : MonoBehaviour
     {
         HP -= 100;
         Vector3 reactVec = transform.position - pos;
+        manager.UpdateBossHP(HP, MaxHP);
         if (HP <= 0)
         {
             reactVec = reactVec.normalized;

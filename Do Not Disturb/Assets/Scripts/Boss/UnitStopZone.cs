@@ -6,6 +6,8 @@ using UnityEngine;
 public class UnitStopZone : MonoBehaviour
 {
     public GameObject damageRock;
+
+    List<GameObject> rocks = new List<GameObject>();
     
     public void StartMakeRock()
     {
@@ -15,16 +17,25 @@ public class UnitStopZone : MonoBehaviour
     {
         while (true)
         {
-            if ( this == null)
+            await UniTask.Delay(6000);
+
+            if (this == null)
             {
                 return;
             }
+
             Vector3 pos = transform.position + new Vector3(Random.Range(-5f, 5f) * 10f, 0.5f, Random.Range(-5f, 5f) * 10f);
 
             GameObject rock = Instantiate(damageRock, pos, Quaternion.identity);
             rock.transform.position = new Vector3(rock.transform.position.x, 0, rock.transform.position.z);
-
-            await UniTask.Delay(6000);
+            rocks.Add(rock);
+        }
+    }
+    private void OnDestroy()
+    {
+        foreach(GameObject rock in rocks)
+        {
+            Destroy(rock);
         }
     }
     private void OnTriggerEnter(Collider other)
