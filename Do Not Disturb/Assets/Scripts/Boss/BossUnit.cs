@@ -12,7 +12,8 @@ public class BossUnit : MonoBehaviour
 
     [Header("Unit State")]
     public BossType type;
-    public int HP = 1000;
+    public float HP = 1000f;
+    float MaxHP = 1000f;
     public UnitState State;
     public GameObject target;
     public GameObject BossPoint;
@@ -33,10 +34,13 @@ public class BossUnit : MonoBehaviour
 
     OurUnitController[] units;
     public GameObject BossAttack;
+    public UnitStopZone stopzone;
+    public GameManager manager;
     private CancellationTokenSource attackCts;
 
     private void Awake()
     {
+        HP = MaxHP;
         rigid = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         Invoke("RequestPathToMgr", 1);
@@ -90,6 +94,7 @@ public class BossUnit : MonoBehaviour
                             unit.target = this.gameObject;
                             unit.BossTargeting();
                         }
+                        stopzone.StartMakeRock();
                         isReady = true;
                         return;
                     }
@@ -198,20 +203,29 @@ public class BossUnit : MonoBehaviour
                 Destroy(other.gameObject);
             }
             Vector3 reactVec = transform.position - other.transform.position;
-            OnDamage(reactVec).Forget();
+
+            manager.UpdateBossHP(HP, MaxHP);
+            if (HP <= 0)
+            {
+                reactVec = reactVec.normalized;
+                reactVec += Vector3.up;
+                rigid.AddForce(reactVec * 5, ForceMode.Impulse);
+
+                OnDestroy();
+            }
+            else
+            {
+                //anim.SetTrigger("DoDamaged");
+                State = UnitState.Attack;
+            }
         }
     }
     public void PlayerDamage(Vector3 pos)
     {
         HP -= 100;
         Vector3 reactVec = transform.position - pos;
-        OnDamage(reactVec).Forget();
-    }
-    async UniTaskVoid OnDamage(Vector3 reactVec)
-    {
-        await UniTask.Delay(100);
-
-        if ( HP <= 0)
+        manager.UpdateBossHP(HP, MaxHP);
+        if (HP <= 0)
         {
             reactVec = reactVec.normalized;
             reactVec += Vector3.up;
@@ -222,10 +236,7 @@ public class BossUnit : MonoBehaviour
         else
         {
             anim.SetTrigger("DoDamaged");
-            await UniTask.Delay(1000);
             State = UnitState.Attack;
-
-            return;
         }
     }
     public void OnDestroy()

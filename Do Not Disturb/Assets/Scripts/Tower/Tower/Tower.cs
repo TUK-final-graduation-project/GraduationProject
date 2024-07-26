@@ -66,11 +66,6 @@ public class Tower : MonoBehaviour
                     rotateObj.GetComponent<Rotate>().isRotate = true;
                     break;
                 }
-            case Type.Blade:
-                yield return new WaitForSeconds(0.1f);
-                Blade();
-                yield return new WaitForSeconds(0.1f);
-                break;
         }
         isAttack = false;
         transform.rotation = Quaternion.identity;
@@ -103,10 +98,6 @@ public class Tower : MonoBehaviour
         //rigidGrenade.velocity = nextVec * 2;
     }
 
-    void Blade()
-    {
-
-    }
     private void FixedUpdate()
     {
         Targeting();
@@ -118,7 +109,7 @@ public class Tower : MonoBehaviour
         {
             isConquer = true;
 
-            Destroy(transform.parent.gameObject, 5);
+            Destroy(transform.parent.gameObject, 2);
         }
     }
     public void SetHP(int hp)
