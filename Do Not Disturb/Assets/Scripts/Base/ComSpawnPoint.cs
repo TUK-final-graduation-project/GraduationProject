@@ -49,7 +49,13 @@ public class ComSpawnPoint : MonoBehaviour
                 break;
         }
     }
-
+    private void Update()
+    {
+        if (UpdateHP.isTarget)
+        {
+            UpdateHP.UpdateBaseHP(HP, MaxHP);
+        }
+    }
     public IEnumerator Spawn(int num)
     {
         for (int i = 0; i < num; i++)
@@ -86,7 +92,6 @@ public class ComSpawnPoint : MonoBehaviour
     public void OnDamage()
     {
         HP -= 50;
-        UpdateHP.UpdateBaseHP(HP, MaxHP);
         if ( HP < 0)
         {
             isConquer = true;

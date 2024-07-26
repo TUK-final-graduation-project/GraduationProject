@@ -9,7 +9,7 @@ public class BaseHPUIManager : MonoBehaviour
     public RectTransform BaseHealthGroup;
     public RectTransform BaseHealthBar;
 
-    bool isTarget = false;
+    public bool isTarget = false;
 
 
     public void UpdateBaseHP(float baseHP, float MaxHP)
@@ -25,6 +25,7 @@ public class BaseHPUIManager : MonoBehaviour
         {
             isTarget = true;
             BaseHealthGroup.gameObject.SetActive(true);
+
         }
     }
 
