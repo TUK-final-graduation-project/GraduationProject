@@ -26,14 +26,14 @@ public class UIManager : MonoBehaviour
     {
         bool isOpen = !CraftTab.activeSelf;
         CraftTab.SetActive(isOpen);
-        playerTools.SetUIOpen(isOpen); // UI 열림 상태 설정
+        //playerTools.SetUIOpen(isOpen); // UI 열림 상태 설정
     }
 
     // UI 열기 함수
     public void OpenUI()
     {
         CraftTab.SetActive(true);
-        playerTools.SetUIOpen(true);
+        //playerTools.SetUIOpen(true);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
@@ -42,7 +42,7 @@ public class UIManager : MonoBehaviour
     public void CloseUI()
     {
         CraftTab.SetActive(false);
-        playerTools.SetUIOpen(false);
+        //playerTools.SetUIOpen(false);
         Cursor.visible = false;
     }
 }
