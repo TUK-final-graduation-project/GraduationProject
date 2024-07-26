@@ -6,6 +6,10 @@ public class PlayerAttackToBoss : MonoBehaviour
 {
     public BossUnit boss;
 
+    private void Awake()
+    {
+        boss = FindObjectOfType<BossUnit>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Sword")
