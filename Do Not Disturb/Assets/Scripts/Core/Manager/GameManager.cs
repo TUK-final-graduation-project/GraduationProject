@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Video;
+
 public class GameManager : MonoBehaviour
 {
     public enum States { ready, battle, gameEnd };
@@ -45,6 +46,9 @@ public class GameManager : MonoBehaviour
     private PlayerMovement playerMovement; // Reference to PlayerMovement
 
     float uiTime;
+
+
+    int Boss_Rock = 4;
 
     private void Awake()
     {
@@ -119,8 +123,6 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.WPlayBgm(false);
             if (stage == 4)
             {
-                
-
                 AudioManager.instance.SPlayBgm(true);
                 Bosses[0].SetActive(true);
                 bossHealthGroup.gameObject.SetActive(true);
