@@ -20,8 +20,9 @@ public class TestSceneManager : MonoBehaviour
     public GameObject obs;
 
     int lobbyScene = 0;
-    int gameScene = 1;
+    int gameScene = 3;
     int optionScene = 2;
+    int CinematicScene_Start = 1;
     void Update()
     {
         vDown = Input.GetButton("Debug SpawnUnit");
@@ -56,7 +57,7 @@ public class TestSceneManager : MonoBehaviour
         }
         if (bDown)
         {
-            SceneManager.LoadScene(gameScene);
+            SceneManager.LoadScene(CinematicScene_Start);
         }
         if (nDown)
         {
@@ -76,7 +77,7 @@ public class TestSceneManager : MonoBehaviour
     }
     public void OnGameSceneStart()
     {
-        SceneManager.LoadScene(gameScene);
+        SceneManager.LoadScene(CinematicScene_Start);
     }
     public void OnOptionSceneStart()
     {
