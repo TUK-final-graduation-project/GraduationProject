@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: -7688305010232312178}
   - component: {fileID: -490257889991671406}
   - component: {fileID: 1505973006867847794}
-  m_Layer: 0
+  - component: {fileID: -614219937378903810}
+  m_Layer: 15
   m_Name: GolemDamage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,3 +139,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 0}
+--- !u!114 &-614219937378903810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8317507532356440673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee38bcbcc7c65c419fb1850ba06deac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 100
+  isMelee: 1
