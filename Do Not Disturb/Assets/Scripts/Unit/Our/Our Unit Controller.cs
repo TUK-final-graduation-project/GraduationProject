@@ -241,9 +241,9 @@ public class OurUnitController : MonoBehaviour
     public void EndAttack()
     {
         rigid.isKinematic = false;
+        rigid.velocity = Vector3.zero;
         if (type == Type.Melee)
         {
-            rigid.velocity = Vector3.zero;
             meleeArea.SetActive(false);
         }
 
@@ -381,4 +381,11 @@ public class OurUnitController : MonoBehaviour
         }
     }
     //////////////////////////////////////////////
+    
+    public void SetSpeed(int _speed)
+    {
+        speed = _speed;
+    }
+
+
 }

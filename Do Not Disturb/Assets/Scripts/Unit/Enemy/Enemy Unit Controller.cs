@@ -91,6 +91,14 @@ public class EnemyUnitController : MonoBehaviour
                 {
                     return;
                 }
+
+                if ( target == null)
+                {
+                    StopPathFinding();
+                    target = Base;
+                    RequestPathToMgr();
+                    return;
+                }
                 Vector3 direction = (currentWaypoint - transform.position).normalized;
                 direction.y = 0; // y 방향은 0으로 고정
                 if (Vector3.Distance(transform.position, currentWaypoint) < 0.5f)
@@ -98,6 +106,7 @@ public class EnemyUnitController : MonoBehaviour
                     targetIndex++;
                     if (targetIndex >= path.Length)
                     {
+                        StopPathFinding();
                         return;
                     }
                     currentWaypoint = path[targetIndex];
@@ -358,4 +367,9 @@ public class EnemyUnitController : MonoBehaviour
         }
     }
     //////////////////////////////////////////////
+
+    public void SetSpeed(int _speed)
+    {
+        speed = _speed;
+    }
 }

@@ -73,6 +73,7 @@ public class UserSpawnPoint : MonoBehaviour
 
             if ( num <= 0)
             {
+                Destroy(transform.parent.gameObject );
                 yield break;
             }
             yield return new WaitForSeconds(4f);

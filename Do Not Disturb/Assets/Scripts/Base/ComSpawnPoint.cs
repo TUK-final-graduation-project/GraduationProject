@@ -9,7 +9,8 @@ public class ComSpawnPoint : MonoBehaviour
 
     [Header("spawn point type")]
     public Element element;
-    public int HP;
+    public float HP;
+    public float MaxHP = 1000f;
     public bool isConquer = false;
 
     public GameObject UserBase;
@@ -22,11 +23,15 @@ public class ComSpawnPoint : MonoBehaviour
     public GameObject Snowman;
 
     public Tower[] towers;
-    
+
+
+    public BaseHPUIManager UpdateHP;
+
     GameObject unit;
 
     private void Awake()
     {
+        HP = MaxHP;
         target = UserBase;
         switch (element)
         {
@@ -44,7 +49,13 @@ public class ComSpawnPoint : MonoBehaviour
                 break;
         }
     }
-
+    private void Update()
+    {
+        if (UpdateHP.isTarget)
+        {
+            UpdateHP.UpdateBaseHP(HP, MaxHP);
+        }
+    }
     public IEnumerator Spawn(int num)
     {
         for (int i = 0; i < num; i++)

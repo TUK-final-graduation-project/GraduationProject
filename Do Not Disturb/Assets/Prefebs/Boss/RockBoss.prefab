@@ -82,10 +82,12 @@ MonoBehaviour:
   target: {fileID: 0}
   BossPoint: {fileID: 0}
   speed: 30
+  isReady: 0
   meshObj: {fileID: 3399341466924565559}
   bullet: {fileID: 3383397831979674463, guid: ddaddf2c432348b42b8cca9a723a2b8f, type: 3}
   indicator: {fileID: 7697193669086684440}
   BossAttack: {fileID: 0}
+  stopzone: {fileID: 4291834508106482516}
 --- !u!95 &4027474770780299083
 Animator:
   serializedVersion: 5
@@ -117,6 +119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5599748602779308739}
   - component: {fileID: 2613059034379644477}
+  - component: {fileID: 4291834508106482516}
   m_Layer: 18
   m_Name: UnitStopZone
   m_TagString: Boss
@@ -160,6 +163,19 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 21.71
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4291834508106482516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5253613333179434210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1928a4f6ecc4eef4a842f0ed398e593b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageRock: {fileID: 8317507532356440673, guid: 7c68e230a023edf4a9e6a3d7c246da19, type: 3}
 --- !u!1 &7697193669086684440
 GameObject:
   m_ObjectHideFlags: 0

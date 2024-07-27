@@ -99,6 +99,7 @@ Transform:
   - {fileID: 819141264639106138}
   - {fileID: 7512532594408595551}
   - {fileID: 7057662604498027672}
+  - {fileID: 3871717817682058843}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4922104120052440626
@@ -148,6 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   element: 1
   HP: 10000
+  MaxHP: 1000
   isConquer: 0
   UserBase: {fileID: 0}
   target: {fileID: 0}
@@ -156,6 +158,7 @@ MonoBehaviour:
   Cannon: {fileID: 0}
   Snowman: {fileID: 0}
   towers: []
+  UpdateHP: {fileID: 619062195690235705}
 --- !u!1 &7982231436008824462
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,6 +191,74 @@ Transform:
   - {fileID: 3737114769721153890}
   m_Father: {fileID: 251766038783081421}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8073419440913808207
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3871717817682058843}
+  - component: {fileID: 9188465109272570523}
+  - component: {fileID: 619062195690235705}
+  m_Layer: 17
+  m_Name: ShowHPZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3871717817682058843
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073419440913808207}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 251766038783081421}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &9188465109272570523
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073419440913808207}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 600, y: 300, z: 800}
+  m_Center: {x: 200, y: 150, z: 300}
+--- !u!114 &619062195690235705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073419440913808207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f75fe6f9867a5c845ae87dcfcbcf144b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BaseHealthGroup: {fileID: 0}
+  BaseHealthBar: {fileID: 0}
 --- !u!1001 &3399384057702894437
 PrefabInstance:
   m_ObjectHideFlags: 0
