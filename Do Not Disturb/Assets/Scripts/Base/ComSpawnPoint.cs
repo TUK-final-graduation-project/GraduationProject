@@ -9,9 +9,10 @@ public class ComSpawnPoint : MonoBehaviour
 
     [Header("spawn point type")]
     public Element element;
-    public float HP;
-    public float MaxHP = 1000f;
+    public float HP = 600f;
+    public float MaxHP = 600f;
     public bool isConquer = false;
+    public List<int> SpawnUnitNum = new List<int>();
 
     public GameObject UserBase;
     public GameObject target;
@@ -23,7 +24,6 @@ public class ComSpawnPoint : MonoBehaviour
     public GameObject Snowman;
 
     public Tower[] towers;
-
 
     public BaseHPUIManager UpdateHP;
 

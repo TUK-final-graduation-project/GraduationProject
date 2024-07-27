@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Video;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,20 +14,23 @@ public class GameManager : MonoBehaviour
     public States state;
     public int enemyCnt;
 
-    public float battleTime;
-    public float readyTime;
-    public float bossVideoTime;
-    public float playTime;
+    float battleTime;
+    float readyTime;
+    float bossVideoTime;
 
-    public float coolTimeOfReady;
-    public float coolTimeOfBattle;
+    [Header("Time")]
+    public float playTime;
+    public float coolTimeOfReady = 120f;
+    public float coolTimeOfBattle = 60f;
     public float coolTimeOfbossVideo;
 
+    [Header("UI")]
     public GameObject menuPanel;
     public GameObject gamePanel;
 
     public Text stageTxt;
     public Text playTimeTxt;
+    float uiTime;
     public Text enemyCntTxt;
     public Text coinTxt;  // Text component to display coin count
     public Text actionText; // Text component to display action messages
@@ -35,19 +39,20 @@ public class GameManager : MonoBehaviour
     public RectTransform bossHealthBar;
     float bossHealth;
 
-    public ComSpawnPoint[] spawns;
-    public GameObject[] Bosses;
-
-    public Laboratory laboratory;
-    public bool isPaused;
-
     public GameObject settingsPanel; // 설정 UI 패널
     public GameObject scorePanel; // 코인 UI 패널
 
     private CraftMenu craftMenu; // CraftMenu 클래스 인스턴스 변수 추가
     private PlayerMovement playerMovement; // Reference to PlayerMovement
 
-    float uiTime;
+    [Header("Unit")]
+    public ComSpawnPoint[] spawns;
+    public GameObject[] Bosses;
+
+    public Laboratory laboratory;
+    public bool isPaused;
+
+
     [SerializeField]
     public VideoPlayer Boss_Rock;
     [SerializeField]
@@ -57,6 +62,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     public GameObject videoCanvas;
+
+    public List<float> ReadyTimeList = new List<float>();
+    public List<float> BattleTimeList = new List<float>();
+
 
     private void Awake()
     {
@@ -146,7 +155,7 @@ public class GameManager : MonoBehaviour
         {
             AudioManager.instance.WPlayBgm(false);
             state = States.bossVideo;
-            readyTime = coolTimeOfReady;
+            readyTime = ReadyTimeList[stage];
 
             if (stage == 4)
             {
@@ -169,7 +178,7 @@ public class GameManager : MonoBehaviour
                 AudioManager.instance.BPlayBgm(true);
                 foreach (ComSpawnPoint spawn in spawns)
                 {
-                    spawn.StartSpawn(stage + 1);
+                    spawn.StartSpawn(stage-1);
                 }
             }
         }
@@ -184,7 +193,7 @@ public class GameManager : MonoBehaviour
         if (battleTime < 0)
         {
             state = States.ready;
-            battleTime = coolTimeOfBattle;
+            battleTime = BattleTimeList[stage];
 
             stage += 1;
 
@@ -229,10 +238,6 @@ public class GameManager : MonoBehaviour
             else if (stage == 10)
             {
                 Bosses[2].SetActive(true);
-            }
-            foreach (ComSpawnPoint spawn in spawns)
-            {
-                spawn.StartSpawn(stage + 1);
             }
         }
     }
