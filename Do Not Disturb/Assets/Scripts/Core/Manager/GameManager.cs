@@ -46,9 +46,15 @@ public class GameManager : MonoBehaviour
     private PlayerMovement playerMovement; // Reference to PlayerMovement
 
     float uiTime;
+    [SerializeField]
+    public VideoPlayer Boss_Rock;
+    [SerializeField]
+    public VideoPlayer Boss_Orc;
+    [SerializeField]
+    public VideoPlayer Boss_Wizard;
 
-
-    int Boss_Rock = 4;
+    [SerializeField]
+    public GameObject videoCanvas;
 
     private void Awake()
     {
@@ -123,18 +129,21 @@ public class GameManager : MonoBehaviour
             AudioManager.instance.WPlayBgm(false);
             if (stage == 4)
             {
+                PlayVideoOnTime(9f,0);
                 AudioManager.instance.SPlayBgm(true);
                 Bosses[0].SetActive(true);
                 bossHealthGroup.gameObject.SetActive(true);
             }
             else if (stage == 7)
             {
+                PlayVideoOnTime(7f,1);
                 AudioManager.instance.SPlayBgm(true);
                 Bosses[1].SetActive(true);
                 bossHealthGroup.gameObject.SetActive(true);
             }
             else if (stage == 10)
             {
+                PlayVideoOnTime(5f, 2);
                 AudioManager.instance.SPlayBgm(true);
                 Bosses[2].SetActive(true);
                 bossHealthGroup.gameObject.SetActive(true);
@@ -452,4 +461,43 @@ public class GameManager : MonoBehaviour
             bossHealthGroup.gameObject.SetActive(false);
         }
     }
+
+    void PlayVideoOnTime(float time,int type)
+    {
+        isPaused = false;
+        videoCanvas.gameObject.SetActive(true);
+        if(type == 0)
+        {
+            Boss_Rock.gameObject.SetActive(true);
+        }
+        else if(type ==1)
+        {
+            Boss_Orc.gameObject.SetActive(true);
+        }
+        else if(type == 2)
+        {
+            Boss_Wizard.gameObject.SetActive(true);
+        }
+        StartCoroutine(WaitOffVideo(time,type));
+    }
+
+    IEnumerator WaitOffVideo(float time,int type)
+    {
+        yield return new WaitForSeconds(time);
+        if (type == 0)
+        {
+            Boss_Rock.gameObject.SetActive(false);
+        }
+        else if (type == 1)
+        {
+            Boss_Orc.gameObject.SetActive(false);
+        }
+        else if (type == 2)
+        {
+            Boss_Wizard.gameObject.SetActive(false);
+        }
+        videoCanvas.gameObject.SetActive(false);
+
+        isPaused = true;
+     }
 }
