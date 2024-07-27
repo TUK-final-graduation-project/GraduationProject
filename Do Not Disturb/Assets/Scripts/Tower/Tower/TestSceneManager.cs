@@ -15,7 +15,7 @@ public class TestSceneManager : MonoBehaviour
     int lobbyScene = 0;
     int gameScene = 1;
     int optionScene = 2;
-    int CinematicScene_Start = 3;
+    int CinematicScene_Start = 4;
     void Update()
     {
         bDown = Input.GetButton("Game Scene");
