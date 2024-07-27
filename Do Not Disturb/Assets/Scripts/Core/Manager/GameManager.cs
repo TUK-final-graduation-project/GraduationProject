@@ -6,7 +6,7 @@ using UnityEngine.Video;
 
 public class GameManager : MonoBehaviour
 {
-    public enum States { ready, battle, gameEnd };
+    public enum States { ready, battle, bossVideo, gameEnd };
 
     public int stage;
     public int maxStage;
@@ -15,10 +15,12 @@ public class GameManager : MonoBehaviour
 
     public float battleTime;
     public float readyTime;
+    public float bossVideoTime;
     public float playTime;
 
     public float coolTimeOfReady;
     public float coolTimeOfBattle;
+    public float coolTimeOfbossVideo;
 
     public GameObject menuPanel;
     public GameObject gamePanel;
@@ -116,12 +118,17 @@ public class GameManager : MonoBehaviour
                     Battle();
                     break;
                 }
+            case States.bossVideo:
+                {
+                    BossVideo();
+                    break;
+                }
         }
 
-        //if (CalculateGameEnd())
-        //{
-        //    SceneManager.LoadScene(2);
-        //}
+        if (CalculateGameEnd())
+        {
+            SceneManager.LoadScene(2);
+        }
     }
 
     void SetBgm()
@@ -138,37 +145,32 @@ public class GameManager : MonoBehaviour
         if (readyTime < 0)
         {
             AudioManager.instance.WPlayBgm(false);
-            state = States.battle;
+            state = States.bossVideo;
             readyTime = coolTimeOfReady;
 
             if (stage == 4)
             {
                 PlayVideoOnTime(9f,0);
-                AudioManager.instance.SPlayBgm(true);
-                Bosses[0].SetActive(true);
-                bossHealthGroup.gameObject.SetActive(true);
+                bossVideoTime = 10f;
             }
             else if (stage == 7)
             {
                 PlayVideoOnTime(7f,1);
-                AudioManager.instance.SPlayBgm(true);
-                Bosses[1].SetActive(true);
-                bossHealthGroup.gameObject.SetActive(true);
+                bossVideoTime = 8f;
             }
             else if (stage == 10)
             {
                 PlayVideoOnTime(5f, 2);
-                AudioManager.instance.SPlayBgm(true);
-                Bosses[2].SetActive(true);
-                bossHealthGroup.gameObject.SetActive(true);
+                bossVideoTime = 6f;
             }
             else
             {
+                state = States.battle;
                 AudioManager.instance.BPlayBgm(true);
-            }
-            foreach (ComSpawnPoint spawn in spawns)
-            {
-                spawn.StartSpawn(stage + 1);
+                foreach (ComSpawnPoint spawn in spawns)
+                {
+                    spawn.StartSpawn(stage + 1);
+                }
             }
         }
     }
@@ -199,6 +201,39 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene(2/* ½Â¸® ¾À */);
             }
 
+        }
+    }
+
+    void BossVideo()
+    {
+        bossVideoTime -= Time.deltaTime;
+        
+        if (bossVideoTime < 0)
+        {
+            state = States.battle;
+
+            AudioManager.instance.WPlayBgm(false);
+            state = States.battle;
+            readyTime = coolTimeOfReady;
+
+            AudioManager.instance.SPlayBgm(true);
+            bossHealthGroup.gameObject.SetActive(true);
+            if (stage == 4)
+            {
+                Bosses[0].SetActive(true);
+            }
+            else if (stage == 7)
+            {
+                Bosses[1].SetActive(true);
+            }
+            else if (stage == 10)
+            {
+                Bosses[2].SetActive(true);
+            }
+            foreach (ComSpawnPoint spawn in spawns)
+            {
+                spawn.StartSpawn(stage + 1);
+            }
         }
     }
     bool CalculateGameEnd()
