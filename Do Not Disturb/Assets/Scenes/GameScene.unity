@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 552058559}
-  m_IndirectSpecularColor: {r: 0.37130144, g: 0.31779164, b: 0.4918416, a: 1}
+  m_IndirectSpecularColor: {r: 0.37170514, g: 0.31829664, b: 0.49216324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9785,7 +9785,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3520907659200381198, guid: d8f242e186763a44a9d8767da93d07eb, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7697193669086684440, guid: d8f242e186763a44a9d8767da93d07eb, type: 3}
       propertyPath: m_IsActive
@@ -12309,10 +12309,12 @@ MonoBehaviour:
   state: 0
   enemyCnt: 0
   battleTime: 1
-  readyTime: 100
+  readyTime: 1
+  bossVideoTime: 0
   playTime: 0
   coolTimeOfReady: 3
   coolTimeOfBattle: 3
+  coolTimeOfbossVideo: 0
   menuPanel: {fileID: 325716372}
   gamePanel: {fileID: 1164931403}
   stageTxt: {fileID: 428332719}
