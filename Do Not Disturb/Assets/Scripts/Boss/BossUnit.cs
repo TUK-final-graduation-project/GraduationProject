@@ -133,7 +133,7 @@ public class BossUnit : MonoBehaviour
         while ( State == UnitState.Attack && !token.IsCancellationRequested)
         {
             anim.SetTrigger("DoAttack");
-            await UniTask.Delay(2000, cancellationToken: token);
+            await UniTask.Delay(5000, cancellationToken: token);
         }
     }
 

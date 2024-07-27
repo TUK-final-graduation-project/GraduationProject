@@ -26,7 +26,7 @@ public class UserSpawnPoint : MonoBehaviour
     public int HP;
     public bool isConquer = false;
 
-    int num = 10;
+    int num = 5;
 
 
     private void Start()

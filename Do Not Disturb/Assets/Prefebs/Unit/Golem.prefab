@@ -98,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   type: 0
-  HP: 0
+  HP: 80
   speed: 5
   target: {fileID: 0}
   Base: {fileID: 0}
@@ -281,6 +281,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 8317999286682350009, guid: 82709be4aee0f174fbd5bda79680a7e5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8657230112293858051, guid: 82709be4aee0f174fbd5bda79680a7e5, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.3
@@ -365,7 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee38bcbcc7c65c419fb1850ba06deac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
+  damage: 20
   isMelee: 1
 --- !u!65 &8237893890443613741
 BoxCollider:
