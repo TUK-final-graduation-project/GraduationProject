@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         uiTime = readyTime;
 
         readyTime = ReadyTimeList[0];
-        battleTime = coolTimeOfBattle;
+        battleTime = BattleTimeList[0];
 
         isPaused = false;
 

@@ -204,7 +204,7 @@ public class BossUnit : MonoBehaviour
             }
             Vector3 reactVec = transform.position - other.transform.position;
 
-            manager.UpdateBossHP(HP, MaxHP);
+            // manager.UpdateBossHP(HP, MaxHP);
             if (HP <= 0)
             {
                 reactVec = reactVec.normalized;
