@@ -11,6 +11,11 @@ public class LoseSceneManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    public void Replay()
+    {
+        SceneManager.LoadScene(1);
+    }
+
     public void QuitGame()
     {
         Application.Quit();
