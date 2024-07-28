@@ -36,7 +36,6 @@ public class Laboratory : MonoBehaviour
             Cursor.visible = false;
         }
 
-
         UpdateButtonUI();
     }
 
@@ -101,7 +100,7 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradePlayerSpeed()
     {
-        if (player == null) return;
+        if (player == null || !player.pv.IsMine) return;
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         player.pv.RPC("RPC_UpgradePlayerSpeed", RpcTarget.All, player.speed + 5, player.runSpeed + 5);
@@ -110,7 +109,7 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradeUserBase()
     {
-        if (player == null) return;
+        if (player == null || !player.pv.IsMine) return;
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         //manager.GetUserHome().UpgradeMaxHP();
@@ -118,7 +117,7 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradeResourceRespawnSpeed()
     {
-        if (player == null) return;
+        if (player == null || !player.pv.IsMine) return;
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         //manager.UpgradeRespawnSpeed();
@@ -126,7 +125,7 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradeTowerHP()
     {
-        if (player == null) return;
+        if (player == null || !player.pv.IsMine) return;
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         //manager.GetTower().UpgradeMaxHP();
@@ -134,7 +133,7 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradeTowerSpeed()
     {
-        if (player == null) return;
+        if (player == null || !player.pv.IsMine) return;
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         //manager.GetTower().UpgradeAttackSpeed();
@@ -142,7 +141,7 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradeUserUnitHP()
     {
-        if (player == null) return;
+        if (player == null || !player.pv.IsMine) return;
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         //manager.UpgradeUserUnitMaxHP();
@@ -150,7 +149,7 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradeUserUnitSpeed()
     {
-        if (player == null) return;
+        if (player == null || !player.pv.IsMine) return;
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         //manager.UpgradeUserUnitAttackSpeed();
@@ -158,7 +157,7 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradeEnemyUnitHP()
     {
-        if (player == null) return;
+        if (player == null || !player.pv.IsMine) return;
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         //manager.UpgradeEnemyUnitMaxHP();
@@ -166,15 +165,15 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradeEnemyUnitSpeed()
     {
-        if (player == null) return;
+        if (player == null || !player.pv.IsMine) return;
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-       // manager.UpgradeEnemyUnitAttackSpeed();
+        // manager.UpgradeEnemyUnitAttackSpeed();
     }
 
     public void Show()
     {
-        if (uiPanel != null)
+        if (uiPanel != null && player != null && player.pv.IsMine)
         {
             uiPanel.SetActive(true);
             Cursor.visible = true;

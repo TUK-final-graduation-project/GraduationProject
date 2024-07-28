@@ -70,35 +70,55 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
 
         Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-        int idx = Random.Range(0, points.Length);
-
-        player = PhotonNetwork.Instantiate("Player", points[idx].position, points[idx].rotation, 0);
-
-        Laboratory laboratory = FindObjectOfType<Laboratory>();
-        if (laboratory != null)
+        if (points.Length > 0)
         {
-            laboratory.SetPlayer(player.GetComponent<PlayerMovement>());
-        }
+            int idx = Random.Range(1, points.Length); // Exclude the parent transform at index 0
+            player = PhotonNetwork.Instantiate("Player", points[idx].position, points[idx].rotation, 0);
 
-        GameManager gameManager = FindObjectOfType<GameManager>();
-        if (gameManager != null)
-        {
-            gameManager.SetPlayerMovement(player.GetComponent<PlayerMovement>());
-        }
-
-        if (resourceManager != null && PhotonNetwork.IsMasterClient)
-        {
-            if (resourceManager.photonView == null)
+            Laboratory laboratory = FindObjectOfType<Laboratory>();
+            if (laboratory != null)
             {
-                Debug.LogError("PhotonView on ResourceManager is null.");
+                laboratory.SetPlayer(player.GetComponent<PlayerMovement>());
             }
-            else
+
+            GameManager gameManager = FindObjectOfType<GameManager>();
+            if (gameManager != null)
             {
-                resourceManager.photonView.RPC("RPC_SpawnAllPrefabs", RpcTarget.AllBuffered);
+                gameManager.SetPlayerMovement(player.GetComponent<PlayerMovement>());
             }
+
+            // 여기에서 CraftMenu의 cam과 tf_Player를 플레이어의 Camera와 Transform으로 설정합니다.
+            CraftMenu craftMenu = FindObjectOfType<CraftMenu>();
+            if (craftMenu != null)
+            {
+                craftMenu.cam = player.GetComponentInChildren<Camera>();
+                craftMenu.tf_Player = player.transform;
+            }
+
+            if (resourceManager != null && PhotonNetwork.IsMasterClient)
+            {
+                if (resourceManager.photonView == null)
+                {
+                    Debug.LogError("PhotonView on ResourceManager is null.");
+                }
+                else
+                {
+                    resourceManager.photonView.RPC("RPC_SpawnAllPrefabs", RpcTarget.AllBuffered);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("No spawn points found.");
         }
     }
 
+
+    [PunRPC]
+    public void RPC_SpawnTower(string prefabName, Vector3 position, Quaternion rotation)
+    {
+        PhotonNetwork.Instantiate(prefabName, position, rotation);
+    }
 
     void Update()
     {

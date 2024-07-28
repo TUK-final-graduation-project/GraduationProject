@@ -68,6 +68,12 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             //Debug.LogError("PlayerMovement 컴포넌트를 찾을 수 없습니다.");
         }
+        
+        laboratory = FindObjectOfType<Laboratory>();
+        if (laboratory == null)
+        {
+            //Debug.LogError("laboratory 컴포넌트를 찾을 수 없습니다.");
+        }
 
         StartCoroutine(UpdateCoins()); // Start the coroutine to update coins
 
@@ -95,7 +101,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 PauseSetting();
             }
         }
-        if (state == States.ready)
+        /*if (state == States.ready)
         {
             Ready();
         }
@@ -106,7 +112,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (CalculateGameEnd())
         {
             SceneManager.LoadScene(2);
-        }
+        }*/
         playTime += Time.deltaTime;
     }
 

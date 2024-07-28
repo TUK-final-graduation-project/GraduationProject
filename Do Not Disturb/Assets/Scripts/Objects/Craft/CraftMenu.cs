@@ -41,7 +41,7 @@ public class CraftMenu : MonoBehaviour
     private Craft currentCraft;
 
     [SerializeField]
-    private Transform tf_Player;                // 플레이어의 위치를 나타내는 Transform
+    public Transform tf_Player;                // 플레이어의 위치를 나타내는 Transform
 
     
     private RaycastHit hitInfo;                 // 레이캐스트를 통해 충돌 정보를 저장할 변수
@@ -56,7 +56,7 @@ public class CraftMenu : MonoBehaviour
 
     
     [SerializeField]
-    private Camera cam;                         // 카메라
+    public Camera cam;                         // 카메라
 
     public bool isCrafting;
 
@@ -70,8 +70,7 @@ public class CraftMenu : MonoBehaviour
 
     void Start()
     {
-        // mainCamera 변수에 현재 활성화된 메인 카메라를 할당
-        cam = Camera.main;
+       
         if (tooltip == null)
         {
             Debug.LogError("Tooltip is not assigned in the inspector.");
