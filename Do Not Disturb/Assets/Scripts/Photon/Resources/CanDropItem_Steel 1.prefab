@@ -2443,6 +2443,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8700518383166094084}
+  - component: {fileID: 4895901568555552558}
   m_Layer: 8
   m_Name: CanDropItem_Steel 1
   m_TagString: Rock
@@ -2467,6 +2468,28 @@ Transform:
   - {fileID: 570629512957631588}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4895901568555552558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8568530524686942423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &9112350957745328957
 GameObject:
   m_ObjectHideFlags: 0
@@ -3038,6 +3061,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 61d36fd741d737440a1141db2542d983, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4847141620014290351}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 61d36fd741d737440a1141db2542d983, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1756900785195391107}
   m_SourcePrefab: {fileID: 100100000, guid: 61d36fd741d737440a1141db2542d983, type: 3}
 --- !u!4 &6480738315514503012 stripped
 Transform:
@@ -3137,3 +3163,25 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.442087, y: 4.576272, z: 1.9035325}
   m_Center: {x: 0.014847795, y: -0.013319871, z: 0.6161558}
+--- !u!114 &1756900785195391107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6480738315514856260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

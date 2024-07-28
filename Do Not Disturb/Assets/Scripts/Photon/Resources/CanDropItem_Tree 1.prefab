@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5317863052914351261}
   - component: {fileID: 4853319859510810106}
   - component: {fileID: 7340848072613180872}
+  - component: {fileID: 2279791873483105160}
   m_Layer: 8
   m_Name: TreeBase
   m_TagString: Tree
@@ -178,6 +179,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.22528298, y: 0.16246808, z: 0.114310235}
   m_Center: {x: -0.067002684, y: -0.0062812753, z: 0.11620813}
+--- !u!114 &2279791873483105160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792115306752777566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1225329296697345466
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,6 +581,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5692122583491224668}
+  - component: {fileID: 2357138424043188422}
   m_Layer: 8
   m_Name: CanDropItem_Tree 1
   m_TagString: Tree
@@ -582,6 +606,28 @@ Transform:
   - {fileID: 8659039816554235336}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2357138424043188422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3413995709408903035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &5274742607276070117
 GameObject:
   m_ObjectHideFlags: 0

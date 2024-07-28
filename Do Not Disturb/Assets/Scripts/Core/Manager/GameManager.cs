@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         playerMovement = FindObjectOfType<PlayerMovement>();
         if (playerMovement == null)
         {
-            Debug.LogError("PlayerMovement 컴포넌트를 찾을 수 없습니다.");
+            //Debug.LogError("PlayerMovement 컴포넌트를 찾을 수 없습니다.");
         }
 
         StartCoroutine(UpdateCoins()); // Start the coroutine to update coins

@@ -9,21 +9,18 @@ public class PlayerItem : MonoBehaviourPun
     [SerializeField]
     private float range; // 습득 가능한 최대 거리.
 
-    // 아이템 레이어에만 반응하도록 레이어 마스크를 설정.
     [SerializeField]
     private LayerMask layerMask;
 
-    // 필요한 컴포넌트.
     [SerializeField]
     private Text actionText;
     [SerializeField]
     private Inventory inven;
 
-    private Collider hitInfo; // 충돌체 정보 저장.
+    private Collider hitInfo;
 
     void Start()
     {
-        // "Action Text"라는 이름을 가진 게임 오브젝트를 찾아 Text 컴포넌트를 할당합니다.
         GameObject actionTextObject = GameObject.Find("Action Text");
         if (actionTextObject != null)
         {
@@ -34,7 +31,6 @@ public class PlayerItem : MonoBehaviourPun
             Debug.LogError("Action Text 오브젝트를 찾을 수 없습니다.");
         }
 
-        // Inventory 컴포넌트를 찾아 할당합니다.
         inven = FindObjectOfType<Inventory>();
         if (inven == null)
         {
@@ -50,7 +46,6 @@ public class PlayerItem : MonoBehaviourPun
             ItemInfoAppear();
             Invoke("InfoDisappear", 2.0f);
 
-            // 아이템 획득
             CanPickUp();
         }
     }
@@ -74,13 +69,12 @@ public class PlayerItem : MonoBehaviourPun
                 inven.AcquireItem(getItem.item);
                 Debug.Log(getItem.item.itemName + " 획득했습니다 / 총 " + getItem.item.itemCount + "개");
 
-                // 네트워크 상에서 아이템을 파괴
                 if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
                 {
                     PhotonView photonView = hitInfo.transform.GetComponent<PhotonView>();
-                    if (photonView != null)
+                    if (photonView != null && photonView.ViewID != 0)
                     {
-                        PhotonNetwork.Destroy(hitInfo.transform.gameObject);
+                        photonView.RPC("DestroyItem", RpcTarget.AllBuffered);
                     }
                     else
                     {
@@ -93,13 +87,21 @@ public class PlayerItem : MonoBehaviourPun
                     Destroy(hitInfo.transform.gameObject);
                 }
 
-                // AudioManager.instance.PlaySfx(AudioManager.Sfx.Item);
-                hitInfo = null; // 아이템을 파괴한 후 hitInfo를 null로 설정
+                hitInfo = null;
             }
             else
             {
                 Debug.LogWarning("ItemAcquisition 또는 Inventory 컴포넌트를 찾을 수 없습니다.");
             }
+        }
+    }
+
+    [PunRPC]
+    private void DestroyItem()
+    {
+        if (hitInfo != null)
+        {
+            Destroy(hitInfo.transform.gameObject);
         }
     }
 

@@ -1,73 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class ResourceManager : MonoBehaviour
+public class ResourceManager : MonoBehaviourPun
 {
-    // 프리팹 정보 클래스: 각 프리팹의 최대 개수를 저장하는 클래스
     [System.Serializable]
     public class PrefabInfo
     {
-        public GameObject prefab;  // 프리팹 오브젝트
-        public int maxCount;       // 최대 생성 개수
+        public GameObject prefab;
+        public int maxCount;
     }
 
     [SerializeField]
-    private List<PrefabInfo> prefabInfos;  // 프리팹 정보 리스트
+    private List<PrefabInfo> prefabInfos;
 
     [SerializeField]
-    private float mapWidth = 1000f;          // 맵의 너비
+    private float mapWidth = 1000f;
     [SerializeField]
-    private float mapHeight = 1000f;         // 맵의 높이
+    private float mapHeight = 1000f;
     [SerializeField]
-    public float respawnTime = 30f;        // 리스폰 주기 (초 단위)
+    public float respawnTime = 30f;
     [SerializeField]
-    private float minSpawnDistance = 5f;   // 최소 생성 거리 (중복 생성 방지용)
+    private float minSpawnDistance = 5f;
     [SerializeField]
-    private float exclusionZoneWidth = 200f; // 생성 예외 영역 너비
+    private float exclusionZoneWidth = 200f;
     [SerializeField]
-    private float exclusionZoneHeight = 200f;   // 생성 예외 영역 높이
-    private Dictionary<GameObject, List<GameObject>> activePrefabs = new Dictionary<GameObject, List<GameObject>>();  // 활성화된 프리팹 리스트
-    private Dictionary<GameObject, Vector3> respawnQueue = new Dictionary<GameObject, Vector3>();  // 리스폰 대기열
+    private float exclusionZoneHeight = 200f;
+
+    private Dictionary<GameObject, List<GameObject>> activePrefabs = new Dictionary<GameObject, List<GameObject>>();
+    private Dictionary<GameObject, List<Vector3>> respawnQueue = new Dictionary<GameObject, List<Vector3>>();
 
     void Start()
     {
-        // activePrefabs 딕셔너리 초기화: 각 프리팹에 대해 빈 리스트를 생성
         foreach (var prefabInfo in prefabInfos)
         {
             activePrefabs[prefabInfo.prefab] = new List<GameObject>();
+            respawnQueue[prefabInfo.prefab] = new List<Vector3>();
         }
-        SpawnAllPrefabs();  // 프리팹 생성
-        StartCoroutine(RespawnCycle());  // 리스폰 사이클 시작
-        //AudioManager.instance.PlayerBgm(AudioManager.Bgm.Wait);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("RPC_SpawnAllPrefabs", RpcTarget.AllBuffered);
+        }
+
+        StartCoroutine(RespawnCycle());
     }
 
-    void Update()
-    {
-    }
-
-    // 프리팹 생성
-    void SpawnAllPrefabs()
+    [PunRPC]
+    public void RPC_SpawnAllPrefabs()
     {
         foreach (var prefabInfo in prefabInfos)
         {
             for (int i = 0; i < prefabInfo.maxCount; i++)
             {
-                Vector3 spawnPosition = GetRandomPosition();  // 랜덤 위치 계산
-                // 위치가 이미 점유되었는지 확인
+                Vector3 spawnPosition = GetRandomPosition();
                 while (IsPositionOccupied(spawnPosition) || IsWithinExclusionZone(spawnPosition))
                 {
-                    spawnPosition = GetRandomPosition();  // 새로운 랜덤 위치 계산
+                    spawnPosition = GetRandomPosition();
                 }
-                // 프리팹 생성
-                var spawnedObject = Instantiate(prefabInfo.prefab, spawnPosition, Quaternion.identity);
-                activePrefabs[prefabInfo.prefab].Add(spawnedObject);  // 생성된 프리팹을 리스트에 추가
-                spawnedObject.AddComponent<PrefabTracker>().resourceManager = this;  // PrefabTracker 컴포넌트를 추가하고 ResourceManager를 참조로 설정
+                SpawnPrefab(prefabInfo.prefab, spawnPosition);
             }
         }
     }
 
-    // 랜덤 위치 반환
     Vector3 GetRandomPosition()
     {
         float x = Random.Range(-mapWidth / 2, mapWidth / 2);
@@ -85,14 +81,12 @@ public class ResourceManager : MonoBehaviour
         return position.x > exclusionZoneXMin && position.x < exclusionZoneXMax && position.z > exclusionZoneZMin && position.z < exclusionZoneZMax;
     }
 
-    // 주어진 위치에 이미 생성되었는지 확인
     bool IsPositionOccupied(Vector3 position)
     {
         foreach (var list in activePrefabs.Values)
         {
             foreach (var obj in list)
             {
-                // 최소 생성 거리 이내에 다른 프리팹이 있으면 리턴
                 if (Vector3.Distance(obj.transform.position, position) < minSpawnDistance)
                 {
                     return true;
@@ -102,43 +96,39 @@ public class ResourceManager : MonoBehaviour
         return false;
     }
 
-    // 프리팹 리스폰 예약
     public void ScheduleRespawn(GameObject prefab, Vector3 position)
     {
         if (!respawnQueue.ContainsKey(prefab))
         {
-            respawnQueue[prefab] = position;  // 리스폰 대기열에 추가
+            respawnQueue[prefab] = new List<Vector3>();
         }
+        respawnQueue[prefab].Add(position);
     }
 
-    // 리스폰 사이클을 처리하는 코루틴
     IEnumerator RespawnCycle()
     {
         while (true)
         {
-            yield return new WaitForSeconds(respawnTime);  // 지정된 리스폰 시간 대기
+            yield return new WaitForSeconds(respawnTime);
 
             foreach (var prefabInfo in prefabInfos)
             {
                 GameObject prefab = prefabInfo.prefab;
                 List<GameObject> currentPrefabs = activePrefabs[prefab];
-                int missingCount = prefabInfo.maxCount - currentPrefabs.Count;  // 부족한 개수 계산
+                int missingCount = prefabInfo.maxCount - currentPrefabs.Count;
 
                 if (missingCount > 0)
                 {
                     for (int i = 0; i < missingCount; i++)
                     {
-                        if (respawnQueue.ContainsKey(prefab))
+                        if (respawnQueue[prefab].Count > 0)
                         {
-                            Vector3 position = respawnQueue[prefab];  // 리스폰할 위치
+                            Vector3 position = respawnQueue[prefab][0];
                             if (!IsPositionOccupied(position) && !IsWithinExclusionZone(position))
                             {
-                                var spawnedObject = Instantiate(prefab, position, Quaternion.identity);
-                                currentPrefabs.Add(spawnedObject);  // 리스트에 추가
-                                spawnedObject.AddComponent<PrefabTracker>().resourceManager = this;  // PrefabTracker 컴포넌트를 추가하고 ResourceManager를 참조로 설정
+                                SpawnPrefab(prefab, position);
                             }
-                            respawnQueue.Remove(prefab);  // 대기열에서 제거
-                            break;
+                            respawnQueue[prefab].RemoveAt(0);
                         }
                     }
                 }
@@ -146,16 +136,43 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    private void RPC_SpawnPrefab(string prefabName, Vector3 position)
+    {
+        foreach (var prefabInfo in prefabInfos)
+        {
+            if (prefabInfo.prefab.name == prefabName)
+            {
+                var spawnedObject = PhotonNetwork.InstantiateSceneObject(prefabInfo.prefab.name, position, Quaternion.identity);
+                activePrefabs[prefabInfo.prefab].Add(spawnedObject);
+                spawnedObject.AddComponent<PrefabTracker>().resourceManager = this;
+                break;
+            }
+        }
+    }
+
+    private void SpawnPrefab(GameObject prefab, Vector3 position)
+    {
+        if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
+        {
+            photonView.RPC("RPC_SpawnPrefab", RpcTarget.AllBuffered, prefab.name, position);
+        }
+        else
+        {
+            var spawnedObject = PhotonNetwork.InstantiateSceneObject(prefab.name, position, Quaternion.identity);
+            activePrefabs[prefab].Add(spawnedObject);
+            spawnedObject.AddComponent<PrefabTracker>().resourceManager = this;
+        }
+    }
+
     public void RemovePrefab(GameObject prefab, GameObject prefabInstance)
     {
         if (activePrefabs.ContainsKey(prefab))
         {
-            activePrefabs[prefab].Remove(prefabInstance);  // 활성화된 프리팹 리스트에서 제거
+            activePrefabs[prefab].Remove(prefabInstance);
         }
     }
 
-    // Set, Minus, Plus
-    // 프리팹 최대 생성 개수 설정
     public void SetMaxCount(GameObject prefab, int count)
     {
         foreach (var prefabInfo in prefabInfos)
@@ -168,7 +185,6 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    // 프리팹 최대 생성 개수 증가
     public void PlusMaxCount(GameObject prefab, int count)
     {
         foreach (var prefabInfo in prefabInfos)
@@ -181,51 +197,15 @@ public class ResourceManager : MonoBehaviour
         }
     }
 
-    // 프리팹 최대 생성 개수 감소
     public void MinusMaxCount(GameObject prefab, int count)
     {
         foreach (var prefabInfo in prefabInfos)
         {
             if (prefabInfo.prefab == prefab)
             {
-                prefabInfo.maxCount = Mathf.Max(0, prefabInfo.maxCount - count);  // 최소 0으로 제한
+                prefabInfo.maxCount -= count;
                 break;
             }
         }
     }
-
-    // 리스폰 주기 설정
-    public void SetRespawnTime(float time)
-    {
-        respawnTime = time;
-    }
-    // 리스폰 주기 증가
-    public void PlusRespawnTime(float time)
-    {
-        respawnTime += time;
-    }
-    // 리스폰 주기 감소
-    public void MinusRespawnTime(float time)
-    {
-        respawnTime -= time;
-    }
 }
-
-
-
-public class PrefabTracker : MonoBehaviour
-{
-    public ResourceManager resourceManager;  // ResourceManager에 대한 참조
-
-    // 프리팹이 제거될 때 호출
-    void OnDestroy()
-    {
-        if (resourceManager != null)
-        {
-            resourceManager.RemovePrefab(this.gameObject, this.gameObject);  // ResourceManager에서 프리팹 제거
-            resourceManager.ScheduleRespawn(this.gameObject, this.transform.position);  // 리스폰 예약
-        }
-    }
-}
-
-
