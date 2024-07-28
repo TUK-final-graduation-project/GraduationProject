@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System;
 
 public class Laboratory : MonoBehaviour
 {
@@ -9,7 +11,13 @@ public class Laboratory : MonoBehaviour
     public PlayerMovement player;
     public ResourceManager manager;
     public UserHome home;
-    public Tower tower;
+    public Tower[] towers;
+    public OurUnitController[] userUnits;
+    public EnemyUnitController [] enemyUnits;
+
+    //temp
+    //public UnitAttack unitAttack;
+    //public UnitAttack unitEnemyAttack;
 
     // 강화에 필요한 코인 개수
     public int PlayerSpeedCost = 50;
@@ -91,6 +99,11 @@ public class Laboratory : MonoBehaviour
     void Update()
     {
         UpdateButtonUI();
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            uiPanel.SetActive(false); 
+            Cursor.visible = false; 
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
     public void UpgradePlayerSpeed()
@@ -132,34 +145,64 @@ public class Laboratory : MonoBehaviour
     public void UpgradeTowerHP()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        tower.SetHP(100);
+        towers = FindObjectsOfType(typeof(Tower)) as Tower[];
+        foreach (Tower tower in towers)
+        {
+            tower.SetHP(tower.HP + 50);
+        }
     }
 
     public void UpgradeTowerAttackSpeed()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        tower.SetAttackSpeed(100);
+        towers = FindObjectsOfType(typeof(Tower)) as Tower[];
+        foreach (Tower tower in towers)
+        {
+            tower.SetAttackSpeed(tower.attackSpeed);
+        }
     }
 
+    //------------------------------
     public void UpgradeUserUnitSpeed()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        //userUnit.SetSpeed();
-    }
-    public void UpgradeUserUnitDamage()
-    {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        //userUnit.SetDamage();
+        userUnits = FindObjectsOfType(typeof(OurUnitController)) as OurUnitController[];
+        foreach (OurUnitController userUnit in userUnits)
+        {
+            userUnit.SetSpeed(userUnit.speed + 5);
+        }
     }
     public void UpgradeEnemyUnitSpeed()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        //enemyUnit.SetSpeed();
+        enemyUnits = FindObjectsOfType(typeof(EnemyUnitController)) as EnemyUnitController[];
+        foreach (EnemyUnitController enemyUnit in enemyUnits)
+        {
+            enemyUnit.SetSpeed(enemyUnit.speed / 2);
+        }
     }
+
+  /*  public void UpgradeUserUnitDamage()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
+        unitAttack.SetDamage(unitAttack.damage + 10);
+    }
+    
     public void UpgradeEnemyUnitDamage()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        //enemyUnit.SetDamage();
+        unitEnemyAttack.SetDamage(unitEnemyAttack.damage + 10);
+    }*/
+   
+    public void UpgradeUserUnitHP()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
+        //userUnits.SetHP(userUnits.HP + 50);
+    }
+    public void UpgradeEnemyUnitHP()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
+        //enemyUnit.SetHP(enemyUnit.HP - 30);
     }
 
     private void OnTriggerEnter(Collider other)

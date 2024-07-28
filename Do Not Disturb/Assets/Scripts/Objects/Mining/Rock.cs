@@ -22,6 +22,8 @@ public class Rock : MonoBehaviour
     private GameObject go_effect_prefabs;       // √§±º ¿Ã∆Â∆Æ
     [SerializeField]
     public GameObject rock;
+    [SerializeField]
+    public int itemDropCount = 3;
 
     public void Mining()
     {
@@ -41,10 +43,15 @@ public class Rock : MonoBehaviour
         Destroy(go_rock);
         go_debris.SetActive(true);
         Destroy(go_debris, destroyTime);
-        for (int i = 0; i < 5; i++)
+        if (go_debris.transform.childCount >= 5)
+            itemDropCount = 5;
+        else itemDropCount = go_debris.transform.childCount;
+
+        for (int i = 0; i < itemDropCount; i++)
         {
             Instantiate(rock, go_debris.transform.GetChild(i).gameObject.transform.position, Quaternion.identity);
         }
+
         Invoke("CreateDropItem", 0.2f);
     }
 }

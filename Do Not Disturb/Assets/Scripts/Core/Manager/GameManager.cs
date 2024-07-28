@@ -337,6 +337,7 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    ///--------------------------------------------------------------------
     void fail()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Fail);
@@ -393,7 +394,7 @@ public class GameManager : MonoBehaviour
             if (playerMovement.coinCount >= laboratory.ResourceRequiredItemsCost)
             {
                 playerMovement.coinCount -= laboratory.ResourceRequiredItemsCost;
-                craftMenu.ApplyDiscount(0.5f); // 매개변수는 할인율 (/100)
+                craftMenu.ApplyDiscount(0.25f); // 매개변수는 할인율 (25%)
                 StartCoroutine(ShowActionText("건설 소모 아이템이 할인 되었습니다!", Color.green, 2.0f));
             }
             else
@@ -437,9 +438,9 @@ public class GameManager : MonoBehaviour
 
     public void UpgradeUserUnitSpeed()
     {
-        if (playerMovement.coinCount >= laboratory.UserUnitHP)
+        if (playerMovement.coinCount >= laboratory.UserUnitSpeed)
         {
-            playerMovement.coinCount -= laboratory.UserUnitHP;
+            playerMovement.coinCount -= laboratory.UserUnitSpeed;
             laboratory.UpgradeUserUnitSpeed();
             StartCoroutine(ShowActionText("아군 유닛 이동속도가 빨라집니다!", Color.green, 2.0f));
         }
@@ -449,13 +450,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpgradeUserUnitDamage()
+    public void UpgradeUserUnitHP()
     {
-        if (playerMovement.coinCount >= laboratory.UserUnitSpeed)
+        if (playerMovement.coinCount >= laboratory.UserUnitHP)
         {
-            playerMovement.coinCount -= laboratory.UserUnitSpeed;
-            laboratory.UpgradeUserUnitDamage();
-            StartCoroutine(ShowActionText("아군 유닛 공격력이 강해집니다!", Color.green, 2.0f));
+            playerMovement.coinCount -= laboratory.UserUnitHP;
+            laboratory.UpgradeUserUnitHP();
+            StartCoroutine(ShowActionText("아군 유닛 생명력이 늘어납니다!", Color.green, 2.0f));
         }
         else
         {
@@ -464,9 +465,9 @@ public class GameManager : MonoBehaviour
     }
     public void UpgradeEnemyUnitSpeed()
     {
-        if (playerMovement.coinCount >= laboratory.EnemyUnitHP)
+        if (playerMovement.coinCount >= laboratory.EnemyUnitSpeed)
         {
-            playerMovement.coinCount -= laboratory.EnemyUnitHP;
+            playerMovement.coinCount -= laboratory.EnemyUnitSpeed;
             laboratory.UpgradeEnemyUnitSpeed();
             StartCoroutine(ShowActionText("적군 유닛 이동속도가 느려집니다!", Color.green, 2.0f));
         }
@@ -476,19 +477,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpgradeEnemyUnitDamage()
+    public void UpgradeEnemyUnitHP()
     {
-        if (playerMovement.coinCount >= laboratory.EnemyUnitSpeed)
+        if (playerMovement.coinCount >= laboratory.EnemyUnitHP)
         {
-            playerMovement.coinCount -= laboratory.EnemyUnitSpeed;
-            laboratory.UpgradeEnemyUnitDamage();
-            StartCoroutine(ShowActionText("적군 유닛 공격력이 줄어듭니다!", Color.green, 2.0f));
+            playerMovement.coinCount -= laboratory.EnemyUnitHP;
+            laboratory.UpgradeEnemyUnitHP();
+            StartCoroutine(ShowActionText("적군 유닛 생명력이 줄어듭니다!", Color.green, 2.0f));
         }
         else
         {
             fail();
         }
     }
+
+    ///--------------------------------------------------------------------
 
     public void UpdateBossHP(float bossHP, float maxHP)
     {

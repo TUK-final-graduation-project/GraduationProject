@@ -122,8 +122,8 @@ public class CraftMenu : MonoBehaviour
         if (isPreviewActivated)
             PreviewPositionUpdate();
 
-        // 마우스 오른쪽 버튼을 눌렀을 때 건설
-        if (Input.GetButtonDown("Fire2"))
+        // 마우스 왼쪽 버튼을 눌렀을 때 건설
+        if (Input.GetButtonDown("Fire1"))
             Build();
 
         // ESC 키를 눌렀을 때 취소
