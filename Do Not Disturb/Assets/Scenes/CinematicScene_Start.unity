@@ -24495,6 +24495,26 @@ PlayableDirector:
     value: {fileID: 1371580076}
   - key: {fileID: -9085583505185922860, guid: 50b9440f6d744084583afe2ca699d195, type: 2}
     value: {fileID: 552058558}
+  - key: {fileID: 8844618950677245205, guid: 50b9440f6d744084583afe2ca699d195, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -5639814540433313578, guid: 50b9440f6d744084583afe2ca699d195, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -2602031611459893290, guid: 50b9440f6d744084583afe2ca699d195, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 8275768820396152244, guid: 50b9440f6d744084583afe2ca699d195, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -3605824513657063935, guid: 50b9440f6d744084583afe2ca699d195, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -7883063559950192910, guid: 50b9440f6d744084583afe2ca699d195, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -8204368405699843631, guid: 50b9440f6d744084583afe2ca699d195, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -3838185529314362900, guid: 50b9440f6d744084583afe2ca699d195, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 7566145559325372762, guid: 50b9440f6d744084583afe2ca699d195, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 932838040659441153, guid: 50b9440f6d744084583afe2ca699d195, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References:
     - bced434e5d46c2840b13e4ff717bdb6f: {fileID: 0}
@@ -29644,31 +29664,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -21.832542
+      value: -4.9062004
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.882363
+      value: 43.95851
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.87877
+      value: -75.52779
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.85865843
+      value: 0.7841692
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.16682166
+      value: 0.15384787
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.47616556
+      value: -0.5899272
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.090236835
+      value: 0.115739085
       objectReference: {fileID: 0}
     - target: {fileID: 4471129803835515900, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.w
@@ -29928,7 +29948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9069715242996786442, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: field of view
-      value: 60.000004
+      value: 47
       objectReference: {fileID: 0}
     - target: {fileID: 9069715242996786442, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: far clip plane
@@ -31342,7 +31362,9 @@ MonoBehaviour:
   player: {fileID: 871426364432453803}
   manager: {fileID: 339142457}
   home: {fileID: 0}
-  tower: {fileID: 0}
+  towers: []
+  userUnits: []
+  enemyUnits: []
   PlayerSpeedCost: 50
   BaseHPCost: 100
   ResourceRespawnTimeCost: 50
