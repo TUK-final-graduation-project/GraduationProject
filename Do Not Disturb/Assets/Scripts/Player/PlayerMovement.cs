@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 targetVelocity;
     private Vector3 yVelocity;
 
-    private PhotonView pv;
+    public PhotonView pv;
 
     void Start()
     {
@@ -77,17 +77,18 @@ public class PlayerMovement : MonoBehaviour
         {
             isRun = Input.GetKey(KeyCode.LeftShift);
             InputMovement();
+            if (!toggleCameraRotation)
+            {
+                Vector3 playerRotate = Vector3.Scale(cam.transform.forward, new Vector3(1, 0, 1));
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(playerRotate), Time.deltaTime * smoothness);
+            }
         }
 
     }
 
     void LateUpdate()
     {
-        if (!toggleCameraRotation)
-        {
-            Vector3 playerRotate = Vector3.Scale(cam.transform.forward, new Vector3(1, 0, 1));
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(playerRotate), Time.deltaTime * smoothness);
-        }
+
     }
 
     void InputMovement()
@@ -165,6 +166,19 @@ public class PlayerMovement : MonoBehaviour
             toggleCameraRotation = true;
         }
     }
+
+    public void UpgradePlayerSpeed(float newSpeed, float newRunSpeed)
+    {
+        pv.RPC("RPC_UpgradePlayerSpeed", RpcTarget.All, newSpeed, newRunSpeed);
+    }
+
+    [PunRPC]
+    public void RPC_UpgradePlayerSpeed(float newSpeed, float newRunSpeed)
+    {
+        speed = newSpeed;
+        runSpeed = newRunSpeed;
+    }
+
 
     private void OnCollisionEnter(Collision collision)
     {

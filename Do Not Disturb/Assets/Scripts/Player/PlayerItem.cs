@@ -21,6 +21,27 @@ public class PlayerItem : MonoBehaviourPun
 
     private Collider hitInfo; // 충돌체 정보 저장.
 
+    void Start()
+    {
+        // "Action Text"라는 이름을 가진 게임 오브젝트를 찾아 Text 컴포넌트를 할당합니다.
+        GameObject actionTextObject = GameObject.Find("Action Text");
+        if (actionTextObject != null)
+        {
+            actionText = actionTextObject.GetComponent<Text>();
+        }
+        else
+        {
+            Debug.LogError("Action Text 오브젝트를 찾을 수 없습니다.");
+        }
+
+        // Inventory 컴포넌트를 찾아 할당합니다.
+        inven = FindObjectOfType<Inventory>();
+        if (inven == null)
+        {
+            Debug.LogError("Inventory 컴포넌트를 찾을 수 없습니다.");
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "Item")
@@ -56,14 +77,23 @@ public class PlayerItem : MonoBehaviourPun
                 // 네트워크 상에서 아이템을 파괴
                 if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
                 {
-                    PhotonNetwork.Destroy(hitInfo.transform.gameObject);
+                    PhotonView photonView = hitInfo.transform.GetComponent<PhotonView>();
+                    if (photonView != null)
+                    {
+                        PhotonNetwork.Destroy(hitInfo.transform.gameObject);
+                    }
+                    else
+                    {
+                        Debug.LogError("PhotonView가 없는 게임 오브젝트를 제거하려고 시도했습니다: " + hitInfo.transform.name);
+                        Destroy(hitInfo.transform.gameObject);
+                    }
                 }
                 else
                 {
                     Destroy(hitInfo.transform.gameObject);
                 }
 
-                //AudioManager.instance.PlaySfx(AudioManager.Sfx.Item);
+                // AudioManager.instance.PlaySfx(AudioManager.Sfx.Item);
                 hitInfo = null; // 아이템을 파괴한 후 hitInfo를 null로 설정
             }
             else

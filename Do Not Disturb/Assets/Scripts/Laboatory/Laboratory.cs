@@ -1,31 +1,28 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class Laboratory : MonoBehaviour
 {
     [SerializeField]
-    GameObject uiPanel; // 연구소 UI 패널
+    GameObject uiPanel;
 
     private PlayerMovement player;
     public ResourceManager manager;
     public UserHome home;
     public Tower tower;
 
-    // 강화에 필요한 코인 개수
     public int PlayerSpeedCost = 50;
     public int BaseHPCost = 100;
     public int ResourceRespawnTimeCost = 50;
-
     public int ResourceRequiredItemsCost = 100;
     public int TowerHPCost = 100;
     public int TowerSpeedCost = 100;
-
     public int UserUnitHPCost = 100;
     public int UserUnitSpeedCost = 100;
     public int EnemyUnitHPCost = 100;
     public int EnemyUnitSpeedCost = 100;
 
-    // 버튼 및 텍스트 컴포넌트
     public Button[] upgradeButton = new Button[10];
     public Text[] upgradeButtonText = new Text[10];
 
@@ -35,13 +32,14 @@ public class Laboratory : MonoBehaviour
     {
         if (uiPanel != null)
         {
-            uiPanel.SetActive(false); // UI 패널을 비활성화
-            Cursor.visible = false; // 커서 숨기기
+            uiPanel.SetActive(false);
+            Cursor.visible = false;
         }
+
+
         UpdateButtonUI();
     }
 
-    // PlayerMovement를 설정하는 메서드
     public void SetPlayer(PlayerMovement player)
     {
         this.player = player;
@@ -63,7 +61,6 @@ public class Laboratory : MonoBehaviour
         upgradeButtonText[8].text = EnemyUnitHPCost + " coins";
         upgradeButtonText[9].text = EnemyUnitSpeedCost + " coins";
 
-        // 코인 확인 후 색상 변경
         UpdateButtonColor(upgradeButton[0], player.coinCount >= PlayerSpeedCost);
         UpdateButtonColor(upgradeButton[1], player.coinCount >= BaseHPCost);
         UpdateButtonColor(upgradeButton[2], player.coinCount >= ResourceRespawnTimeCost);
@@ -81,7 +78,7 @@ public class Laboratory : MonoBehaviour
         ColorBlock colors = button.colors;
         if (isAffordable)
         {
-            colors.normalColor = Color.white; 
+            colors.normalColor = Color.white;
             colors.selectedColor = Color.white;
             colors.highlightedColor = Color.green;
         }
@@ -105,29 +102,10 @@ public class Laboratory : MonoBehaviour
     public void UpgradePlayerSpeed()
     {
         if (player == null) return;
-        
+
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        player.SetSpeed(player.speed + 5);
-        player.SetRunSpeed(player.runSpeed + 5);
+        player.pv.RPC("RPC_UpgradePlayerSpeed", RpcTarget.All, player.speed + 5, player.runSpeed + 5);
         Debug.Log("coinCount : " + player.coinCount + "| speed : " + player.speed);
-    }
-
-    public void UpgradePlayerHP()
-    {
-        if (player == null) return;
-        
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        player.SetHP(player.maxHP);
-        Debug.Log("coinCount : " + player.coinCount + "| HP : " + player.HP);
-    }
-
-    public void UpgradePlayerDamage()
-    {
-        if (player == null) return;
-        
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        player.SetDamage(player.attackDamage + 20);
-        Debug.Log("coinCount : " + player.coinCount + "| attackDamage : " + player.attackDamage);
     }
 
     public void UpgradeUserBase()
@@ -135,8 +113,7 @@ public class Laboratory : MonoBehaviour
         if (player == null) return;
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        home.setHP(userBaseMaxHP);
-        Debug.Log("coinCount : " + player.coinCount + "| userBaseHP : " + home.HP);
+        //manager.GetUserHome().UpgradeMaxHP();
     }
 
     public void UpgradeResourceRespawnSpeed()
@@ -144,67 +121,72 @@ public class Laboratory : MonoBehaviour
         if (player == null) return;
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        manager.MinusRespawnTime(10);
-        Debug.Log("coinCount : " + player.coinCount + "| respawnTime : " + manager.respawnTime);
+        //manager.UpgradeRespawnSpeed();
     }
 
     public void UpgradeTowerHP()
     {
+        if (player == null) return;
+
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        tower.SetHP(100);
+        //manager.GetTower().UpgradeMaxHP();
     }
 
-    public void UpgradeTowerAttackSpeed()
+    public void UpgradeTowerSpeed()
     {
+        if (player == null) return;
+
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        tower.SetAttackSpeed(100);
+        //manager.GetTower().UpgradeAttackSpeed();
+    }
+
+    public void UpgradeUserUnitHP()
+    {
+        if (player == null) return;
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
+        //manager.UpgradeUserUnitMaxHP();
     }
 
     public void UpgradeUserUnitSpeed()
     {
+        if (player == null) return;
+
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        //userUnit.SetSpeed();
-    }
-    public void UpgradeUserUnitDamage()
-    {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        //userUnit.SetDamage();
-    }
-    public void UpgradeEnemyUnitSpeed()
-    {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        //enemyUnit.SetSpeed();
-    }
-    public void UpgradeEnemyUnitDamage()
-    {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        //enemyUnit.SetDamage();
+        //manager.UpgradeUserUnitAttackSpeed();
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void UpgradeEnemyUnitHP()
     {
-        if (other.CompareTag("Player"))
+        if (player == null) return;
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
+        //manager.UpgradeEnemyUnitMaxHP();
+    }
+
+    public void UpgradeEnemyUnitSpeed()
+    {
+        if (player == null) return;
+
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
+       // manager.UpgradeEnemyUnitAttackSpeed();
+    }
+
+    public void Show()
+    {
+        if (uiPanel != null)
         {
-            if (uiPanel != null)
-            {
-                uiPanel.SetActive(true); // 플레이어가 연구소 근처에 왔을 때 UI 패널을 활성화
-                Cursor.visible = true; // 커서 보이기
-                Cursor.lockState = CursorLockMode.None;
-                AudioManager.instance.PlaySfx(AudioManager.Sfx.Lab);
-            }
+            uiPanel.SetActive(true);
+            Cursor.visible = true;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    public void Hide()
     {
-        if (other.CompareTag("Player"))
+        if (uiPanel != null)
         {
-            if (uiPanel != null)
-            {
-                uiPanel.SetActive(false); // 플레이어가 연구소에서 벗어났을 때 UI 패널을 비활성화
-                Cursor.visible = false; // 커서 숨기기
-                Cursor.lockState = CursorLockMode.None;
-            }
+            uiPanel.SetActive(false);
+            Cursor.visible = false;
         }
     }
 }

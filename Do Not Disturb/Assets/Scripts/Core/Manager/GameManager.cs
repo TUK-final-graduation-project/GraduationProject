@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using Photon.Pun;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPunCallbacks
 {
     public enum States { ready, battle, gameEnd };
 
@@ -74,10 +74,12 @@ public class GameManager : MonoBehaviour
         bossHealthGroup.transform.gameObject.SetActive(false);
         Invoke("SetBgm", 1);
     }
+
     void SetBgm()
     {
         AudioManager.instance.WPlayBgm(true);
     }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -168,9 +170,9 @@ public class GameManager : MonoBehaviour
 
                 SceneManager.LoadScene(2);
             }
-
         }
     }
+
     bool CalculateGameEnd()
     {
         foreach (ComSpawnPoint spawn in spawns)
@@ -182,6 +184,7 @@ public class GameManager : MonoBehaviour
         }
         return true;
     }
+
     private void LateUpdate()
     {
         int hour = (int)(uiTime / 3600);
@@ -207,7 +210,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     private IEnumerator UpdateCoins()
     {
         while (true)
@@ -220,7 +222,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
 
     private IEnumerator ShowActionText(string message, Color color, float duration)
     {
@@ -255,6 +256,7 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
     public void GoToSetting()
     {
         //SceneManager.LoadScene(2);
@@ -277,7 +279,7 @@ public class GameManager : MonoBehaviour
         {
             playerMovement.coinCount -= laboratory.PlayerSpeedCost;
             laboratory.UpgradePlayerSpeed();
-            StartCoroutine(ShowActionText("이동속도가 증가 되었습니다!", Color.green, 2.0f));
+            photonView.RPC("RPC_UpgradePlayerSpeed", RpcTarget.All);
         }
         else
         {
@@ -285,14 +287,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void UpgradeBase()
     {
         if (playerMovement.coinCount >= laboratory.BaseHPCost)
         {
             playerMovement.coinCount -= laboratory.BaseHPCost;
             laboratory.UpgradeUserBase();
-            StartCoroutine(ShowActionText("기지 생명력이 회복되었습니다!", Color.green, 2.0f));
+            photonView.RPC("RPC_UpgradeBase", RpcTarget.All);
         }
         else
         {
@@ -306,7 +307,7 @@ public class GameManager : MonoBehaviour
         {
             playerMovement.coinCount -= laboratory.ResourceRespawnTimeCost;
             laboratory.UpgradeResourceRespawnSpeed();
-            StartCoroutine(ShowActionText("자원 생성 속도가 빨라졌습니다!", Color.green, 2.0f));
+            photonView.RPC("RPC_UpgradeResourceRespawnSpeed", RpcTarget.All);
         }
         else
         {
@@ -323,6 +324,7 @@ public class GameManager : MonoBehaviour
                 playerMovement.coinCount -= laboratory.ResourceRequiredItemsCost;
                 craftMenu.ApplyDiscount(0.5f); // 매개변수는 할인율 (/100)
                 StartCoroutine(ShowActionText("건설 소모 아이템이 할인 되었습니다!", Color.green, 2.0f));
+                photonView.RPC("RPC_UpgradeDiscountItem", RpcTarget.All, 0.5f);
             }
             else
             {
@@ -341,7 +343,7 @@ public class GameManager : MonoBehaviour
         {
             playerMovement.coinCount -= laboratory.TowerHPCost;
             laboratory.UpgradeTowerHP();
-            StartCoroutine(ShowActionText("타워 생명력이 강화되었습니다!", Color.green, 2.0f));
+            photonView.RPC("RPC_UpgradeTowerHP", RpcTarget.All);
         }
         else
         {
@@ -349,13 +351,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpgradeTowerAttackSpeed()
+    public void UpgradeTowerSpeed()
     {
         if (playerMovement.coinCount >= laboratory.TowerSpeedCost)
         {
             playerMovement.coinCount -= laboratory.TowerSpeedCost;
-            laboratory.UpgradeTowerAttackSpeed();
-            StartCoroutine(ShowActionText("타워 공격속도가 빨라집니다!", Color.green, 2.0f));
+            laboratory.UpgradeTowerSpeed();
+            photonView.RPC("RPC_UpgradeTowerSpeed", RpcTarget.All);
+        }
+        else
+        {
+            fail();
+        }
+    }
+
+    public void UpgradeUserUnitHP()
+    {
+        if (playerMovement.coinCount >= laboratory.UserUnitHPCost)
+        {
+            playerMovement.coinCount -= laboratory.UserUnitHPCost;
+            laboratory.UpgradeUserUnitHP();
+            photonView.RPC("RPC_UpgradeUserUnitHP", RpcTarget.All);
         }
         else
         {
@@ -369,7 +385,7 @@ public class GameManager : MonoBehaviour
         {
             playerMovement.coinCount -= laboratory.UserUnitSpeedCost;
             laboratory.UpgradeUserUnitSpeed();
-            StartCoroutine(ShowActionText("아군 유닛 이동속도가 빨라집니다!", Color.green, 2.0f));
+            photonView.RPC("RPC_UpgradeUserUnitSpeed", RpcTarget.All);
         }
         else
         {
@@ -377,26 +393,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpgradeUserUnitDamage()
+    public void UpgradeEnemyUnitHP()
     {
-        if (playerMovement.coinCount >= laboratory.UserUnitHPCost)
+        if (playerMovement.coinCount >= laboratory.EnemyUnitHPCost)
         {
-            playerMovement.coinCount -= laboratory.UserUnitHPCost;
-            laboratory.UpgradeUserUnitDamage();
-            StartCoroutine(ShowActionText("아군 유닛 생명력이 강해집니다!", Color.green, 2.0f));
+            playerMovement.coinCount -= laboratory.EnemyUnitHPCost;
+            laboratory.UpgradeEnemyUnitHP();
+            photonView.RPC("RPC_UpgradeEnemyUnitHP", RpcTarget.All);
         }
         else
         {
             fail();
         }
     }
+
     public void UpgradeEnemyUnitSpeed()
     {
         if (playerMovement.coinCount >= laboratory.EnemyUnitSpeedCost)
         {
             playerMovement.coinCount -= laboratory.EnemyUnitSpeedCost;
             laboratory.UpgradeEnemyUnitSpeed();
-            StartCoroutine(ShowActionText("적군 유닛 이동속도가 느려집니다!", Color.green, 2.0f));
+            photonView.RPC("RPC_UpgradeEnemyUnitSpeed", RpcTarget.All);
         }
         else
         {
@@ -404,51 +421,106 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpgradeEnemyUnitDamage()
+    [PunRPC]
+    public void RPC_UpgradePlayerSpeed()
     {
-        if (playerMovement.coinCount >= laboratory.EnemyUnitHPCost)
+        if (playerMovement != null)
         {
-            playerMovement.coinCount -= laboratory.EnemyUnitHPCost;
-            laboratory.UpgradeEnemyUnitDamage();
-            StartCoroutine(ShowActionText("적군 유닛 생명렫이 줄어듭니다!", Color.green, 2.0f));
-        }
-        else
-        {
-            fail();
+            playerMovement.UpgradePlayerSpeed(playerMovement.speed + 5, playerMovement.runSpeed + 5);
+            StartCoroutine(ShowActionText("이동속도가 증가 되었습니다!", Color.green, 2.0f));
         }
     }
 
-    public void UpdateBossHP()
+    [PunRPC]
+    public void RPC_UpgradeBase()
     {
-        switch (stage)
+        if (laboratory != null)
         {
-            case 4:
-                {
-                    bossHealth = Bosses[0].GetComponent<BossUnit>().HP / 100f;
-                    Debug.Log(bossHealth);
-                    bossHealthBar.transform.localScale = new Vector3(bossHealth, 1, 1);
-                    break;
-                }
-            case 7:
-                {
-                    bossHealth = Bosses[1].GetComponent<BossUnit>().HP / 100f;
-                    Debug.Log(bossHealth);
-                    bossHealthBar.transform.localScale = new Vector3(bossHealth, 1, 1);
-                    break;
-                }
-            case 10:
-                {
-                    bossHealth = Bosses[2].GetComponent<BossUnit>().HP / 100f;
-                    Debug.Log(bossHealth);
-                    bossHealthBar.transform.localScale = new Vector3(bossHealth, 1, 1);
-                    break;
-                }
-        }
-        if (bossHealth <= 0)
-        {
-            bossHealthGroup.gameObject.SetActive(false);
+            laboratory.UpgradeUserBase();
+            StartCoroutine(ShowActionText("기지의 최대 체력이 증가 되었습니다!", Color.green, 2.0f));
         }
     }
+
+    [PunRPC]
+    public void RPC_UpgradeResourceRespawnSpeed()
+    {
+        if (laboratory != null)
+        {
+            laboratory.UpgradeResourceRespawnSpeed();
+            StartCoroutine(ShowActionText("자원 리젠 속도가 증가 되었습니다!", Color.green, 2.0f));
+        }
+    }
+
+    [PunRPC]
+    public void RPC_UpgradeDiscountItem(float discountRate)
+    {
+        if (craftMenu != null)
+        {
+            craftMenu.ApplyDiscount(discountRate);
+            StartCoroutine(ShowActionText("건설 소모 아이템이 할인 되었습니다!", Color.green, 2.0f));
+        }
+    }
+
+    [PunRPC]
+    public void RPC_UpgradeTowerHP()
+    {
+        if (laboratory != null)
+        {
+            laboratory.UpgradeTowerHP();
+            StartCoroutine(ShowActionText("타워의 최대 체력이 증가 되었습니다!", Color.green, 2.0f));
+        }
+    }
+
+    [PunRPC]
+    public void RPC_UpgradeTowerSpeed()
+    {
+        if (laboratory != null)
+        {
+            laboratory.UpgradeTowerSpeed();
+            StartCoroutine(ShowActionText("타워의 공격속도가 증가 되었습니다!", Color.green, 2.0f));
+        }
+    }
+
+    [PunRPC]
+    public void RPC_UpgradeUserUnitHP()
+    {
+        if (laboratory != null)
+        {
+            laboratory.UpgradeUserUnitHP();
+            StartCoroutine(ShowActionText("사용자 유닛의 최대 체력이 증가 되었습니다!", Color.green, 2.0f));
+        }
+    }
+
+    [PunRPC]
+    public void RPC_UpgradeUserUnitSpeed()
+    {
+        if (laboratory != null)
+        {
+            laboratory.UpgradeUserUnitSpeed();
+            StartCoroutine(ShowActionText("사용자 유닛의 공격속도가 증가 되었습니다!", Color.green, 2.0f));
+        }
+    }
+
+    [PunRPC]
+    public void RPC_UpgradeEnemyUnitHP()
+    {
+        if (laboratory != null)
+        {
+            laboratory.UpgradeEnemyUnitHP();
+            StartCoroutine(ShowActionText("적 유닛의 최대 체력이 증가 되었습니다!", Color.green, 2.0f));
+        }
+    }
+
+    [PunRPC]
+    public void RPC_UpgradeEnemyUnitSpeed()
+    {
+        if (laboratory != null)
+        {
+            laboratory.UpgradeEnemyUnitSpeed();
+            StartCoroutine(ShowActionText("적 유닛의 공격속도가 증가 되었습니다!", Color.green, 2.0f));
+        }
+    }
+
     public void SetPlayerMovement(PlayerMovement playerMovement)
     {
         this.playerMovement = playerMovement;
