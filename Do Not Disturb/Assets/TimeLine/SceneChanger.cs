@@ -19,6 +19,11 @@ public class SceneChanger : MonoBehaviour
         if (ChangeTime <= 0)
         {
             Debug.Log("¾À º¯°æ");
+            if (SceneNumber == 2 || SceneNumber == 3)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
             SceneManager.LoadScene(SceneNumber);
         }
     }
