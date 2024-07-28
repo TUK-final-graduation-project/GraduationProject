@@ -6,7 +6,7 @@ public class Laboratory : MonoBehaviour
     [SerializeField]
     GameObject uiPanel; // 연구소 UI 패널
 
-    public PlayerMovement player;
+    private PlayerMovement player;
     public ResourceManager manager;
     public UserHome home;
     public Tower tower;
@@ -20,10 +20,10 @@ public class Laboratory : MonoBehaviour
     public int TowerHPCost = 100;
     public int TowerSpeedCost = 100;
 
-    public int UserUnitHP = 100;
-    public int UserUnitSpeed = 100;
-    public int EnemyUnitHP = 100;
-    public int EnemyUnitSpeed = 100;
+    public int UserUnitHPCost = 100;
+    public int UserUnitSpeedCost = 100;
+    public int EnemyUnitHPCost = 100;
+    public int EnemyUnitSpeedCost = 100;
 
     // 버튼 및 텍스트 컴포넌트
     public Button[] upgradeButton = new Button[10];
@@ -40,21 +40,28 @@ public class Laboratory : MonoBehaviour
         }
         UpdateButtonUI();
     }
-    //AudioManager.instance.PlaySfx(AudioManager.Sfx.Ui); ui클릭소리 
 
+    // PlayerMovement를 설정하는 메서드
+    public void SetPlayer(PlayerMovement player)
+    {
+        this.player = player;
+        UpdateButtonUI();
+    }
 
     public void UpdateButtonUI()
     {
+        if (player == null) return;
+
         upgradeButtonText[0].text = PlayerSpeedCost + " coins";
         upgradeButtonText[1].text = BaseHPCost + " coins";
         upgradeButtonText[2].text = ResourceRespawnTimeCost + " coins";
         upgradeButtonText[3].text = ResourceRequiredItemsCost + " coins";
         upgradeButtonText[4].text = TowerHPCost + " coins";
         upgradeButtonText[5].text = TowerSpeedCost + " coins";
-        upgradeButtonText[6].text = UserUnitHP + " coins";
-        upgradeButtonText[7].text = UserUnitSpeed + " coins";
-        upgradeButtonText[8].text = EnemyUnitHP + " coins";
-        upgradeButtonText[9].text = EnemyUnitSpeed + " coins";
+        upgradeButtonText[6].text = UserUnitHPCost + " coins";
+        upgradeButtonText[7].text = UserUnitSpeedCost + " coins";
+        upgradeButtonText[8].text = EnemyUnitHPCost + " coins";
+        upgradeButtonText[9].text = EnemyUnitSpeedCost + " coins";
 
         // 코인 확인 후 색상 변경
         UpdateButtonColor(upgradeButton[0], player.coinCount >= PlayerSpeedCost);
@@ -63,11 +70,10 @@ public class Laboratory : MonoBehaviour
         UpdateButtonColor(upgradeButton[3], player.coinCount >= ResourceRequiredItemsCost);
         UpdateButtonColor(upgradeButton[4], player.coinCount >= TowerHPCost);
         UpdateButtonColor(upgradeButton[5], player.coinCount >= TowerSpeedCost);
-        UpdateButtonColor(upgradeButton[6], player.coinCount >= UserUnitHP);
-        UpdateButtonColor(upgradeButton[7], player.coinCount >= UserUnitSpeed);
-        UpdateButtonColor(upgradeButton[8], player.coinCount >= EnemyUnitHP);
-        UpdateButtonColor(upgradeButton[9], player.coinCount >= EnemyUnitSpeed);
-
+        UpdateButtonColor(upgradeButton[6], player.coinCount >= UserUnitHPCost);
+        UpdateButtonColor(upgradeButton[7], player.coinCount >= UserUnitSpeedCost);
+        UpdateButtonColor(upgradeButton[8], player.coinCount >= EnemyUnitHPCost);
+        UpdateButtonColor(upgradeButton[9], player.coinCount >= EnemyUnitSpeedCost);
     }
 
     public void UpdateButtonColor(Button button, bool isAffordable)
@@ -90,11 +96,16 @@ public class Laboratory : MonoBehaviour
 
     void Update()
     {
-        UpdateButtonUI();
+        if (player != null)
+        {
+            UpdateButtonUI();
+        }
     }
 
     public void UpgradePlayerSpeed()
     {
+        if (player == null) return;
+        
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         player.SetSpeed(player.speed + 5);
         player.SetRunSpeed(player.runSpeed + 5);
@@ -103,6 +114,8 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradePlayerHP()
     {
+        if (player == null) return;
+        
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         player.SetHP(player.maxHP);
         Debug.Log("coinCount : " + player.coinCount + "| HP : " + player.HP);
@@ -110,6 +123,8 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradePlayerDamage()
     {
+        if (player == null) return;
+        
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         player.SetDamage(player.attackDamage + 20);
         Debug.Log("coinCount : " + player.coinCount + "| attackDamage : " + player.attackDamage);
@@ -117,6 +132,8 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradeUserBase()
     {
+        if (player == null) return;
+
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         home.setHP(userBaseMaxHP);
         Debug.Log("coinCount : " + player.coinCount + "| userBaseHP : " + home.HP);
@@ -124,6 +141,8 @@ public class Laboratory : MonoBehaviour
 
     public void UpgradeResourceRespawnSpeed()
     {
+        if (player == null) return;
+
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         manager.MinusRespawnTime(10);
         Debug.Log("coinCount : " + player.coinCount + "| respawnTime : " + manager.respawnTime);

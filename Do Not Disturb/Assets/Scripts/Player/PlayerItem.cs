@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class PlayerItem : MonoBehaviour
+public class PlayerItem : MonoBehaviourPun
 {
     [SerializeField]
     private float range; // 습득 가능한 최대 거리.
@@ -51,7 +52,17 @@ public class PlayerItem : MonoBehaviour
             {
                 inven.AcquireItem(getItem.item);
                 Debug.Log(getItem.item.itemName + " 획득했습니다 / 총 " + getItem.item.itemCount + "개");
-                Destroy(hitInfo.transform.gameObject);
+
+                // 네트워크 상에서 아이템을 파괴
+                if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
+                {
+                    PhotonNetwork.Destroy(hitInfo.transform.gameObject);
+                }
+                else
+                {
+                    Destroy(hitInfo.transform.gameObject);
+                }
+
                 //AudioManager.instance.PlaySfx(AudioManager.Sfx.Item);
                 hitInfo = null; // 아이템을 파괴한 후 hitInfo를 null로 설정
             }

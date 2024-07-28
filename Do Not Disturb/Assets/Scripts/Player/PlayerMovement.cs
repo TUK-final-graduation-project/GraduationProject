@@ -1,4 +1,6 @@
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -32,12 +34,31 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 targetVelocity;
     private Vector3 yVelocity;
 
+    private PhotonView pv;
+
     void Start()
     {
         anim = GetComponent<Animator>();
-        cam = Camera.main;
+
         controller = GetComponent<CharacterController>();
         gameManager = FindObjectOfType<GameManager>();
+
+        pv = GetComponent<PhotonView>();
+
+        if (pv.IsMine)
+        {
+            cam = GetComponentInChildren<Camera>(); // 플레이어 오브젝트 내의 카메라 가져오기
+            cam.gameObject.SetActive(true); // 자신의 플레이어 카메라 활성화
+        }
+        else
+        {
+            // 다른 플레이어의 카메라 비활성화
+            Camera[] cameras = GetComponentsInChildren<Camera>();
+            foreach (Camera c in cameras)
+            {
+                c.gameObject.SetActive(false);
+            }
+        }
 
         if (anim == null) Debug.LogError("Animator component is missing on " + gameObject.name);
         if (controller == null) Debug.LogError("CharacterController component is missing on " + gameObject.name);
@@ -52,9 +73,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        isRun = Input.GetKey(KeyCode.LeftShift);
+        if (pv.IsMine)
+        {
+            isRun = Input.GetKey(KeyCode.LeftShift);
+            InputMovement();
+        }
 
-        InputMovement();
     }
 
     void LateUpdate()

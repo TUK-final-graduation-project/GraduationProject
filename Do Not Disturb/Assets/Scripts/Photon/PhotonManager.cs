@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-using Unity.VisualScripting;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
@@ -11,6 +10,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     private readonly string version = "1.0f";
     // 사용자 아이디 입력
     private string userID = "Bony";
+
+    private GameObject player;
 
     // Start is called before the first frame update
     void Start()
@@ -69,14 +70,36 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         Debug.Log($"PhotonNetwork.InRoom = {PhotonNetwork.InRoom}");
         Debug.Log($"Player Count = {PhotonNetwork.CurrentRoom.PlayerCount}");
-        
+
         // 룸에 접속한 사용자 정보 확인
-        foreach(var player in PhotonNetwork.CurrentRoom.Players)
+        foreach (var player in PhotonNetwork.CurrentRoom.Players)
         {
             Debug.Log($"{player.Value.NickName}.{player.Value.ActorNumber}");
             // $ => String.Format()
         }
+
+        // 캐릭터 출현 정보를 배열에 저장
+        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+        int idx = Random.Range(0, points.Length);
+
+        // 캐릭터 생성
+        player = PhotonNetwork.Instantiate("Player", points[idx].position, points[idx].rotation, 0);
+
+        // Laboratory 컴포넌트에 플레이어 할당
+        Laboratory laboratory = FindObjectOfType<Laboratory>();
+        if (laboratory != null)
+        {
+            laboratory.SetPlayer(player.GetComponent<PlayerMovement>());
+        }
+
+        // GameManager에 PlayerMovement 할당
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        if (gameManager != null)
+        {
+            gameManager.SetPlayerMovement(player.GetComponent<PlayerMovement>());
+        }
     }
+
 
     // Update is called once per frame
     void Update()
