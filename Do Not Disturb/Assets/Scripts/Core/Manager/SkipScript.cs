@@ -9,19 +9,24 @@ public class SkipScript : MonoBehaviour
     public GameObject home;
     bool xDown;
     bool cDown;
+    bool vDown;
     public GameObject snowman;
     bool onetime;
+    bool vOnetime;
+    bool xOnetime;
     private void Update()
     {
         xDown = Input.GetButton("SkipToRockBoss");
         cDown = Input.GetButton("SkipToUserBaseDestroy");
+        vDown = Input.GetButton("SkipToUnitSpawn");
         
         
-        if (xDown)
+        if (xDown && !xOnetime)
         {
             manager.state = GameManager.States.ready;
             manager.stage = 4;
             manager.readyTime = -1f;
+            xOnetime = true;
         }
 
         if (cDown && !onetime)
@@ -31,6 +36,14 @@ public class SkipScript : MonoBehaviour
             _iUnit.GetComponent<EnemyUnitController>().target = home;
             _iUnit.GetComponent<EnemyUnitController>().Base = home;
             onetime = true;
+        }
+
+        if (vDown && !vOnetime)
+        {
+            manager.state = GameManager.States.ready;
+            manager.stage = 1;
+            manager.readyTime = -1f;
+            vOnetime = true;
         }
     }
 }
