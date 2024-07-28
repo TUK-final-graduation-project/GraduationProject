@@ -12,7 +12,7 @@ public class UserHome : MonoBehaviour
         HP -= 50;
         if ( HP < 0)
         {
-            SceneManager.LoadScene(3);
+            SceneManager.LoadScene(6);
         }
     }
 
