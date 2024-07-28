@@ -154,7 +154,7 @@ public class Laboratory : MonoBehaviour
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         home.setHP(userBaseMaxHP);
-        Debug.Log("coinCount : " + player.coinCount + "| userBaseHP : " + home.HP);
+        Debug.Log("coinCount : " + player.coinCount + "| userBaseHP : " + home.baseHP);
     }
 
     public void UpgradeResourceRespawnSpeed()

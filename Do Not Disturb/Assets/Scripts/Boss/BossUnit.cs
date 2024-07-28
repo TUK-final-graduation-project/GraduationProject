@@ -100,10 +100,10 @@ public class BossUnit : MonoBehaviour
                     }
                     currentWaypoint = path[targetIndex];
                     currentWaypoint.y = 0; // y를 0으로 고정
+                    transform.rotation = Quaternion.LookRotation(currentWaypoint - transform.position);
                 }
                 else
                 {
-                    transform.rotation = Quaternion.LookRotation(currentWaypoint - transform.position);
                     transform.position += direction * speed * Time.deltaTime;
                 }
                 await UniTask.Yield();

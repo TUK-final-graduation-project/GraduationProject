@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.401886, g: 0.27554595, b: 0.44740993, a: 1}
+  m_IndirectSpecularColor: {r: 0.46357793, g: 0.28219464, b: 0.45609176, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2470,7 +2470,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Golem
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7058117661022054158, guid: 095542123690aed4883972fbb569f828, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -9610,7 +9611,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1392763575349561774, guid: 11ca44cdbd09e994897bf5e7cc88022d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -11007,6 +11009,7 @@ MonoBehaviour:
   maxStage: 3
   state: 0
   enemyCnt: 0
+  readyTime: 0
   playTime: 0
   coolTimeOfReady: 30
   coolTimeOfBattle: 30
@@ -19285,7 +19288,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4186720073882107929, guid: 3d8c7cf8f8b8bb14390472a391e379d3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -26177,17 +26181,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7181190475775268217, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
   m_PrefabInstance: {fileID: 4251636347373925437}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &871426364432453803 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4277754584223755287, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
-  m_PrefabInstance: {fileID: 4251636347373925437}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c84c0c9b5b251394f919568f209c4ef1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &880742895734994719
 Transform:
   m_ObjectHideFlags: 0
@@ -27404,31 +27397,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.120646
+      value: 10.45301
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3838298
+      value: 0.50526536
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.735514
+      value: -12.9758215
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.12795988
+      value: -0.3313285
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.00000003198189
+      value: -0.0922454
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.9917794
+      value: 0.9066241
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00000020209
+      value: -0.24442804
       objectReference: {fileID: 0}
     - target: {fileID: 4471129803835515900, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.w
@@ -27730,7 +27723,8 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.09992879
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4277754584223755287, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8333678794247050798, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
@@ -27972,8 +27966,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0767ef647acfb6c4bbda0fbea18ad7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rate: 0.4
+  rateTime: 0.4
+  onTime: 0.5
+  endRateTime: 0.3
   area: {fileID: 1642091788682488626}
+  effect: {fileID: 0}
 --- !u!54 &4929147489859931168
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -28910,8 +28907,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0767ef647acfb6c4bbda0fbea18ad7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rate: 0.4
+  rateTime: 0.4
+  onTime: 0.5
+  endRateTime: 0.3
   area: {fileID: 798356972946194922}
+  effect: {fileID: 0}
 --- !u!4 &8150672464229783098
 Transform:
   m_ObjectHideFlags: 0
@@ -28981,8 +28981,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0767ef647acfb6c4bbda0fbea18ad7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rate: 0.4
+  rateTime: 0.4
+  onTime: 0.5
+  endRateTime: 0.3
   area: {fileID: 5797608236776418361}
+  effect: {fileID: 0}
 --- !u!1 &8406876635114030935
 GameObject:
   m_ObjectHideFlags: 0
@@ -29099,7 +29102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiPanel: {fileID: 215366569}
-  player: {fileID: 871426364432453803}
+  player: {fileID: 0}
   manager: {fileID: 339142457}
   home: {fileID: 0}
   towers: []

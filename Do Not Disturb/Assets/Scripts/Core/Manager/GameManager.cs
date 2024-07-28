@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public int enemyCnt;
 
     float battleTime;
-    float readyTime;
+    public float readyTime;
     float bossVideoTime;
 
     [Header("Time")]
@@ -155,7 +155,10 @@ public class GameManager : MonoBehaviour
         {
             AudioManager.instance.WPlayBgm(false);
             state = States.bossVideo;
-            readyTime = ReadyTimeList[stage];
+            if ( stage < 10)
+            {
+                readyTime = ReadyTimeList[stage];
+            }
 
             if (stage == 4)
             {
