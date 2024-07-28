@@ -101,6 +101,7 @@ MonoBehaviour:
   state: 0
   type: 0
   HP: 60
+  DieEffect: {fileID: 413775286643867866}
   speed: 5
   target: {fileID: 0}
   Base: {fileID: 0}
@@ -904,6 +905,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdbb84a309207c5489ac068dca61854a, type: 3}
+--- !u!1 &413775286643867866 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2683211062089777059, guid: cdbb84a309207c5489ac068dca61854a, type: 3}
+  m_PrefabInstance: {fileID: 2342619821838712697}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6999198271760188076 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4728935663569173973, guid: cdbb84a309207c5489ac068dca61854a, type: 3}

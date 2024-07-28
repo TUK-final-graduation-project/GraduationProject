@@ -58,14 +58,14 @@ public class ComSpawnPoint : MonoBehaviour
     }
     public IEnumerator Spawn(int num)
     {
-        for (int i = 0; i < num; i++)
+        for (int i = 0; i < SpawnUnitNum[num]; i++)
         {
             Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
             GameObject _iUnit = Instantiate(unit, transform.position, targetRotation);
             _iUnit.GetComponent<EnemyUnitController>().target = target;
             _iUnit.GetComponent<EnemyUnitController>().Base = UserBase;
 
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(7f);
         }
         yield return new WaitForSeconds(0.1f);
     }

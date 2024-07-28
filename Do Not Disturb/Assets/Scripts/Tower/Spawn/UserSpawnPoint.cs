@@ -79,7 +79,7 @@ public class UserSpawnPoint : MonoBehaviour
                 Destroy(transform.parent.gameObject );
                 yield break;
             }
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(7f);
         }
     }
 
