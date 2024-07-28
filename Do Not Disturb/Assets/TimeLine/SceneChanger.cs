@@ -11,6 +11,11 @@ public class SceneChanger : MonoBehaviour
     void Update()
     {
         ChangeTime -= Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            SceneManager.LoadScene(SceneNumber);
+        }
+
         if (ChangeTime <= 0)
         {
             Debug.Log("¾À º¯°æ");

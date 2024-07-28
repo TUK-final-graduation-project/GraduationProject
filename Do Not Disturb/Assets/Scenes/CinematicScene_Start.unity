@@ -30212,8 +30212,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0767ef647acfb6c4bbda0fbea18ad7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rate: 0.4
+  rateTime: 0.4
+  onTime: 0.5
+  endRateTime: 0.3
   area: {fileID: 1642091788682488626}
+  effect: {fileID: 0}
 --- !u!54 &4929147489859931168
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -31150,8 +31153,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0767ef647acfb6c4bbda0fbea18ad7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rate: 0.4
+  rateTime: 0.4
+  onTime: 0.5
+  endRateTime: 0.3
   area: {fileID: 798356972946194922}
+  effect: {fileID: 0}
 --- !u!4 &8150672464229783098
 Transform:
   m_ObjectHideFlags: 0
@@ -31221,8 +31227,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0767ef647acfb6c4bbda0fbea18ad7f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rate: 0.4
+  rateTime: 0.4
+  onTime: 0.5
+  endRateTime: 0.3
   area: {fileID: 5797608236776418361}
+  effect: {fileID: 0}
 --- !u!1 &8406876635114030935
 GameObject:
   m_ObjectHideFlags: 0
@@ -31342,7 +31351,9 @@ MonoBehaviour:
   player: {fileID: 871426364432453803}
   manager: {fileID: 339142457}
   home: {fileID: 0}
-  tower: {fileID: 0}
+  towers: []
+  userUnits: []
+  enemyUnits: []
   PlayerSpeedCost: 50
   BaseHPCost: 100
   ResourceRespawnTimeCost: 50
