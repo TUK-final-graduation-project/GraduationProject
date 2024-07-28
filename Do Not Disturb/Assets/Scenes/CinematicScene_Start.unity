@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3714427, g: 0.31799355, b: 0.4919716, a: 1}
+  m_IndirectSpecularColor: {r: 0.3714329, g: 0.31798893, b: 0.49196124, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -12476,11 +12476,10 @@ MonoBehaviour:
   maxStage: 3
   state: 0
   enemyCnt: 0
-  battleTime: 30
-  readyTime: 30
   playTime: 0
   coolTimeOfReady: 30
   coolTimeOfBattle: 30
+  coolTimeOfbossVideo: 0
   menuPanel: {fileID: 325716372}
   gamePanel: {fileID: 1164931403}
   stageTxt: {fileID: 428332719}
@@ -12490,6 +12489,8 @@ MonoBehaviour:
   actionText: {fileID: 0}
   bossHealthGroup: {fileID: 1433440017}
   bossHealthBar: {fileID: 256330581}
+  settingsPanel: {fileID: 0}
+  scorePanel: {fileID: 0}
   spawns:
   - {fileID: 982151067}
   - {fileID: 1531840591}
@@ -12498,12 +12499,12 @@ MonoBehaviour:
   Bosses: []
   laboratory: {fileID: 8594060696110946828}
   isPaused: 0
-  settingsPanel: {fileID: 0}
-  scorePanel: {fileID: 0}
   Boss_Rock: {fileID: 0}
   Boss_Orc: {fileID: 0}
   Boss_Wizard: {fileID: 0}
   videoCanvas: {fileID: 0}
+  ReadyTimeList: []
+  BattleTimeList: []
 --- !u!114 &940910609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29643,31 +29644,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 54.307903
+      value: -21.832542
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 36.565346
+      value: 7.882363
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 28.204344
+      value: -12.87877
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.35748562
+      value: -0.85865843
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.123254456
+      value: -0.16682166
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.8752633
+      value: 0.47616556
       objectReference: {fileID: 0}
     - target: {fileID: 4293684004661575643, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.30154052
+      value: -0.090236835
       objectReference: {fileID: 0}
     - target: {fileID: 4471129803835515900, guid: 6771ecad746289c49ac8a75b6ea23bfe, type: 3}
       propertyPath: m_LocalRotation.w
