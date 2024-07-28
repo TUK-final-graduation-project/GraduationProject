@@ -21,6 +21,7 @@ public class BossUnit : MonoBehaviour
     public bool isReady = false;
 
     public GameObject meshObj;
+    public GameObject effectObj;
 
     Animator anim;
     Rigidbody rigid;
@@ -202,29 +203,17 @@ public class BossUnit : MonoBehaviour
             {
                 Destroy(other.gameObject);
             }
+            
             Vector3 reactVec = transform.position - other.transform.position;
-
-            // manager.UpdateBossHP(HP, MaxHP);
-            if (HP <= 0)
-            {
-                reactVec = reactVec.normalized;
-                reactVec += Vector3.up;
-                rigid.AddForce(reactVec * 5, ForceMode.Impulse);
-
-                OnDestroy();
-            }
-            else
-            {
-                //anim.SetTrigger("DoDamaged");
-                State = UnitState.Attack;
-            }
+            StartCoroutine(OnDamage(reactVec));
         }
     }
-    public void PlayerDamage(Vector3 pos)
+
+    IEnumerator OnDamage(Vector3 reactVec)
     {
-        HP -= 100;
-        Vector3 reactVec = transform.position - pos;
         manager.UpdateBossHP(HP, MaxHP);
+        effectObj.SetActive(true);
+
         if (HP <= 0)
         {
             reactVec = reactVec.normalized;
@@ -235,9 +224,18 @@ public class BossUnit : MonoBehaviour
         }
         else
         {
-            anim.SetTrigger("DoDamaged");
             State = UnitState.Attack;
+
+            yield return new WaitForSeconds(1f);
+
+            effectObj.SetActive(false);
         }
+    }
+    public void PlayerDamage(Vector3 pos)
+    {
+        HP -= 100;
+        Vector3 reactVec = transform.position - pos;
+        StartCoroutine(OnDamage(reactVec));
     }
     public void OnDestroy()
     {
