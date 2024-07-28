@@ -46,6 +46,7 @@ public class UserSpawnPoint : MonoBehaviour
 
         spawnPoints = FindObjectsOfType(typeof(ComSpawnPoint)) as ComSpawnPoint[];
         float tmp = 0;
+        Base = spawnPoints[0].gameObject;
         foreach (ComSpawnPoint b in spawnPoints)
         {
             if (!b.isConquer)
@@ -54,10 +55,11 @@ public class UserSpawnPoint : MonoBehaviour
                 if (minDistance > tmp)
                 {
                     minDistance = tmp;
-                    target = b.gameObject;
+                    Base = b.gameObject;
                 }
             }
         }
+        target = Base;
         StartCoroutine(Spawn());
     }
 
@@ -68,6 +70,7 @@ public class UserSpawnPoint : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
             GameObject _iUnit = Instantiate(unit, transform.position, targetRotation);
             _iUnit.GetComponent<OurUnitController>().target = target;
+            _iUnit.GetComponent<OurUnitController>().Base = Base;
 
             num -= 1;
 
@@ -76,7 +79,7 @@ public class UserSpawnPoint : MonoBehaviour
                 Destroy(transform.parent.gameObject );
                 yield break;
             }
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(7f);
         }
     }
 

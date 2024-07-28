@@ -16,6 +16,7 @@ public class EnemyUnitController : MonoBehaviour
     public UnitState state;
     public Type type;
     public int HP;
+    public GameObject DieEffect;
 
     [Header("Unit Chase")]
     public int speed = 5;
@@ -312,7 +313,10 @@ public class EnemyUnitController : MonoBehaviour
         StopTargeting();
         StopFindTower();
         anim.SetTrigger("DoDie");
-
+        if ( DieEffect != null)
+        {
+            DieEffect.SetActive(true);
+        }
         Destroy(gameObject, 2);
     }
     //////////////////////////////////////////////

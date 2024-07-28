@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public int enemyCnt;
 
     float battleTime;
-    float readyTime;
+    public float readyTime;
     float bossVideoTime;
 
     [Header("Time")]
@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
 
         if (CalculateGameEnd())
         {
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(5);
         }
     }
 
@@ -155,22 +155,25 @@ public class GameManager : MonoBehaviour
         {
             AudioManager.instance.WPlayBgm(false);
             state = States.bossVideo;
-            readyTime = ReadyTimeList[stage];
+            if ( stage < 10)
+            {
+                readyTime = ReadyTimeList[stage];
+            }
 
             if (stage == 4)
             {
-                PlayVideoOnTime(9f,0);
-                bossVideoTime = 10f;
+                PlayVideoOnTime(8f,0);
+                bossVideoTime = 9f;
             }
             else if (stage == 7)
             {
-                PlayVideoOnTime(7f,1);
-                bossVideoTime = 8f;
+                PlayVideoOnTime(5f, 2);
+                bossVideoTime = 6f;
             }
             else if (stage == 10)
             {
-                PlayVideoOnTime(5f, 2);
-                bossVideoTime = 6f;
+                PlayVideoOnTime(7f, 1);
+                bossVideoTime = 8f;
             }
             else
             {
@@ -207,7 +210,7 @@ public class GameManager : MonoBehaviour
                 stage = maxStage;
                 state = States.gameEnd;
 
-                SceneManager.LoadScene(2/* ½Â¸® ¾À */);
+                SceneManager.LoadScene(5/* ½Â¸® ¾À */);
             }
 
         }

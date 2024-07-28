@@ -10,6 +10,7 @@ public class TestSceneManager : MonoBehaviour
     bool bDown;
     bool nDown;
     bool mDown;
+    bool xDown;
     bool escDown;
 
     int lobbyScene = 0;
@@ -22,6 +23,7 @@ public class TestSceneManager : MonoBehaviour
         nDown = Input.GetButton("Mini Scene");
         mDown = Input.GetButton("Lobby Scene");
         escDown = Input.GetButton("Game End");
+
 
         if (bDown)
         {

@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using System;
 
 public class Laboratory : MonoBehaviour
 {
@@ -13,11 +11,7 @@ public class Laboratory : MonoBehaviour
     public UserHome home;
     public Tower[] towers;
     public OurUnitController[] userUnits;
-    public EnemyUnitController [] enemyUnits;
-
-    //temp
-    //public UnitAttack unitAttack;
-    //public UnitAttack unitEnemyAttack;
+    public EnemyUnitController[] enemyUnits;
 
     // 강화에 필요한 코인 개수
     public int PlayerSpeedCost = 50;
@@ -48,11 +42,25 @@ public class Laboratory : MonoBehaviour
         }
         UpdateButtonUI();
     }
-    //AudioManager.instance.PlaySfx(AudioManager.Sfx.Ui); ui클릭소리 
-
 
     public void UpdateButtonUI()
     {
+        // player 또는 upgradeButtonText가 null인지 확인
+        if (player == null || upgradeButtonText == null)
+        {
+            //Debug.Log("Player or upgradeButtonText is null");
+            return;
+        }
+
+        for (int i = 0; i < upgradeButtonText.Length; i++)
+        {
+            if (upgradeButtonText[i] == null)
+            {
+                //Debug.Log("upgradeButtonText[" + i + "] is null");
+                return;
+            }
+        }
+
         upgradeButtonText[0].text = PlayerSpeedCost + " coins";
         upgradeButtonText[1].text = BaseHPCost + " coins";
         upgradeButtonText[2].text = ResourceRespawnTimeCost + " coins";
@@ -75,15 +83,20 @@ public class Laboratory : MonoBehaviour
         UpdateButtonColor(upgradeButton[7], player.coinCount >= UserUnitSpeed);
         UpdateButtonColor(upgradeButton[8], player.coinCount >= EnemyUnitHP);
         UpdateButtonColor(upgradeButton[9], player.coinCount >= EnemyUnitSpeed);
-
     }
 
     public void UpdateButtonColor(Button button, bool isAffordable)
     {
+        if (button == null)
+        {
+            Debug.LogError("Button is null");
+            return;
+        }
+
         ColorBlock colors = button.colors;
         if (isAffordable)
         {
-            colors.normalColor = Color.white; 
+            colors.normalColor = Color.white;
             colors.selectedColor = Color.white;
             colors.highlightedColor = Color.green;
         }
@@ -98,11 +111,20 @@ public class Laboratory : MonoBehaviour
 
     void Update()
     {
+        if (upgradeButtonText == null || player == null)
+        {
+            return;
+        }
+
         UpdateButtonUI();
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            uiPanel.SetActive(false); 
-            Cursor.visible = false; 
-            Cursor.lockState = CursorLockMode.None;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (uiPanel != null)
+            {
+                uiPanel.SetActive(false);
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.None;
+            }
         }
     }
 
@@ -132,7 +154,7 @@ public class Laboratory : MonoBehaviour
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
         home.setHP(userBaseMaxHP);
-        Debug.Log("coinCount : " + player.coinCount + "| userBaseHP : " + home.HP);
+        Debug.Log("coinCount : " + player.coinCount + "| userBaseHP : " + home.baseHP);
     }
 
     public void UpgradeResourceRespawnSpeed()
@@ -182,18 +204,6 @@ public class Laboratory : MonoBehaviour
         }
     }
 
-  /*  public void UpgradeUserUnitDamage()
-    {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        unitAttack.SetDamage(unitAttack.damage + 10);
-    }
-    
-    public void UpgradeEnemyUnitDamage()
-    {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
-        unitEnemyAttack.SetDamage(unitEnemyAttack.damage + 10);
-    }*/
-   
     public void UpgradeUserUnitHP()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Level);
