@@ -218,7 +218,7 @@ public class ResourceManager : MonoBehaviourPun
 
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.CompareTag("Resource"))
+                if (hit.collider.CompareTag("Rock"))
                 {
                     Rock rock = hit.collider.GetComponent<Rock>();
                     if (rock != null)

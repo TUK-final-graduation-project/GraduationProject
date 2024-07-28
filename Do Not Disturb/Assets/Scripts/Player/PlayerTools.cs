@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Photon.Pun;
 
-public class PlayerTools : MonoBehaviour
+public class PlayerTools : MonoBehaviourPun
 {
     public GameObject[] tools;
     public bool[] hasTools;
@@ -49,6 +50,8 @@ public class PlayerTools : MonoBehaviour
 
     void HandleInput()
     {
+        if (!photonView.IsMine) return;
+
         fDown = Input.GetButton("Fire1");
 
         swapTool1 = Input.GetButton("Swap1");
@@ -60,15 +63,10 @@ public class PlayerTools : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!photonView.IsMine) return;
+
         Swap();
         Swing();
-
-        /*        if (Input.GetKeyDown(KeyCode.Tab))
-                {
-                    if (!isCrafting) isCrafting = true;
-                    else isCrafting = false;
-                }
-                if (isCrafting)*/
     }
 
     void Swing()
