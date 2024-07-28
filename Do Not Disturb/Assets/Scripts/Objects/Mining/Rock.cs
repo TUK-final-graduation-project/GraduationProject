@@ -30,11 +30,12 @@ public class Rock : MonoBehaviourPun
 
     public void Mining()
     {
-        if (!photonView.IsMine)
-        {
-            return;
-        }
+        photonView.RPC("RPC_Mine", RpcTarget.AllBuffered);
+    }
 
+    [PunRPC]
+    private void RPC_Mine()
+    {
         var clone = Instantiate(go_effect_prefabs, col.bounds.center, Quaternion.identity);
         Destroy(clone, destroyTime);
 
@@ -42,12 +43,12 @@ public class Rock : MonoBehaviourPun
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Mining);
         if (hp <= 0)
         {
-            photonView.RPC("Destruction", RpcTarget.AllBuffered);
+            photonView.RPC("RPC_Destruction", RpcTarget.AllBuffered);
         }
     }
 
     [PunRPC]
-    private void Destruction()
+    private void RPC_Destruction()
     {
         col.enabled = false;
         go_rock.SetActive(false);

@@ -208,4 +208,25 @@ public class ResourceManager : MonoBehaviourPun
             }
         }
     }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.CompareTag("Resource"))
+                {
+                    Rock rock = hit.collider.GetComponent<Rock>();
+                    if (rock != null)
+                    {
+                        rock.Mining();
+                    }
+                }
+            }
+        }
+    }
 }
