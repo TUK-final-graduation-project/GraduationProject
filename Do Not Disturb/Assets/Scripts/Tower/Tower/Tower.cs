@@ -101,7 +101,7 @@ public class Tower : MonoBehaviour
         //rigidGrenade.velocity = nextVec * 2;
     }
 
-    void Focus() 
+    void Focus()
     {
         Vector3 nextVec = releasePoint.transform.forward;
         nextVec.Normalize();
@@ -121,7 +121,7 @@ public class Tower : MonoBehaviour
     public void OnDamage()
     {
         HP -= 50;
-        if ( HP < 0 )
+        if (HP < 0)
         {
             isConquer = true;
 
@@ -134,7 +134,10 @@ public class Tower : MonoBehaviour
     }
     public void SetAttackSpeed(float _speed)
     {
-        attackSpeed = _speed;
+        if (_speed <= 0)
+            attackSpeed = 1;
+        else { attackSpeed /= 2; }
+
     }
 
 

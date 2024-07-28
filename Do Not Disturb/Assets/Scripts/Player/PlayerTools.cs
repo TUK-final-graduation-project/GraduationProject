@@ -49,7 +49,7 @@ public class PlayerTools : MonoBehaviour
 
     void HandleInput()
     {
-        fDown = Input.GetButton("Fire1");
+        fDown = Input.GetButton("Fire2");
 
         swapTool1 = Input.GetButton("Swap1");
         swapTool2 = Input.GetButton("Swap2");

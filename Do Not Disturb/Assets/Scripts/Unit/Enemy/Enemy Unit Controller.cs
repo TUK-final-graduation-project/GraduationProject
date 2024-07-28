@@ -372,4 +372,9 @@ public class EnemyUnitController : MonoBehaviour
     {
         speed = _speed;
     }
+
+    public void SetHP(int _hp)
+    {
+        HP = _hp;
+    }
 }
