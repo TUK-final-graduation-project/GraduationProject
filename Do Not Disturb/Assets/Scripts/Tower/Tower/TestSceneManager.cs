@@ -25,7 +25,7 @@ public class TestSceneManager : MonoBehaviour
 
         if (bDown)
         {
-            SceneManager.LoadScene(gameScene);
+            SceneManager.LoadScene(CinematicScene_Start);
         }
         if (nDown)
         {
@@ -36,6 +36,10 @@ public class TestSceneManager : MonoBehaviour
             SceneManager.LoadScene(lobbyScene);
         }
 
+        if(Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            SceneManager.LoadScene(gameScene);
+        }
         
     }
 
@@ -43,9 +47,10 @@ public class TestSceneManager : MonoBehaviour
     {
         Application.Quit();
     }
+
     public void OnGameSceneStart()
     {
-        SceneManager.LoadScene(gameScene);
+        SceneManager.LoadScene(CinematicScene_Start);
     }
     public void OnOptionSceneStart()
     {
