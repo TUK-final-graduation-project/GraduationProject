@@ -77,7 +77,7 @@ public class PlayerTools : MonoBehaviour
             return;
 
         swingDelay += Time.deltaTime;
-        isSwingReady = equipTool.rate < swingDelay;
+        isSwingReady = equipTool.rateTime < swingDelay;
 
         if (fDown && isSwingReady && !isSwap)
         {
