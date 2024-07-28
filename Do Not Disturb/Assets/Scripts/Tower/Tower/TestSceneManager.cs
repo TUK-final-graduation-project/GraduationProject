@@ -25,7 +25,7 @@ public class TestSceneManager : MonoBehaviour
 
         if (bDown)
         {
-            SceneManager.LoadScene(CinematicScene_Start);
+            SceneManager.LoadScene(gameScene);
         }
         if (nDown)
         {
@@ -45,7 +45,7 @@ public class TestSceneManager : MonoBehaviour
     }
     public void OnGameSceneStart()
     {
-        SceneManager.LoadScene(CinematicScene_Start);
+        SceneManager.LoadScene(gameScene);
     }
     public void OnOptionSceneStart()
     {
