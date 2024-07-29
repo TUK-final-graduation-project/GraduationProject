@@ -86,6 +86,7 @@ public class BossUnit : MonoBehaviour
                     targetIndex++;
                     if (targetIndex >= path.Length)
                     {
+                        isReady = true;
                         anim.SetTrigger("atBossPoint");
                         StartAttacking();
 
@@ -96,7 +97,6 @@ public class BossUnit : MonoBehaviour
                             unit.BossTargeting();
                         }
                         stopzone.StartMakeRock();
-                        isReady = true;
                         return;
                     }
                     currentWaypoint = path[targetIndex];

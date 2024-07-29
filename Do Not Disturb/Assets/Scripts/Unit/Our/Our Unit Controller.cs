@@ -34,7 +34,7 @@ public class OurUnitController : MonoBehaviour
     private CancellationTokenSource pathFindingCts;
     private CancellationTokenSource targetingCts;
     private CancellationTokenSource attackCts;
-
+    public BossUnit[] bosses;
     private void Awake()
     {
         target = Base;
@@ -42,15 +42,6 @@ public class OurUnitController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
 
-        BossUnit[] bosses = FindObjectsOfType(typeof(BossUnit)) as BossUnit[];
-        foreach(BossUnit boss in bosses)
-        {
-            if ( boss.isReady == true)
-            {
-                target = boss.gameObject;
-                break;
-            }
-        }
         Invoke("RequestPathToMgr", 1);
         StartTargeting();
     }
@@ -223,12 +214,12 @@ public class OurUnitController : MonoBehaviour
 
         rigid.isKinematic = true;
 
-        if (type == Type.Melee)
+        if (type == Type.Melee && target != null)
         {
             //rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
             meleeArea.SetActive(true);
         }
-        else if (type == Type.Range)
+        else if (type == Type.Range && target != null)
         {
 
             GameObject instantBullet = Instantiate(bullet, transform.position + Vector3.up * 1.5f, transform.rotation);

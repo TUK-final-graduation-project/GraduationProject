@@ -28,7 +28,7 @@ public class UserSpawnPoint : MonoBehaviour
 
     int num = 5;
 
-
+    public BossUnit[] bosses;
     private void Start()
     {
         switch (type)
@@ -67,6 +67,16 @@ public class UserSpawnPoint : MonoBehaviour
     {
         while(true)
         {
+            bosses = FindObjectsOfType(typeof(BossUnit)) as BossUnit[];
+            foreach (BossUnit boss in bosses)
+            {
+                if (boss.isReady == true)
+                {
+                    Debug.Log("aaaaa");
+                    target = boss.gameObject;
+                    break;
+                }
+            }
             Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
             GameObject _iUnit = Instantiate(unit, transform.position, targetRotation);
             _iUnit.GetComponent<OurUnitController>().target = target;
