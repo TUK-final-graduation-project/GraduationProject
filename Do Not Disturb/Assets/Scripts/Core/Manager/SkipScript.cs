@@ -8,6 +8,8 @@ public class SkipScript : MonoBehaviour
     public GameManager manager;
     public GameObject home;
     bool xDown;
+    bool lDown;
+    bool kDown;
     bool cDown;
     bool vDown;
     bool zDown;
@@ -15,10 +17,14 @@ public class SkipScript : MonoBehaviour
     bool onetime;
     bool vOnetime;
     bool xOnetime;
+    bool kOnetime;
+    bool lOnetime;
     bool zOnetime;
     private void Update()
     {
         xDown = Input.GetButton("SkipToRockBoss");
+        lDown = Input.GetButton("SkipToWizardBoss");
+        kDown = Input.GetButton("SkipToOakBoss");
         cDown = Input.GetButton("SkipToUserBaseDestroy");
         vDown = Input.GetButton("SkipToUnitSpawn");
         zDown = Input.GetButton("SkipToWin");
@@ -31,7 +37,20 @@ public class SkipScript : MonoBehaviour
             manager.readyTime = -1f;
             xOnetime = true;
         }
-
+        if (kDown && !kOnetime)
+        {
+            manager.state = GameManager.States.ready;
+            manager.stage = 10;
+            manager.readyTime = -1f;
+            kOnetime = true;
+        }
+        if (lDown && !lOnetime)
+        {
+            manager.state = GameManager.States.ready;
+            manager.stage = 7;
+            manager.readyTime = -1f;
+            lOnetime = true;
+        }
         if (cDown && !onetime)
         {
             home.GetComponent<UserHome>().baseHP = 10;
