@@ -28,6 +28,8 @@ public class SkipScript : MonoBehaviour
         cDown = Input.GetButton("SkipToUserBaseDestroy");
         vDown = Input.GetButton("SkipToUnitSpawn");
         zDown = Input.GetButton("SkipToWin");
+        // r 눌러서 돋보기
+        // 1번 2번 3번 헷갈리지 말기 ^___^
         
         
         if (xDown && !xOnetime)
