@@ -31,7 +31,7 @@ public class Rock : MonoBehaviour
         Destroy(clone, destroyTime);
 
         hp--;
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Mining);
+        //AudioManager.instance.PlaySfx(AudioManager.Sfx.Mining);
         if (hp <= 0)
             Destruction();
     }
