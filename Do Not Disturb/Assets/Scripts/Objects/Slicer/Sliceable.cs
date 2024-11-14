@@ -1,82 +1,41 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.AccessControl;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Sliceable : MonoBehaviour
 {
     [SerializeField]
-    private bool isSolid = true;
+    private bool isClosedMesh = true;
 
     [SerializeField]
-    private bool reverseWindTriangles = false;
+    private bool shareVertex = false;
 
     [SerializeField]
-    private bool useGravity = true;
+    private bool smoothVertex = false;
 
     [SerializeField]
-    private bool shareVertices = false;
+    private bool reverseWindTriangle = false;
 
-    [SerializeField]
-    private bool smoothVertices = false;
-
-    public bool IsSolid
+    // Auto-properties 활용하여 코드 간소화
+    public bool IsClosedMesh
     {
-        get
-        {
-            return isSolid;
-        }
-        set
-        {
-            isSolid = value;
-        }
+        get => isClosedMesh;
+        set => isClosedMesh = value;
     }
 
-    public bool ReverseWireTriangles
+    public bool ShareVertex
     {
-        get
-        {
-            return reverseWindTriangles;
-        }
-        set
-        {
-            reverseWindTriangles = value;
-        }
+        get => shareVertex;
+        set => shareVertex = value;
     }
 
-    public bool UseGravity
+    public bool SmoothVertex
     {
-        get
-        {
-            return useGravity;
-        }
-        set
-        {
-            useGravity = value;
-        }
+        get => smoothVertex;
+        set => smoothVertex = value;
     }
 
-    public bool ShareVertices
+    public bool ReverseWindTriangle
     {
-        get
-        {
-            return shareVertices;
-        }
-        set
-        {
-            shareVertices = value;
-        }
-    }
-
-    public bool SmoothVertices
-    {
-        get
-        {
-            return smoothVertices;
-        }
-        set
-        {
-            smoothVertices = value;
-        }
+        get => reverseWindTriangle;
+        set => reverseWindTriangle = value;
     }
 }

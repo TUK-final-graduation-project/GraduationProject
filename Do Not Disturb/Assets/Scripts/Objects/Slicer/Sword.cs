@@ -7,6 +7,7 @@ public class Sword : MonoBehaviour
 {
     // 프레임당 생성할 정점 수
     private const int NUM_VERTICES = 12;
+    private const float SLICE_DESTROY_DELAY = 3f;
 
     [SerializeField]
     [Tooltip("블레이드 첨단 오브젝트")]
@@ -26,76 +27,129 @@ public class Sword : MonoBehaviour
     private float cutForce = 3f;
 
     [SerializeField]
-    public bool DestroySliced;
+    public bool destroySlicedObjects = true;
 
     private Mesh mesh;
     private Vector3[] vertices;
     private int[] triangles;
-    private Vector3 preTipPos;
-    private Vector3 preBasePos;
+
+    // 이전 프레임에서의 위치
+    private Vector3 prevTipPosition;
+    private Vector3 prevBasePosition;
+
+    // 트리거 진입 및 종료 시 위치
     private Vector3 triggerEnterTipPos;
     private Vector3 triggerEnterBasePos;
     private Vector3 triggerExitTipPos;
 
-    void Start()
+    private void Start()
     {
+        InitializeMesh();
+        SetInitialPositions();
+    }
 
+    private void InitializeMesh()
+    {
         vertices = new Vector3[NUM_VERTICES];
         triangles = new int[vertices.Length];
+    }
 
-        // 끝과 기준 위치 설정
-        preTipPos = tip.transform.position;
-        preBasePos = swordBase.transform.position;
-
+    private void SetInitialPositions()
+    {
+        prevTipPosition = tip.transform.position;
+        prevBasePosition = swordBase.transform.position;
     }
 
     private void OnTriggerEnter(Collider other)
+    {
+        RecordTriggerEnterPositions();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        RecordTriggerExitPosition();
+        ProcessSlice(other);
+    }
+
+    private void RecordTriggerEnterPositions()
     {
         triggerEnterTipPos = tip.transform.position;
         triggerEnterBasePos = swordBase.transform.position;
     }
 
-    private void OnTriggerExit(Collider other)
+    private void RecordTriggerExitPosition()
     {
         triggerExitTipPos = tip.transform.position;
+    }
 
-        // 팁과 베이스 사이에 삼각형을 만들어서 노말을 얻는다.
+    private Plane CalculateSlicingPlane(Collider other)
+    {
         Vector3 side1 = triggerExitTipPos - triggerEnterTipPos;
         Vector3 side2 = triggerExitTipPos - triggerEnterBasePos;
 
-        // 삼각형 위의 점을 얻어 노말을 계산
+        // 노말 벡터 계산
         Vector3 normal = Vector3.Cross(side1, side2).normalized;
 
-        // 노말을 자르려는 객체의 로컬 변환(transform)과 일치하도록 변환
-        Vector3 transformedNormal = ((Vector3)(other.gameObject.transform.localToWorldMatrix.transpose * normal)).normalized;
-
-        // 자르려는 객체의 로컬 변환에서 시작점을 얻는다.
+        // 로컬 변환으로 변환된 노말과 시작점 계산
+        Vector3 transformedNormal = TransformNormalToOtherLocalSpace(normal, other);
         Vector3 transformedStartingPoint = other.gameObject.transform.InverseTransformPoint(triggerEnterTipPos);
 
-        Plane plane = new Plane();
+        Plane plane = new Plane(transformedNormal, transformedStartingPoint);
 
-        plane.SetNormalAndPosition(
-                transformedNormal,
-                transformedStartingPoint);
-
-        var direction = Vector3.Dot(Vector3.up, transformedNormal);
-
-        // 양쪽의 메시가 어느 쪽에 있는지 항상 알 수 있도록 평면을 뒤집음.
-
-        if (direction < 0)
+        // 항상 일관된 절단 방향 유지
+        if (Vector3.Dot(Vector3.up, transformedNormal) < 0)
         {
             plane = plane.flipped;
         }
 
-        GameObject[] slices = Slicer.Slice(plane, other.gameObject);
+        return plane;
+    }
+
+    private Vector3 TransformNormalToOtherLocalSpace(Vector3 normal, Collider other)
+    {
+        return ((Vector3)(other.gameObject.transform.localToWorldMatrix.transpose * normal)).normalized;
+    }
+
+    private void ProcessSlice(Collider other)
+    {
+        // 슬라이스 평면 계산
+        Plane slicingPlane = CalculateSlicingPlane(other);
+
+        // 원본 객체를 슬라이스
+        GameObject[] slices = Slicer.Slice(slicingPlane, other.gameObject);
+
+        // 슬라이스된 객체가 제대로 반환되지 않았을 경우 처리
+        if (slices == null || slices.Length < 2)
+        {
+            Debug.Log("Slicing failed: Invalid slice data.");
+            return;
+        }
+
         Destroy(other.gameObject);
 
-        Rigidbody rigidbody = slices[1].GetComponent<Rigidbody>();
-        Vector3 newNormal = transformedNormal + Vector3.up * cutForce;
-        rigidbody.AddForce(newNormal, ForceMode.Impulse);
+        // 두 번째 조각에 대해 물리력 적용
+        ApplyCutForce(slices[1], slicingPlane.normal);
 
-        // 3초 후 객체 삭제
-        Destroy(slices[0], 3);
-        Destroy(slices[1], 3);
+        // 잘린 객체들 처리 (삭제 지연 시간)
+        if (destroySlicedObjects)
+        {
+            Destroy(slices[0], SLICE_DESTROY_DELAY);
+            Destroy(slices[1], SLICE_DESTROY_DELAY);
+        }
+    }
+
+    private void ApplyCutForce(GameObject slice, Vector3 normal)
+    {
+        // 리지드바디가 없다면, 물리력 적용을 하지 않음
+        Rigidbody rigidbody = slice.GetComponent<Rigidbody>();
+        if (rigidbody != null)
+        {
+            Vector3 forceDirection = normal + Vector3.up * cutForce;
+            rigidbody.AddForce(forceDirection, ForceMode.Impulse);
+        }
+        else
+        {
+            Debug.LogWarning("No Rigidbody attached to the sliced object.");
+        }
     }
 }

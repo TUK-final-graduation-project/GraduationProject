@@ -1,95 +1,76 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace Assets.Scripts
 {
     class Slicer
     {
         // 평면에 따라 객체를 자르기
-        
-        /// <param name="plane"></param>
-        /// <param name="objectToCut"></param>
-        /// <returns></returns>
         public static GameObject[] Slice(Plane plane, GameObject objectToCut)
         {
-            // 현재 메시 및 해당 정점 및 삼각형 가져오기
             Mesh mesh = objectToCut.GetComponent<MeshFilter>().mesh;
-            var a = mesh.GetSubMesh(0);
             Sliceable sliceable = objectToCut.GetComponent<Sliceable>();
-
 
             if (sliceable == null)
             {
-                //throw new NotSupportedException("자를 수 없는 객체를 잘랐습니다. 해당 객체에 sliceable 스크립트를 추가하거나 sliceable에서 상속하세요.");
-                //Debug.Log("절단할 수 없습니다 : " + objectToCut.name);
-                //return null;
+                //Debug.LogWarning($"Cannot slice: {objectToCut.name} does not have a Sliceable component.");
+                return null;
             }
 
-            // 중첩된 객체의 왼쪽 및 오른쪽 슬라이스 만들기
-            SlicesMetadata slicesMeta = new SlicesMetadata(plane, mesh, sliceable.IsSolid, sliceable.ReverseWireTriangles, sliceable.ShareVertices, sliceable.SmoothVertices);
-            
+            // 슬라이스 메타데이터 생성
+            SliceDummyData sliceData = new SliceDummyData(
+                plane,
+                mesh,
+                sliceable.IsClosedMesh,
+                sliceable.ReverseWindTriangle,
+                sliceable.ShareVertex,
+                sliceable.SmoothVertex
+            );
 
-            GameObject positiveObject = CreateMeshGameObject(objectToCut);
-            positiveObject.name = string.Format("{0}_positive", objectToCut.name);
+            // 양측 생성
+            GameObject SliceSideA = CreateSliceObject(objectToCut, $"{objectToCut.name}_A");
+            GameObject SliceSideB = CreateSliceObject(objectToCut, $"{objectToCut.name}_B");
 
-            GameObject negativeObject = CreateMeshGameObject(objectToCut);
-            negativeObject.name = string.Format("{0}_negative", objectToCut.name);
+            SliceSideA.GetComponent<MeshFilter>().mesh = sliceData.SideAMesh;
+            SliceSideB.GetComponent<MeshFilter>().mesh = sliceData.SideBMesh;
 
-            var positiveSideMeshData = slicesMeta.PositiveSideMesh;
-            var negativeSideMeshData = slicesMeta.NegativeSideMesh;
+            SetupCollidersAndRigidBody(SliceSideA, sliceData.SideAMesh);
+            SetupCollidersAndRigidBody(SliceSideB, sliceData.SideBMesh);
 
-            positiveObject.GetComponent<MeshFilter>().mesh = positiveSideMeshData;
-            negativeObject.GetComponent<MeshFilter>().mesh = negativeSideMeshData;
-
-            SetupCollidersAndRigidBodys(ref positiveObject, positiveSideMeshData, sliceable.UseGravity);
-            SetupCollidersAndRigidBodys(ref negativeObject, negativeSideMeshData, sliceable.UseGravity);
-
-            return new GameObject[] { positiveObject, negativeObject };
+            return new GameObject[] { SliceSideA, SliceSideB };
         }
 
-        // 기본 메시 게임 객체 만들기
-        
-        /// <param name="originalObject">원본 객체.</param>
-        /// <returns></returns>
-        private static GameObject CreateMeshGameObject(GameObject originalObject)
+        private static GameObject CreateSliceObject(GameObject originalObject, string newName)
         {
+            GameObject sliceObject = new GameObject(newName);
             var originalMaterial = originalObject.GetComponent<MeshRenderer>().materials;
-
-            GameObject meshGameObject = new GameObject();
             Sliceable originalSliceable = originalObject.GetComponent<Sliceable>();
 
-            meshGameObject.AddComponent<MeshFilter>();
-            meshGameObject.AddComponent<MeshRenderer>();
-            Sliceable sliceable = meshGameObject.AddComponent<Sliceable>();
+            sliceObject.AddComponent<MeshFilter>();
+            sliceObject.AddComponent<MeshRenderer>().materials = originalMaterial;
+            var sliceable = sliceObject.AddComponent<Sliceable>();
 
-            sliceable.IsSolid = originalSliceable.IsSolid;
-            sliceable.ReverseWireTriangles = originalSliceable.ReverseWireTriangles;
-            sliceable.UseGravity = originalSliceable.UseGravity;
+            sliceable.IsClosedMesh = originalSliceable.IsClosedMesh;
+            sliceable.ReverseWindTriangle = originalSliceable.ReverseWindTriangle;
+           
+            sliceObject.transform.SetPositionAndRotation(
+                originalObject.transform.position,
+                originalObject.transform.rotation
+            );
+            sliceObject.transform.localScale = originalObject.transform.localScale;
+            sliceObject.tag = originalObject.tag;
 
-            meshGameObject.GetComponent<MeshRenderer>().materials = originalMaterial;
-
-            meshGameObject.transform.localScale = originalObject.transform.localScale;
-            meshGameObject.transform.rotation = originalObject.transform.rotation;
-            meshGameObject.transform.position = originalObject.transform.position;
-
-            meshGameObject.tag = originalObject.tag;
-            return meshGameObject;
+            return sliceObject;
         }
 
-        // 메시 콜라이더 및 리지드 바디를 게임 객체에 추가
-        /// <param name="gameObject"></param>
-        /// <param name="mesh"></param>
-        private static void SetupCollidersAndRigidBodys(ref GameObject gameObject, Mesh mesh, bool useGravity)
+        private static void SetupCollidersAndRigidBody(GameObject gameObject, Mesh mesh)
         {
-            MeshCollider meshCollider = gameObject.AddComponent<MeshCollider>();
+            var meshCollider = gameObject.AddComponent<MeshCollider>();
             meshCollider.sharedMesh = mesh;
             meshCollider.convex = true;
 
-            var rb = gameObject.AddComponent<Rigidbody>();
-            rb.useGravity = useGravity;
+            var rigidbody = gameObject.AddComponent<Rigidbody>();
+            rigidbody.useGravity = true;
         }
     }
 }

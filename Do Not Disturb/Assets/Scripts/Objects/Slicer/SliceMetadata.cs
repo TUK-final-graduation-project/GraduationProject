@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,111 +6,95 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using UnityEngine.UIElements;
+
 namespace Assets.Scripts
 {
-    /// <summary>
-    /// ¸Ş½ÃÀÇ Ãø¸éÀ» ³ªÅ¸³»´Â ¿­°ÅÇü
-    /// </summary>
     public enum MeshSide
     {
-        Positive = 0,
-        Negative = 1
+        SideA = 0,
+        SideB = 1
     }
 
-    /// <summary>
-    /// ½½¶óÀÌ½ºµÈ °´Ã¼ÀÇ ¾çÂÊ ¸é ¸Ş½Ã µ¥ÀÌÅÍ¸¦ °ü¸®ÇÏ´Â °´Ã¼
-    /// </summary>
-    class SlicesMetadata
+    class SliceDummyData
     {
-        private Mesh positiveSideMesh;
-        private List<Vector3> positiveSideVertices;
-        private List<int> positiveSideTriangles;
-        private List<Vector2> positiveSideUvs;
-        private List<Vector3> positiveSideNormals;
+        private Mesh sideAMesh;
+        private List<Vector3> sideAVertices;
+        private List<int> sideATriangles;
+        private List<Vector2> sideAUvs;
+        private List<Vector3> sideANormals;
 
-        private Mesh negativeSideMesh;
-        private List<Vector3> negativeSideVertices;
-        private List<int> negativeSideTriangles;
-        private List<Vector2> negativeSideUvs;
-        private List<Vector3> negativeSideNormals;
+        private Mesh sideBMesh;
+        private List<Vector3> sideBVertices;
+        private List<int> sideBTriangles;
+        private List<Vector2> sideBUvs;
+        private List<Vector3> sideBNormals;
 
         private readonly List<Vector3> pointsAlongPlane;
         private Plane plane;
         private Mesh mesh;
-        private bool isSolid;
+        private bool isClosedMesh;
         private bool useSharedVertices = false;
         private bool smoothVertices = false;
         private bool createReverseTriangleWindings = false;
 
-
-        // °´Ã¼°¡ ½ÇÃ¼ÀÎÁö ¿©ºÎ¸¦ ³ªÅ¸³»´Â ÇÁ·ÎÆÛÆ¼
-        public bool IsSolid
+        // ì–‘ìˆ˜ ë©´ ë©”ì‹œ
+        public Mesh SideAMesh
         {
             get
             {
-                return isSolid;
+                if (sideAMesh == null)
+                {
+                    sideAMesh = new Mesh();
+                }
+
+                SetMeshData(MeshSide.SideA);
+                return sideAMesh;
+            }
+        }
+
+        // ìŒìˆ˜ ë©´ ë©”ì‹œ
+        public Mesh SideBMesh
+        {
+            get
+            {
+                if (sideBMesh == null)
+                {
+                    sideBMesh = new Mesh();
+                }
+
+                SetMeshData(MeshSide.SideB);
+
+                return sideBMesh;
+            }
+        }
+
+        public bool IsClosedMesh
+        {
+            get
+            {
+                return isClosedMesh;
             }
             set
             {
-                isSolid = value;
+                isClosedMesh = value;
             }
         }
 
-        // ¾ç¼ö ¸é ¸Ş½Ã¸¦ °¡Á®¿À´Â ÇÁ·ÎÆÛÆ¼
-        public Mesh PositiveSideMesh
+        // ìŠ¬ë¼ì´ìŠ¤ëœ ê°ì²´ì˜ ì´ˆê¸°í™” ë° ë©”ì‹œ ê³„ì‚°ì„ ë‹´ë‹¹í•˜ëŠ” ìƒì„±ì
+        public SliceDummyData(Plane plane, Mesh mesh, bool isSolid, bool createReverseTriangleWindings, bool shareVertices, bool smoothVertices)
         {
-            get
-            {
-                if (positiveSideMesh == null)
-                {
-                    positiveSideMesh = new Mesh();
-                }
-
-                SetMeshData(MeshSide.Positive);
-                return positiveSideMesh;
-            }
-        }
-
-        // À½¼ö ¸é ¸Ş½Ã¸¦ °¡Á®¿À´Â ÇÁ·ÎÆÛÆ¼
-        public Mesh NegativeSideMesh
-        {
-            get
-            {
-                if (negativeSideMesh == null)
-                {
-                    negativeSideMesh = new Mesh();
-                }
-
-                SetMeshData(MeshSide.Negative);
-
-                return negativeSideMesh;
-            }
-        }
-
-
-        // ½½¶óÀÌ½ºµÈ °´Ã¼ÀÇ ÃÊ±âÈ­ ¹× ¸Ş½Ã °è»êÀ» ´ã´çÇÏ´Â »ı¼ºÀÚ
-
-        /// <param name="plane">½½¶óÀÌ½º Æò¸é</param>
-        /// <param name="mesh">¿øº» ¸Ş½Ã</param>
-        /// <param name="isSolid">½ÇÃ¼ÀÎÁö ¿©ºÎ</param>
-        /// <param name="createReverseTriangleWindings">¿ª »ï°¢Çü Æ®¶óÀÌ¾Ş±ÛÀ» ¸¸µéÁö ¿©ºÎ</param>
-        /// <param name="shareVertices">°øÀ¯µÈ Á¤Á¡ »ç¿ë ¿©ºÎ</param>
-        /// <param name="smoothVertices">Á¤Á¡À» ºÎµå·´°Ô Ã³¸®ÇÒÁö ¿©ºÎ</param>
-
-        public SlicesMetadata(Plane plane, Mesh mesh, bool isSolid, bool createReverseTriangleWindings, bool shareVertices, bool smoothVertices)
-        {
-            positiveSideTriangles = new List<int>();
-            positiveSideVertices = new List<Vector3>();
-            negativeSideTriangles = new List<int>();
-            negativeSideVertices = new List<Vector3>();
-            positiveSideUvs = new List<Vector2>();
-            negativeSideUvs = new List<Vector2>();
-            positiveSideNormals = new List<Vector3>();
-            negativeSideNormals = new List<Vector3>();
+            sideATriangles = new List<int>();
+            sideAVertices = new List<Vector3>();
+            sideBTriangles = new List<int>();
+            sideBVertices = new List<Vector3>();
+            sideAUvs = new List<Vector2>();
+            sideBUvs = new List<Vector2>();
+            sideANormals = new List<Vector3>();
+            sideBNormals = new List<Vector3>();
             pointsAlongPlane = new List<Vector3>();
             this.plane = plane;
             this.mesh = mesh;
-            this.isSolid = isSolid;
+            this.isClosedMesh = isSolid;
             this.createReverseTriangleWindings = createReverseTriangleWindings;
             useSharedVertices = shareVertices;
             this.smoothVertices = smoothVertices;
@@ -118,51 +102,19 @@ namespace Assets.Scripts
             ComputeNewMeshes();
         }
 
-        // ¸Ş½Ã µ¥ÀÌÅÍ¸¦ ¿Ã¹Ù¸¥ ¸é¿¡ Ãß°¡ÇÏ°í ¹ı¼± º¤ÅÍ¸¦ °è»êÇÏ´Â ¸Ş¼Òµå
-
-        /// <param name="side">Ãß°¡ÇÒ ¸é</param>
-        /// <param name="vertex1">Ã¹ ¹øÂ° Á¤Á¡</param>
-        /// <param name="normal1">Ã¹ ¹øÂ° Á¤Á¡ ¹ı¼± º¤ÅÍ</param>
-        /// <param name="uv1">Ã¹ ¹øÂ° Á¤Á¡ UV ÁÂÇ¥</param>
-        /// <param name="vertex2">µÎ ¹øÂ° Á¤Á¡</param>
-        /// <param name="normal2">µÎ ¹øÂ° Á¤Á¡ ¹ı¼± º¤ÅÍ</param>
-        /// <param name="uv2">µÎ ¹øÂ° Á¤Á¡ UV ÁÂÇ¥</param>
-        /// <param name="vertex3">¼¼ ¹øÂ° Á¤Á¡</param>
-        /// <param name="normal3">¼¼ ¹øÂ° Á¤Á¡ ¹ı¼± º¤ÅÍ</param>
-        /// <param name="uv3">¼¼ ¹øÂ° Á¤Á¡ UV ÁÂÇ¥</param>
-        /// <param name="shareVertices">Á¤Á¡À» °øÀ¯ÇÒÁö ¿©ºÎ</param>
-        /// <param name="addFirst">Ã¹ ¹øÂ° Á¤Á¡À» ¸ÕÀú Ãß°¡ÇÒÁö ¿©ºÎ</param>
+        // ë©”ì‹œ ë°ì´í„°ë¥¼ ì˜¬ë°”ë¥¸ ë©´ì— ì¶”ê°€í•˜ê³  ë²•ì„  ë²¡í„°ë¥¼ ê³„ì‚°í•˜ëŠ” ë©”ì†Œë“œ
         private void AddTrianglesNormalAndUvs(MeshSide side, Vector3 vertex1, Vector3? normal1, Vector2 uv1, Vector3 vertex2, Vector3? normal2, Vector2 uv2, Vector3 vertex3, Vector3? normal3, Vector2 uv3, bool shareVertices, bool addFirst)
         {
-            if (side == MeshSide.Positive)
+            if (side == MeshSide.SideA)
             {
-                AddTrianglesNormalsAndUvs(ref positiveSideVertices, ref positiveSideTriangles, ref positiveSideNormals, ref positiveSideUvs, vertex1, normal1, uv1, vertex2, normal2, uv2, vertex3, normal3, uv3, shareVertices, addFirst);
+                AddTrianglesNormalsAndUvs(ref sideAVertices, ref sideATriangles, ref sideANormals, ref sideAUvs, vertex1, normal1, uv1, vertex2, normal2, uv2, vertex3, normal3, uv3, shareVertices, addFirst);
             }
             else
             {
-                AddTrianglesNormalsAndUvs(ref negativeSideVertices, ref negativeSideTriangles, ref negativeSideNormals, ref negativeSideUvs, vertex1, normal1, uv1, vertex2, normal2, uv2, vertex3, normal3, uv3, shareVertices, addFirst);
+                AddTrianglesNormalsAndUvs(ref sideBVertices, ref sideBTriangles, ref sideBNormals, ref sideBUvs, vertex1, normal1, uv1, vertex2, normal2, uv2, vertex3, normal3, uv3, shareVertices, addFirst);
             }
         }
 
-        // Á¤Á¡À» ¸Ş½Ã¿¡ Ãß°¡ÇÏ°í Á¤Á¡ ¼ø¼­¿¡ µû¶ó »ï°¢ÇüÀ» ¼³Á¤ÇÕ´Ï´Ù.
-        // °øÀ¯µÈ Á¤Á¡ÀÌ ¾Æ´Ñ °æ¿ì ÀÏÄ¡ÇÏ´Â Á¤Á¡ÀÌ ÀÌ¹Ì Á¸ÀçÇÏ´õ¶óµµ Á¤Á¡ÀÌ Ãß°¡µË´Ï´Ù.
-        // ¹ı¼± º¤ÅÍ¸¦ °è»êÇÏÁö ¾Ê½À´Ï´Ù.
-
-        /// <param name="vertices">Á¤Á¡ ¸®½ºÆ®</param>
-        /// <param name="triangles">»ï°¢Çü ¸®½ºÆ®</param>
-        /// <param name="uvs">UV ÁÂÇ¥ ¸®½ºÆ®</param>
-        /// <param name="normals">¹ı¼± º¤ÅÍ ¸®½ºÆ®</param>
-        /// <param name="vertex1">Ã¹ ¹øÂ° Á¤Á¡</param>
-        /// <param name="normal1">Ã¹ ¹øÂ° Á¤Á¡ ¹ı¼± º¤ÅÍ</param>
-        /// <param name="uv1">Ã¹ ¹øÂ° Á¤Á¡ UV ÁÂÇ¥</param>
-        /// <param name="vertex2">µÎ ¹øÂ° Á¤Á¡</param>
-        /// <param name="normal2">µÎ ¹øÂ° Á¤Á¡ ¹ı¼± º¤ÅÍ</param>
-        /// <param name="uv2">µÎ ¹øÂ° Á¤Á¡ UV ÁÂÇ¥</param>
-        /// <param name="vertex3">¼¼ ¹øÂ° Á¤Á¡</param>
-        /// <param name="normal3">¼¼ ¹øÂ° Á¤Á¡ ¹ı¼± º¤ÅÍ</param>
-        /// <param name="uv3">¼¼ ¹øÂ° Á¤Á¡ UV ÁÂÇ¥</param>
-        /// <param name="shareVertices">Á¤Á¡À» °øÀ¯ÇÒÁö ¿©ºÎ</param>
-        /// <param name="addFirst">Ã¹ ¹øÂ° Á¤Á¡À» ¸ÕÀú Ãß°¡ÇÒÁö ¿©ºÎ</param>
         private void AddTrianglesNormalsAndUvs(ref List<Vector3> vertices, ref List<int> triangles, ref List<Vector3> normals, ref List<Vector2> uvs, Vector3 vertex1, Vector3? normal1, Vector2 uv1, Vector3 vertex2, Vector3? normal2, Vector2 uv2, Vector3 vertex3, Vector3? normal3, Vector2 uv3, bool shareVertices, bool addFirst)
         {
             int tri1Index = vertices.IndexOf(vertex1);
@@ -172,7 +124,7 @@ namespace Assets.Scripts
                 ShiftTriangleIndeces(ref triangles);
             }
 
-            // Á¤Á¡ÀÌ ÀÌ¹Ì Á¸ÀçÇÏ´Â °æ¿ì, Á¤Á¡¿¡ ´ëÇÑ »ï°¢Çü ÂüÁ¶¸¦ Ãß°¡ÇÏ°í ±×·¸Áö ¾ÊÀ¸¸é Á¤Á¡À» ¸®½ºÆ®¿¡ Ãß°¡ÇÏ°í »ï°¢Çü ÀÎµ¦½º¸¦ Ãß°¡ÇÕ´Ï´Ù.
+            // ì •ì ì´ ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ê²½ìš°, ì •ì ì— ëŒ€í•œ ì‚¼ê°í˜• ì°¸ì¡°ë¥¼ ì¶”ê°€í•˜ê³  ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ ì •ì ì„ ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€í•˜ê³  ì‚¼ê°í˜• ì¸ë±ìŠ¤ë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
             if (tri1Index > -1 && shareVertices)
             {
                 triangles.Add(tri1Index);
@@ -240,16 +192,7 @@ namespace Assets.Scripts
         }
 
 
-        // Á¤Á¡, ¹ı¼± º¤ÅÍ, UV ÁÂÇ¥ ¹× »ï°¢ÇüÀ» Ãß°¡ÇÏ´Â ¸Ş¼Òµå
-
-        /// <param name="vertices">Á¤Á¡ ¸®½ºÆ®</param>
-        /// <param name="normals">¹ı¼± º¤ÅÍ ¸®½ºÆ®</param>
-        /// <param name="uvs">UV ÁÂÇ¥ ¸®½ºÆ®</param>
-        /// <param name="triangles">»ï°¢Çü ¸®½ºÆ®</param>
-        /// <param name="vertex">Á¤Á¡</param>
-        /// <param name="normal">¹ı¼± º¤ÅÍ</param>
-        /// <param name="uv">UV ÁÂÇ¥</param>
-        /// <param name="index">»ğÀÔÇÒ ÀÎµ¦½º</param>
+        // ì •ì , ë²•ì„  ë²¡í„°, UV ì¢Œí‘œ ë° ì‚¼ê°í˜•ì„ ì¶”ê°€í•˜ëŠ” ë©”ì†Œë“œ
         private void AddVertNormalUv(ref List<Vector3> vertices, ref List<Vector3> normals, ref List<Vector2> uvs, ref List<int> triangles, Vector3 vertex, Vector3 normal, Vector2 uv, int? index)
         {
             if (index != null)
@@ -269,9 +212,9 @@ namespace Assets.Scripts
             }
         }
 
-        // »ï°¢Çü ÀÎµ¦½º¸¦ Á¶Á¤ÇÏ¿© ¸Ş½Ã¸¦ º¯È¯ÇÏ´Â ¸Ş¼Òµå
+        // ì‚¼ê°í˜• ì¸ë±ìŠ¤ë¥¼ ì¡°ì •í•˜ì—¬ ë©”ì‹œë¥¼ ë³€í™˜í•˜ëŠ” ë©”ì†Œë“œ
 
-        /// <param name="triangles">»ï°¢Çü ¸®½ºÆ®</param>
+        /// <param name="triangles">ì‚¼ê°í˜• ë¦¬ìŠ¤íŠ¸</param>
         private void ShiftTriangleIndeces(ref List<int> triangles)
         {
             for (int j = 0; j < triangles.Count; j += 3)
@@ -282,47 +225,45 @@ namespace Assets.Scripts
             }
         }
 
-        // °´Ã¼ÀÇ ³»ºÎ¸¦ ·»´õ¸µÇÏ´Â ¸Ş¼Òµå
-        // ¸ğµç Á¤Á¡À» º¹Á¦ÇÏ°í ¿ª »ï°¢Çü ¹æÇâÀ» »ı¼ºÇÏ¿© ºñ¿ëÀÌ ¸¹ÀÌ µé ¼ö ÀÖ´Ù.
+        // ê°ì²´ì˜ ë‚´ë¶€ë¥¼ ë Œë”ë§í•˜ëŠ” ë©”ì†Œë“œ
+        // ëª¨ë“  ì •ì ì„ ë³µì œí•˜ê³  ì—­ ì‚¼ê°í˜• ë°©í–¥ì„ ìƒì„±í•˜ì—¬ ë¹„ìš©ì´ ë§ì´ ë“¤ ìˆ˜ ìˆë‹¤.
         private void AddReverseTriangleWinding()
         {
-            int positiveVertsStartIndex = positiveSideVertices.Count;
-            // ¿øº» Á¤Á¡ º¹Á¦
-            positiveSideVertices.AddRange(positiveSideVertices);
-            positiveSideUvs.AddRange(positiveSideUvs);
-            positiveSideNormals.AddRange(FlipNormals(positiveSideNormals));
+            int positiveVertsStartIndex = sideAVertices.Count;
+            // ì›ë³¸ ì •ì  ë³µì œ
+            sideAVertices.AddRange(sideAVertices);
+            sideAUvs.AddRange(sideAUvs);
+            sideANormals.AddRange(FlipNormals(sideANormals));
 
-            int numPositiveTriangles = positiveSideTriangles.Count;
+            int numPositiveTriangles = sideATriangles.Count;
 
-            // ¿ª ¹æÇâ »ï°¢Çü Ãß°¡
+            // ì—­ ë°©í–¥ ì‚¼ê°í˜• ì¶”ê°€
             for (int i = 0; i < numPositiveTriangles; i += 3)
             {
-                positiveSideTriangles.Add(positiveVertsStartIndex + positiveSideTriangles[i]);
-                positiveSideTriangles.Add(positiveVertsStartIndex + positiveSideTriangles[i + 2]);
-                positiveSideTriangles.Add(positiveVertsStartIndex + positiveSideTriangles[i + 1]);
+                sideATriangles.Add(positiveVertsStartIndex + sideATriangles[i]);
+                sideATriangles.Add(positiveVertsStartIndex + sideATriangles[i + 2]);
+                sideATriangles.Add(positiveVertsStartIndex + sideATriangles[i + 1]);
             }
 
-            int negativeVertextStartIndex = negativeSideVertices.Count;
-            // ¿øº» Á¤Á¡ º¹Á¦
-            negativeSideVertices.AddRange(negativeSideVertices);
-            negativeSideUvs.AddRange(negativeSideUvs);
-            negativeSideNormals.AddRange(FlipNormals(negativeSideNormals));
+            int negativeVertextStartIndex = sideBVertices.Count;
+            // ì›ë³¸ ì •ì  ë³µì œ
+            sideBVertices.AddRange(sideBVertices);
+            sideBUvs.AddRange(sideBUvs);
+            sideBNormals.AddRange(FlipNormals(sideBNormals));
 
-            int numNegativeTriangles = negativeSideTriangles.Count;
+            int numNegativeTriangles = sideBTriangles.Count;
 
-            // ¿ª ¹æÇâ »ï°¢Çü Ãß°¡
+            // ì—­ ë°©í–¥ ì‚¼ê°í˜• ì¶”ê°€
             for (int i = 0; i < numNegativeTriangles; i += 3)
             {
-                negativeSideTriangles.Add(negativeVertextStartIndex + negativeSideTriangles[i]);
-                negativeSideTriangles.Add(negativeVertextStartIndex + negativeSideTriangles[i + 2]);
-                negativeSideTriangles.Add(negativeVertextStartIndex + negativeSideTriangles[i + 1]);
+                sideBTriangles.Add(negativeVertextStartIndex + sideBTriangles[i]);
+                sideBTriangles.Add(negativeVertextStartIndex + sideBTriangles[i + 2]);
+                sideBTriangles.Add(negativeVertextStartIndex + sideBTriangles[i + 1]);
             }
         }
 
 
-        /// <summary>
-        /// Æò¸éÀ» µû¶ó Á¡µéÀ» Áß°£ ÁöÁ¡¿¡ ¿¬°áÇÏ´Â ¸Ş¼Òµå
-        /// </summary>
+        // í‰ë©´ì„ ë”°ë¼ ì ë“¤ì„ ì¤‘ê°„ ì§€ì ì— ì—°ê²°í•˜ëŠ” ë©”ì†Œë“œ
         private void JoinPointsAlongPlane()
         {
             Vector3 halfway = GetHalfwayPoint(out float distance);
@@ -342,22 +283,18 @@ namespace Assets.Scripts
 
                 if (direction > 0)
                 {
-                    AddTrianglesNormalAndUvs(MeshSide.Positive, halfway, -normal3, Vector2.zero, firstVertex, -normal3, Vector2.zero, secondVertex, -normal3, Vector2.zero, false, true);
-                    AddTrianglesNormalAndUvs(MeshSide.Negative, halfway, normal3, Vector2.zero, secondVertex, normal3, Vector2.zero, firstVertex, normal3, Vector2.zero, false, true);
+                    AddTrianglesNormalAndUvs(MeshSide.SideA, halfway, -normal3, Vector2.zero, firstVertex, -normal3, Vector2.zero, secondVertex, -normal3, Vector2.zero, false, true);
+                    AddTrianglesNormalAndUvs(MeshSide.SideB, halfway, normal3, Vector2.zero, secondVertex, normal3, Vector2.zero, firstVertex, normal3, Vector2.zero, false, true);
                 }
                 else
                 {
-                    AddTrianglesNormalAndUvs(MeshSide.Positive, halfway, normal3, Vector2.zero, secondVertex, normal3, Vector2.zero, firstVertex, normal3, Vector2.zero, false, true);
-                    AddTrianglesNormalAndUvs(MeshSide.Negative, halfway, -normal3, Vector2.zero, firstVertex, -normal3, Vector2.zero, secondVertex, -normal3, Vector2.zero, false, true);
+                    AddTrianglesNormalAndUvs(MeshSide.SideA, halfway, normal3, Vector2.zero, secondVertex, normal3, Vector2.zero, firstVertex, normal3, Vector2.zero, false, true);
+                    AddTrianglesNormalAndUvs(MeshSide.SideB, halfway, -normal3, Vector2.zero, firstVertex, -normal3, Vector2.zero, secondVertex, -normal3, Vector2.zero, false, true);
                 }
             }
         }
 
-        /// <summary>
-        /// Ã¹ ¹øÂ° Á¡°ú °¡Àå ¸Ö¸® ¶³¾îÁø Á¡ »çÀÌÀÇ Áß°£ ÁöÁ¡À» ±¸ÇÏ´Â ¸Ş¼Òµå
-        /// </summary>
-        /// <param name="distance">°¡Àå ¸Õ Á¡°úÀÇ °Å¸®</param>
-        /// <returns>Áß°£ ÁöÁ¡</returns>
+        // ì²« ë²ˆì§¸ ì ê³¼ ê°€ì¥ ë©€ë¦¬ ë–¨ì–´ì§„ ì  ì‚¬ì´ì˜ ì¤‘ê°„ ì§€ì ì„ êµ¬í•˜ëŠ” ë©”ì†Œë“œ
         private Vector3 GetHalfwayPoint(out float distance)
         {
             if (pointsAlongPlane.Count > 0)
@@ -387,63 +324,58 @@ namespace Assets.Scripts
             }
         }
 
-        /// <summary>
-        /// ¸Ş½Ã µ¥ÀÌÅÍ¸¦ ¼³Á¤ÇÏ´Â ¸Ş¼Òµå
-        /// </summary>
-        /// <param name="side">¸Ş½ÃÀÇ ¸é</param>
+        // ë©”ì‹œ ë°ì´í„°ë¥¼ ì„¤ì •í•˜ëŠ” ë©”ì†Œë“œ
         private void SetMeshData(MeshSide side)
         {
-            if (side == MeshSide.Positive)
+            if (side == MeshSide.SideA)
             {
-                positiveSideMesh.vertices = positiveSideVertices.ToArray();
-                positiveSideMesh.triangles = positiveSideTriangles.ToArray();
-                positiveSideMesh.normals = positiveSideNormals.ToArray();
-                positiveSideMesh.uv = positiveSideUvs.ToArray();
+                sideAMesh.vertices = sideAVertices.ToArray();
+                sideAMesh.triangles = sideATriangles.ToArray();
+                sideAMesh.normals = sideANormals.ToArray();
+                sideAMesh.uv = sideAUvs.ToArray();
             }
             else
             {
-                negativeSideMesh.vertices = negativeSideVertices.ToArray();
-                negativeSideMesh.triangles = negativeSideTriangles.ToArray();
-                negativeSideMesh.normals = negativeSideNormals.ToArray();
-                negativeSideMesh.uv = negativeSideUvs.ToArray();
+                sideBMesh.vertices = sideBVertices.ToArray();
+                sideBMesh.triangles = sideBTriangles.ToArray();
+                sideBMesh.normals = sideBNormals.ToArray();
+                sideBMesh.uv = sideBUvs.ToArray();
             }
         }
 
-        /// <summary>
-        /// »õ·Î¿î ¸Ş½Ã¸¦ °è»êÇÏ´Â ¸Ş¼Òµå
-        /// </summary>
+        // ìƒˆë¡œìš´ ë©”ì‹œë¥¼ ê³„ì‚°í•˜ëŠ” ë©”ì†Œë“œ
         private void ComputeNewMeshes()
         {
             int[] meshTriangles = mesh.triangles;
-            Vector3[] meshVerts = mesh.vertices;
+            Vector3[] meshVertices = mesh.vertices;
             Vector3[] meshNormals = mesh.normals;
             Vector2[] meshUvs = mesh.uv;
 
-            // ÀÎµ¦½º¸¦ 3°³¾¿ ÀĞÀ¸¹Ç·Î, ¸Å¹ø 3¾¿ Áõ°¡ÇÏµµ·Ï ÇÔ.
+            // ì¸ë±ìŠ¤ë¥¼ 3ê°œì”© ì½ìœ¼ë¯€ë¡œ, ë§¤ë²ˆ 3ì”© ì¦ê°€í•˜ë„ë¡ í•¨.
             for (int i = 0; i < meshTriangles.Length; i += 3)
             {
-                Vector3 vert1 = meshVerts[meshTriangles[i]];
-                int vert1Index = Array.IndexOf(meshVerts, vert1);
-                Vector2 uv1 = meshUvs[vert1Index];
-                Vector3 normal1 = meshNormals[vert1Index];
-                bool vert1Side = plane.GetSide(vert1);
+                Vector3 v1 = meshVertices[meshTriangles[i]];
+                int v1Index = Array.IndexOf(meshVertices, v1);
+                Vector2 uv1 = meshUvs[v1Index];
+                Vector3 normal1 = meshNormals[v1Index];
+                bool v1Side = plane.GetSide(v1);
 
-                Vector3 vert2 = meshVerts[meshTriangles[i + 1]];
-                int vert2Index = Array.IndexOf(meshVerts, vert2);
-                Vector2 uv2 = meshUvs[vert2Index];
-                Vector3 normal2 = meshNormals[vert2Index];
-                bool vert2Side = plane.GetSide(vert2);
+                Vector3 v2 = meshVertices[meshTriangles[i + 1]];
+                int v2Index = Array.IndexOf(meshVertices, v2);
+                Vector2 uv2 = meshUvs[v2Index];
+                Vector3 normal2 = meshNormals[v2Index];
+                bool v2Side = plane.GetSide(v2);
 
-                Vector3 vert3 = meshVerts[meshTriangles[i + 2]];
-                bool vert3Side = plane.GetSide(vert3);
-                int vert3Index = Array.IndexOf(meshVerts, vert3);
-                Vector3 normal3 = meshNormals[vert3Index];
-                Vector2 uv3 = meshUvs[vert3Index];
+                Vector3 v3 = meshVertices[meshTriangles[i + 2]];
+                bool v3Side = plane.GetSide(v3);
+                int v3Index = Array.IndexOf(meshVertices, v3);
+                Vector3 normal3 = meshNormals[v3Index];
+                Vector2 uv3 = meshUvs[v3Index];
 
-                if (vert1Side == vert2Side && vert2Side == vert3Side)
+                if (v1Side == v2Side && v2Side == v3Side)
                 {
-                    MeshSide side = (vert1Side) ? MeshSide.Positive : MeshSide.Negative;
-                    AddTrianglesNormalAndUvs(side, vert1, normal1, uv1, vert2, normal2, uv2, vert3, normal3, uv3, true, false);
+                    MeshSide side = (v1Side) ? MeshSide.SideA : MeshSide.SideB;
+                    AddTrianglesNormalAndUvs(side, v1, normal1, uv1, v2, normal2, uv2, v3, normal3, uv3, true, false);
                 }
                 else
                 {
@@ -453,38 +385,38 @@ namespace Assets.Scripts
                     Vector2 intersection1Uv;
                     Vector2 intersection2Uv;
 
-                    MeshSide side1 = (vert1Side) ? MeshSide.Positive : MeshSide.Negative;
-                    MeshSide side2 = (vert1Side) ? MeshSide.Negative : MeshSide.Positive;
+                    MeshSide side1 = (v1Side) ? MeshSide.SideA : MeshSide.SideB;
+                    MeshSide side2 = (v1Side) ? MeshSide.SideB : MeshSide.SideA;
 
-                    if (vert1Side == vert2Side)
+                    if (v1Side == v2Side)
                     {
-                        intersection1 = GetRayPlaneIntersectionPointAndUv(vert2, uv2, vert3, uv3, out intersection1Uv);
-                        intersection2 = GetRayPlaneIntersectionPointAndUv(vert3, uv3, vert1, uv1, out intersection2Uv);
+                        intersection1 = GetRayPlaneIntersectionPointAndUv(v2, uv2, v3, uv3, out intersection1Uv);
+                        intersection2 = GetRayPlaneIntersectionPointAndUv(v3, uv3, v1, uv1, out intersection2Uv);
 
-                        AddTrianglesNormalAndUvs(side1, vert1, null, uv1, vert2, null, uv2, intersection1, null, intersection1Uv, useSharedVertices, false);
-                        AddTrianglesNormalAndUvs(side1, vert1, null, uv1, intersection1, null, intersection1Uv, intersection2, null, intersection2Uv, useSharedVertices, false);
+                        AddTrianglesNormalAndUvs(side1, v1, null, uv1, v2, null, uv2, intersection1, null, intersection1Uv, useSharedVertices, false);
+                        AddTrianglesNormalAndUvs(side1, v1, null, uv1, intersection1, null, intersection1Uv, intersection2, null, intersection2Uv, useSharedVertices, false);
 
-                        AddTrianglesNormalAndUvs(side2, intersection1, null, intersection1Uv, vert3, null, uv3, intersection2, null, intersection2Uv, useSharedVertices, false);
+                        AddTrianglesNormalAndUvs(side2, intersection1, null, intersection1Uv, v3, null, uv3, intersection2, null, intersection2Uv, useSharedVertices, false);
                     }
-                    else if (vert1Side == vert3Side)
+                    else if (v1Side == v3Side)
                     {
-                        intersection1 = GetRayPlaneIntersectionPointAndUv(vert1, uv1, vert2, uv2, out intersection1Uv);
-                        intersection2 = GetRayPlaneIntersectionPointAndUv(vert2, uv2, vert3, uv3, out intersection2Uv);
+                        intersection1 = GetRayPlaneIntersectionPointAndUv(v1, uv1, v2, uv2, out intersection1Uv);
+                        intersection2 = GetRayPlaneIntersectionPointAndUv(v2, uv2, v3, uv3, out intersection2Uv);
 
-                        AddTrianglesNormalAndUvs(side1, vert1, null, uv1, intersection1, null, intersection1Uv, vert3, null, uv3, useSharedVertices, false);
-                        AddTrianglesNormalAndUvs(side1, intersection1, null, intersection1Uv, intersection2, null, intersection2Uv, vert3, null, uv3, useSharedVertices, false);
+                        AddTrianglesNormalAndUvs(side1, v1, null, uv1, intersection1, null, intersection1Uv, v3, null, uv3, useSharedVertices, false);
+                        AddTrianglesNormalAndUvs(side1, intersection1, null, intersection1Uv, intersection2, null, intersection2Uv, v3, null, uv3, useSharedVertices, false);
 
-                        AddTrianglesNormalAndUvs(side2, intersection1, null, intersection1Uv, vert2, null, uv2, intersection2, null, intersection2Uv, useSharedVertices, false);
+                        AddTrianglesNormalAndUvs(side2, intersection1, null, intersection1Uv, v2, null, uv2, intersection2, null, intersection2Uv, useSharedVertices, false);
                     }
                     else
                     {
-                        intersection1 = GetRayPlaneIntersectionPointAndUv(vert1, uv1, vert2, uv2, out intersection1Uv);
-                        intersection2 = GetRayPlaneIntersectionPointAndUv(vert1, uv1, vert3, uv3, out intersection2Uv);
+                        intersection1 = GetRayPlaneIntersectionPointAndUv(v1, uv1, v2, uv2, out intersection1Uv);
+                        intersection2 = GetRayPlaneIntersectionPointAndUv(v1, uv1, v3, uv3, out intersection2Uv);
 
-                        AddTrianglesNormalAndUvs(side1, vert1, null, uv1, intersection1, null, intersection1Uv, intersection2, null, intersection2Uv, useSharedVertices, false);
+                        AddTrianglesNormalAndUvs(side1, v1, null, uv1, intersection1, null, intersection1Uv, intersection2, null, intersection2Uv, useSharedVertices, false);
 
-                        AddTrianglesNormalAndUvs(side2, intersection1, null, intersection1Uv, vert2, null, uv2, vert3, null, uv3, useSharedVertices, false);
-                        AddTrianglesNormalAndUvs(side2, intersection1, null, intersection1Uv, vert3, null, uv3, intersection2, null, intersection2Uv, useSharedVertices, false);
+                        AddTrianglesNormalAndUvs(side2, intersection1, null, intersection1Uv, v2, null, uv2, v3, null, uv3, useSharedVertices, false);
+                        AddTrianglesNormalAndUvs(side2, intersection1, null, intersection1Uv, v3, null, uv3, intersection2, null, intersection2Uv, useSharedVertices, false);
                     }
 
                     pointsAlongPlane.Add(intersection1);
@@ -492,7 +424,7 @@ namespace Assets.Scripts
                 }
             }
 
-            if (isSolid)
+            if (isClosedMesh)
             {
                 JoinPointsAlongPlane();
             }
@@ -507,73 +439,42 @@ namespace Assets.Scripts
             }
         }
 
-        /// <summary>
-        /// µÎ Á¤Á¡À» ÀÌ¾î Æò¸é°úÀÇ ±³Â÷ ÁöÁ¡ ¹× »õ·Î¿î UV¸¦ ¾ò´Â ¸Ş¼Òµå
-        /// </summary>
-        /// <param name="vertex1">Ã¹ ¹øÂ° Á¤Á¡</param>
-        /// <param name="vertex1Uv">Ã¹ ¹øÂ° Á¤Á¡ÀÇ UV</param>
-        /// <param name="vertex2">µÎ ¹øÂ° Á¤Á¡</param>
-        /// <param name="vertex2Uv">µÎ ¹øÂ° Á¤Á¡ÀÇ UV</param>
-        /// <param name="uv">»õ·Î¿î UV</param>
-        /// <returns>±³Â÷ ÁöÁ¡</returns>
-
-        private Vector3 GetRayPlaneIntersectionPointAndUv(Vector3 vertex1, Vector2 vertex1Uv, Vector3 vertex2, Vector2 vertex2Uv, out Vector2 uv)
+        // ë‘ ì •ì ì„ ì´ì–´ í‰ë©´ê³¼ì˜ êµì°¨ ì§€ì  ë° ìƒˆë¡œìš´ UVë¥¼ ì–»ëŠ” ë©”ì†Œë“œ
+        private Vector3 GetRayPlaneIntersectionPointAndUv(Vector3 v1, Vector2 v1Uv, Vector3 v2, Vector2 v2Uv, out Vector2 uv)
         {
-            float distance = GetDistanceRelativeToPlane(vertex1, vertex2, out Vector3 pointOfIntersection);
-            uv = InterpolateUvs(vertex1Uv, vertex2Uv, distance);
+            float distance = GetDistanceRelativeToPlane(v1, v2, out Vector3 pointOfIntersection);
+            uv = InterpolateUvs(v1Uv, v2Uv, distance);
             return pointOfIntersection;
         }
 
-        /// <summary>
-        /// Æò¸é¿¡ ´ëÇÑ °Å¸®¸¦ °è»êÇÏ´Â ¸Ş¼Òµå
-        /// </summary>
-        /// <param name="vertex1">Ã¹ ¹øÂ° Á¤Á¡</param>
-        /// <param name="vertex2">µÎ ¹øÂ° Á¤Á¡</param>
-        /// <param name="pointOfintersection">±³Â÷ ÁöÁ¡</param>
-        /// <returns>°Å¸®</returns>
-        private float GetDistanceRelativeToPlane(Vector3 vertex1, Vector3 vertex2, out Vector3 pointOfintersection)
+        // í‰ë©´ì— ëŒ€í•œ ê±°ë¦¬ë¥¼ ê³„ì‚°í•˜ëŠ” ë©”ì†Œë“œ
+        private float GetDistanceRelativeToPlane(Vector3 v1, Vector3 v2, out Vector3 pointOfintersection)
         {
-            Ray ray = new Ray(vertex1, (vertex2 - vertex1));
+            Ray ray = new Ray(v1, (v2 - v1));
             plane.Raycast(ray, out float distance);
             pointOfintersection = ray.GetPoint(distance);
             return distance;
         }
-
-        /// <summary>
-        /// µÎ UV »çÀÌÀÇ °Å¸®¿¡ ´ëÇÑ º¸°£À» ¼öÇàÇÏ´Â ¸Ş¼Òµå
-        /// </summary>
-        /// <param name="uv1">Ã¹ ¹øÂ° UV</param>
-        /// <param name="uv2">µÎ ¹øÂ° UV</param>
-        /// <param name="distance">°Å¸®</param>
-        /// <returns>º¸°£µÈ UV</returns>
+        
+        // ë‘ UV ì‚¬ì´ì˜ ê±°ë¦¬ì— ëŒ€í•œ ë³´ê°„ì„ ìˆ˜í–‰í•˜ëŠ” ë©”ì†Œë“œ
         private Vector2 InterpolateUvs(Vector2 uv1, Vector2 uv2, float distance)
         {
             Vector2 uv = Vector2.Lerp(uv1, uv2, distance);
             return uv;
         }
       
-        /// <summary>
-        /// ¼¼ Á¤Á¡¿¡ ´ëÇÑ ¹ı¼± º¤ÅÍ¸¦ °è»êÇÏ´Â ¸Ş¼Òµå
-        /// </summary>
-        /// <param name="vertex1">Ã¹ ¹øÂ° Á¤Á¡</param>
-        /// <param name="vertex2">µÎ ¹øÂ° Á¤Á¡</param>
-        /// <param name="vertex3">¼¼ ¹øÂ° Á¤Á¡</param>
-        /// <returns>¹ı¼± º¤ÅÍ</returns>
-        private Vector3 ComputeNormal(Vector3 vertex1, Vector3 vertex2, Vector3 vertex3)
+        // ì„¸ ì •ì ì— ëŒ€í•œ ë²•ì„  ë²¡í„°ë¥¼ ê³„ì‚°í•˜ëŠ” ë©”ì†Œë“œ
+        private Vector3 ComputeNormal(Vector3 v1, Vector3 v2, Vector3 v3)
         {
-            Vector3 side1 = vertex2 - vertex1;
-            Vector3 side2 = vertex3 - vertex1;
+            Vector3 side1 = v2 - v1;
+            Vector3 side2 = v3 - v1;
 
             Vector3 normal = Vector3.Cross(side1, side2);
 
             return normal;
         }
-
-        /// <summary>
-        /// ÁÖ¾îÁø ¸ñ·Ï ³»ÀÇ ¹ı¼± º¤ÅÍ¸¦ µÚÁı´Â ¸Ş¼Òµå
-        /// </summary>
-        /// <param name="currentNormals">¹ı¼± º¤ÅÍ ¸ñ·Ï</param>
-        /// <returns>µÚÁıÈù ¹ı¼± º¤ÅÍ ¸ñ·Ï</returns>
+        
+        // ì£¼ì–´ì§„ ëª©ë¡ ë‚´ì˜ ë²•ì„  ë²¡í„°ë¥¼ ë’¤ì§‘ëŠ” ë©”ì†Œë“œ
         private List<Vector3> FlipNormals(List<Vector3> currentNormals)
         {
             List<Vector3> flippedNormals = new List<Vector3>();
@@ -586,21 +487,13 @@ namespace Assets.Scripts
             return flippedNormals;
         }
 
-        /// <summary>
-        /// Á¤Á¡À» ºÎµå·´°Ô ¸¸µå´Â ¸Ş¼Òµå
-        /// </summary>
+        // ì •ì ì„ ë¶€ë“œëŸ½ê²Œ ë§Œë“œëŠ” ë©”ì†Œë“œ
         private void SmoothVertices()
         {
-            DoSmoothing(ref positiveSideVertices, ref positiveSideNormals, ref positiveSideTriangles);
-            DoSmoothing(ref negativeSideVertices, ref negativeSideNormals, ref negativeSideTriangles);
+            DoSmoothing(ref sideAVertices, ref sideANormals, ref sideATriangles);
+            DoSmoothing(ref sideBVertices, ref sideBNormals, ref sideBTriangles);
         }
 
-        /// <summary>
-        /// Á¤Á¡À» ºÎµå·´°Ô ¸¸µå´Â ³»ºÎ µµ¿ì¹Ì ¸Ş¼Òµå
-        /// </summary>
-        /// <param name="vertices">Á¤Á¡ ¸ñ·Ï</param>
-        /// <param name="normals">¹ı¼± º¤ÅÍ ¸ñ·Ï</param>
-        /// <param name="triangles">»ï°¢Çü ¸ñ·Ï</param>
         private void DoSmoothing(ref List<Vector3> vertices, ref List<Vector3> normals, ref List<int> triangles)
         {
             normals.ForEach(x =>
