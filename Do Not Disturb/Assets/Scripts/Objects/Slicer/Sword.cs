@@ -116,7 +116,7 @@ public class Sword : MonoBehaviour
         Plane slicingPlane = CalculateSlicingPlane(other);
 
         // 원본 객체를 슬라이스
-        GameObject[] slices = Slicer.Slice(slicingPlane, other.gameObject);
+        GameObject[] slices = Slicer.Slice(slicingPlane, new List<GameObject> { other.gameObject }).ToArray();
 
         // 슬라이스된 객체가 제대로 반환되지 않았을 경우 처리
         if (slices == null || slices.Length < 2)
@@ -127,14 +127,18 @@ public class Sword : MonoBehaviour
 
         Destroy(other.gameObject);
 
-        // 두 번째 조각에 대해 물리력 적용
-        ApplyCutForce(slices[1], slicingPlane.normal);
-
+        // 두 번째 조각 부터 물리력 적용
+        for (int i = 1; i < slices.Length; i++)
+        {
+            ApplyCutForce(slices[i], slicingPlane.normal);
+        }
         // 잘린 객체들 처리 (삭제 지연 시간)
         if (destroySlicedObjects)
         {
-            Destroy(slices[0], SLICE_DESTROY_DELAY);
-            Destroy(slices[1], SLICE_DESTROY_DELAY);
+            for (int i = 0; i < slices.Length; i++)
+            {
+                Destroy(slices[i], SLICE_DESTROY_DELAY);
+            }
         }
     }
 
