@@ -11,8 +11,8 @@ namespace Assets.Scripts
 {
     public enum MeshSide
     {
-        SideA = 0,
-        SideB = 1
+        SideA,
+        SideB
     }
 
     class SliceDummyData
@@ -29,7 +29,7 @@ namespace Assets.Scripts
         private List<Vector2> sideBUvs;
         private List<Vector3> sideBNormals;
 
-        private readonly List<Vector3> pointsAlongPlane;
+        private readonly List<Vector3> pointsOnPlane;
         private Plane plane;
         private Mesh mesh;
         private bool isClosedMesh;
@@ -91,7 +91,7 @@ namespace Assets.Scripts
             sideBUvs = new List<Vector2>();
             sideANormals = new List<Vector3>();
             sideBNormals = new List<Vector3>();
-            pointsAlongPlane = new List<Vector3>();
+            pointsOnPlane = new List<Vector3>();
             this.plane = plane;
             this.mesh = mesh;
             this.isClosedMesh = isSolid;
@@ -102,6 +102,24 @@ namespace Assets.Scripts
             ComputeNewMeshes();
         }
 
+        // 메시 데이터를 설정하는 메소드
+        private void SetMeshData(MeshSide side)
+        {
+            if (side == MeshSide.SideA)
+            {
+                sideAMesh.vertices = sideAVertices.ToArray();
+                sideAMesh.triangles = sideATriangles.ToArray();
+                sideAMesh.normals = sideANormals.ToArray();
+                sideAMesh.uv = sideAUvs.ToArray();
+            }
+            else
+            {
+                sideBMesh.vertices = sideBVertices.ToArray();
+                sideBMesh.triangles = sideBTriangles.ToArray();
+                sideBMesh.normals = sideBNormals.ToArray();
+                sideBMesh.uv = sideBUvs.ToArray();
+            }
+        }
         // 메시 데이터를 올바른 면에 추가하고 법선 벡터를 계산하는 메소드
         private void AddTrianglesNormalAndUvs(MeshSide side, Vector3 vertex1, Vector3? normal1, Vector2 uv1, Vector3 vertex2, Vector3? normal2, Vector2 uv2, Vector3 vertex3, Vector3? normal3, Vector2 uv3, bool shareVertices, bool addFirst)
         {
@@ -124,7 +142,7 @@ namespace Assets.Scripts
                 ShiftTriangleIndeces(ref triangles);
             }
 
-            // 정점이 이미 존재하는 경우, 정점에 대한 삼각형 참조를 추가하고 그렇지 않으면 정점을 리스트에 추가하고 삼각형 인덱스를 추가합니다.
+            // 정점이 이미 존재하는 경우, 정점에 대한 삼각형 참조를 추가하고 그렇지 않으면 정점을 리스트에 추가하고 삼각형 인덱스를 추가
             if (tri1Index > -1 && shareVertices)
             {
                 triangles.Add(tri1Index);
@@ -229,37 +247,43 @@ namespace Assets.Scripts
         // 모든 정점을 복제하고 역 삼각형 방향을 생성하여 비용이 많이 들 수 있다.
         private void AddReverseTriangleWinding()
         {
-            int positiveVertsStartIndex = sideAVertices.Count;
-            // 원본 정점 복제
-            sideAVertices.AddRange(sideAVertices);
-            sideAUvs.AddRange(sideAUvs);
-            sideANormals.AddRange(FlipNormals(sideANormals));
+            // Side A 처리
+            AddReverseTriangles(sideAVertices, sideAUvs, sideANormals, sideATriangles);
 
-            int numPositiveTriangles = sideATriangles.Count;
+            // Side B 처리
+            AddReverseTriangles(sideBVertices, sideBUvs, sideBNormals, sideBTriangles);
+        }
 
-            // 역 방향 삼각형 추가
-            for (int i = 0; i < numPositiveTriangles; i += 3)
+        // 정점 및 삼각형 데이터를 역방향으로 추가하는 메서드
+        private void AddReverseTriangles(List<Vector3> vertices, List<Vector2> uvs, List<Vector3> normals, List<int> triangles)
+        {
+            int originalVertexCount = vertices.Count;
+
+            // 원본 정점, UV, 노멀 복제 및 역 노멀 생성
+            vertices.AddRange(vertices);
+            uvs.AddRange(uvs);
+            normals.AddRange(FlipNormals(normals));
+
+            int originalTriangleCount = triangles.Count;
+
+            // 기존 삼각형 데이터를 기반으로 역방향 삼각형 생성
+            for (int i = 0; i < originalTriangleCount; i += 3)
             {
-                sideATriangles.Add(positiveVertsStartIndex + sideATriangles[i]);
-                sideATriangles.Add(positiveVertsStartIndex + sideATriangles[i + 2]);
-                sideATriangles.Add(positiveVertsStartIndex + sideATriangles[i + 1]);
+                triangles.Add(originalVertexCount + triangles[i]);
+                triangles.Add(originalVertexCount + triangles[i + 2]);
+                triangles.Add(originalVertexCount + triangles[i + 1]);
             }
+        }
 
-            int negativeVertextStartIndex = sideBVertices.Count;
-            // 원본 정점 복제
-            sideBVertices.AddRange(sideBVertices);
-            sideBUvs.AddRange(sideBUvs);
-            sideBNormals.AddRange(FlipNormals(sideBNormals));
-
-            int numNegativeTriangles = sideBTriangles.Count;
-
-            // 역 방향 삼각형 추가
-            for (int i = 0; i < numNegativeTriangles; i += 3)
+        // 노멀 벡터를 반전시키는 메서드
+        private List<Vector3> FlipNormals(List<Vector3> normals)
+        {
+            List<Vector3> flippedNormals = new List<Vector3>(normals.Count);
+            foreach (Vector3 normal in normals)
             {
-                sideBTriangles.Add(negativeVertextStartIndex + sideBTriangles[i]);
-                sideBTriangles.Add(negativeVertextStartIndex + sideBTriangles[i + 2]);
-                sideBTriangles.Add(negativeVertextStartIndex + sideBTriangles[i + 1]);
+                flippedNormals.Add(-normal);
             }
+            return flippedNormals;
         }
 
 
@@ -268,13 +292,13 @@ namespace Assets.Scripts
         {
             Vector3 halfway = GetHalfwayPoint(out float distance);
 
-            for (int i = 0; i < pointsAlongPlane.Count; i += 2)
+            for (int i = 0; i < pointsOnPlane.Count; i += 2)
             {
                 Vector3 firstVertex;
                 Vector3 secondVertex;
 
-                firstVertex = pointsAlongPlane[i];
-                secondVertex = pointsAlongPlane[i + 1];
+                firstVertex = pointsOnPlane[i];
+                secondVertex = pointsOnPlane[i + 1];
 
                 Vector3 normal3 = ComputeNormal(halfway, secondVertex, firstVertex);
                 normal3.Normalize();
@@ -297,13 +321,13 @@ namespace Assets.Scripts
         // 첫 번째 점과 가장 멀리 떨어진 점 사이의 중간 지점을 구하는 메소드
         private Vector3 GetHalfwayPoint(out float distance)
         {
-            if (pointsAlongPlane.Count > 0)
+            if (pointsOnPlane.Count > 0)
             {
-                Vector3 firstPoint = pointsAlongPlane[0];
+                Vector3 firstPoint = pointsOnPlane[0];
                 Vector3 furthestPoint = Vector3.zero;
                 distance = 0f;
 
-                foreach (Vector3 point in pointsAlongPlane)
+                foreach (Vector3 point in pointsOnPlane)
                 {
                     float currentDistance = 0f;
                     currentDistance = Vector3.Distance(firstPoint, point);
@@ -321,25 +345,6 @@ namespace Assets.Scripts
             {
                 distance = 0;
                 return Vector3.zero;
-            }
-        }
-
-        // 메시 데이터를 설정하는 메소드
-        private void SetMeshData(MeshSide side)
-        {
-            if (side == MeshSide.SideA)
-            {
-                sideAMesh.vertices = sideAVertices.ToArray();
-                sideAMesh.triangles = sideATriangles.ToArray();
-                sideAMesh.normals = sideANormals.ToArray();
-                sideAMesh.uv = sideAUvs.ToArray();
-            }
-            else
-            {
-                sideBMesh.vertices = sideBVertices.ToArray();
-                sideBMesh.triangles = sideBTriangles.ToArray();
-                sideBMesh.normals = sideBNormals.ToArray();
-                sideBMesh.uv = sideBUvs.ToArray();
             }
         }
 
@@ -419,8 +424,8 @@ namespace Assets.Scripts
                         AddTrianglesNormalAndUvs(side2, intersection1, null, intersection1Uv, v3, null, uv3, intersection2, null, intersection2Uv, useSharedVertices, false);
                     }
 
-                    pointsAlongPlane.Add(intersection1);
-                    pointsAlongPlane.Add(intersection2);
+                    pointsOnPlane.Add(intersection1);
+                    pointsOnPlane.Add(intersection2);
                 }
             }
 
@@ -455,14 +460,14 @@ namespace Assets.Scripts
             pointOfintersection = ray.GetPoint(distance);
             return distance;
         }
-        
+
         // 두 UV 사이의 거리에 대한 보간을 수행하는 메소드
         private Vector2 InterpolateUvs(Vector2 uv1, Vector2 uv2, float distance)
         {
             Vector2 uv = Vector2.Lerp(uv1, uv2, distance);
             return uv;
         }
-      
+
         // 세 정점에 대한 법선 벡터를 계산하는 메소드
         private Vector3 ComputeNormal(Vector3 v1, Vector3 v2, Vector3 v3)
         {
@@ -472,19 +477,6 @@ namespace Assets.Scripts
             Vector3 normal = Vector3.Cross(side1, side2);
 
             return normal;
-        }
-        
-        // 주어진 목록 내의 법선 벡터를 뒤집는 메소드
-        private List<Vector3> FlipNormals(List<Vector3> currentNormals)
-        {
-            List<Vector3> flippedNormals = new List<Vector3>();
-
-            foreach (Vector3 normal in currentNormals)
-            {
-                flippedNormals.Add(-normal);
-            }
-
-            return flippedNormals;
         }
 
         // 정점을 부드럽게 만드는 메소드
